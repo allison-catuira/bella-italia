@@ -9,7 +9,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #0c1220; color: #fff; font-family: 'Jost', sans-serif; overflow-x: hidden; }
 
-/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 200;
   background: #000; border-bottom: 1px solid #bf2e2e;
@@ -20,10 +19,9 @@ nav {
 .nav-links a { color: #fff; text-decoration: none; font-size: 16px; white-space: nowrap; }
 .nav-links a:hover { opacity: .75; }
 
-/* PAGE GRID: left text scrolls, right column holds the fixed shape */
 .page { display: grid; grid-template-columns: 1fr 1fr; padding-top: 80px; }
 
-/* LEFT: continuous scroll */
+/* LEFT: scrolling text */
 .text-col { position: relative; }
 
 .panel {
@@ -34,9 +32,18 @@ nav {
 }
 .panel.visible { opacity: 1; }
 
-.panel-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 72px; }
-#hero-about { transition: opacity .5s ease; }
-#hero-about p { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 72px; line-height: 1.1; }
+/* First panel: "About Us" overlaid on section content */
+.panel-hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 72px;
+  position: relative;
+}
+#hero-about {
+  position: absolute;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 72px; line-height: 1.1;
+  transition: opacity .5s ease;
+}
 #section-organic { opacity: 0; transition: opacity .5s ease; }
 
 .section-title { font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.75; margin-bottom: 36px; }
@@ -50,10 +57,16 @@ nav {
   position: sticky; top: 80px; height: calc(100vh - 80px);
   align-self: start;
   display: flex; align-items: flex-start; justify-content: flex-end;
-  overflow: visible;
 }
 
-/* Shape: fills the column flush to the right edge, anchored at the top */
+/*
+  Shape dimensions from Figma: width=642, left side=514px, right side=698px.
+  In objectBoundingBox units (width=1, height=698/698=1):
+    top-left:     0, 0
+    top-right:    1, 0
+    bottom-right: 1, 1
+    bottom-left:  0, 514/698 = 0.737
+*/
 .shape-wrap {
   position: relative;
   width: 80%;
@@ -61,14 +74,12 @@ nav {
   max-height: calc((100vh - 80px) * 0.8);
   flex-shrink: 0;
 }
-
 .defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 .clipped {
   position: absolute; inset: 0;
   clip-path: url(#yShape);
 }
-
 .clipped img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -103,12 +114,14 @@ footer {
 .sub-btn {
   background: #bf2e2e; border: 1px solid #bf2e2e; color: #fff;
   border-radius: 50px; padding: 0 24px; height: 44px; cursor: pointer;
-  font-family: 'Jost', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1.68px; text-transform: uppercase;
+  font-family: 'Jost', sans-serif; font-weight: 700; font-size: 14px;
+  letter-spacing: 1.68px; text-transform: uppercase;
 }
 .footer-copy { margin-top: 40px; font-size: 16px; }
 .footer-wm {
   position: absolute; bottom: -60px; left: -20px; opacity: .05; pointer-events: none;
-  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 200px; color: #fff; white-space: nowrap; line-height: 1;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 200px;
+  color: #fff; white-space: nowrap; line-height: 1;
 }
 </style>
 </head>
@@ -130,12 +143,10 @@ footer {
 </nav>
 
 <div class="page">
-
-  <!-- LEFT: scrolling text panels -->
   <div class="text-col">
 
     <div class="panel-hero" data-img="0">
-      <div id="hero-about"><p>About Us</p></div>
+      <div id="hero-about">About Us</div>
       <div id="section-organic">
         <p class="section-title">An Organic Beginning</p>
         <div class="body-text">
@@ -212,32 +223,33 @@ footer {
 
   </div>
 
-  <!-- RIGHT: sticky image shape, flush top-right -->
+  <!-- RIGHT: sticky shape, flush top-right -->
   <div class="image-col">
     <div class="shape-wrap">
       <svg class="defs-svg" aria-hidden="true">
         <defs>
           <clipPath id="yShape" clipPathUnits="objectBoundingBox">
-            <!-- Rectangle with diagonal cut at bottom-left: matches Figma shape -->
-            <polygon points="0,0 1,0 1,1 0.18,1 0,0.82"/>
+            <!-- width=642, left side=514, right side=698
+                 In unit coords (height=698):
+                 top-left(0,0) top-right(1,0) bottom-right(1,1) bottom-left(0, 514/698=0.737) -->
+            <polygon points="0,0 1,0 1,1 0,0.737"/>
           </clipPath>
         </defs>
       </svg>
       <div class="clipped">
-        <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/0b50a9a1-9c9f-433a-83d9-0ced87cfc4ef" alt="An Organic Beginning"/>
-        <img id="img-1" src="https://www.figma.com/api/mcp/asset/0bd7c8a0-3d81-4e6f-b9fd-211f0a0b578d" alt="Celebrating Organic Moments"/>
-        <img id="img-2" src="https://www.figma.com/api/mcp/asset/2d26d34a-d17d-4853-a304-d4096adda1d6" alt="The Organic Italian was created for those moments"/>
-        <img id="img-3" src="https://www.figma.com/api/mcp/asset/bb5dea30-5b61-4c9b-8d77-7f907ae4b0ec" alt="Organic Isn't Just a Headline"/>
-        <img id="img-4" src="https://www.figma.com/api/mcp/asset/bb5dca0b-0e5a-43a3-8e15-2698f6d216e6" alt="The Art of the Shape"/>
-        <img id="img-5" src="https://www.figma.com/api/mcp/asset/b39756b5-fdbc-41c7-ab97-162a668fdac4" alt="Made in Naples"/>
+        <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/6e7e8e01-a6c6-49a1-a6ca-ae709a0f79bf" alt="An Organic Beginning"/>
+        <img id="img-1" src="https://www.figma.com/api/mcp/asset/3eccb30b-a7d3-4f2c-aea5-16f9acc081eb" alt="Celebrating Organic Moments"/>
+        <img id="img-2" src="https://www.figma.com/api/mcp/asset/94e9a4cd-ac39-4697-b68c-25442c2350ba" alt="The Organic Italian was created for those moments"/>
+        <img id="img-3" src="https://www.figma.com/api/mcp/asset/46c3b1ce-574d-48a3-972b-1703e92c4057" alt="Organic Isn't Just a Headline"/>
+        <img id="img-4" src="https://www.figma.com/api/mcp/asset/53673723-8f42-46ff-a082-6a31efe86ab1" alt="The Art of the Shape"/>
+        <img id="img-5" src="https://www.figma.com/api/mcp/asset/39e8688e-15c5-4693-819d-558263f70ae3" alt="Made in Naples"/>
         <img id="img-6" src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
-        <img id="img-7" src="https://www.figma.com/api/mcp/asset/d0aa411e-20f4-4741-bbf5-dadac1bb0395" alt="This is the Organic Italian"/>
-        <img id="img-8" src="https://www.figma.com/api/mcp/asset/c8536e13-8b7d-47b4-8fb7-c6ee4a6be501" alt="Good taste lives here"/>
+        <img id="img-7" src="https://www.figma.com/api/mcp/asset/d7785ea9-e30a-4ae6-a55e-c81f710b1795" alt="This is the Organic Italian"/>
+        <img id="img-8" src="https://www.figma.com/api/mcp/asset/b7526de9-1280-4874-ae77-bc79ac97e4c1" alt="Good taste lives here"/>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
@@ -271,7 +283,6 @@ footer {
     <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
     <div class="footer-wm">Bella Italia</div>
   </footer>
-
 </div>
 
 <script>
@@ -280,7 +291,7 @@ const images = document.querySelectorAll('.clipped img');
 const heroAbout = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
 let currentImg = -1;
-let heroGone = false;
+let heroState = 'visible'; // 'visible' | 'hidden'
 
 function setImg(idx) {
   if (idx === currentImg) return;
@@ -288,48 +299,64 @@ function setImg(idx) {
   images.forEach((img, i) => img.classList.toggle('active', i === idx));
 }
 
-function triggerHero() {
-  if (heroGone) return;
-  heroGone = true;
-  setTimeout(() => {
-    heroAbout.style.opacity = '0';
-    setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
-  }, 1600);
+function showHero() {
+  if (heroState === 'visible') return;
+  heroState = 'visible';
+  sectionOrganic.style.opacity = '0';
+  setTimeout(() => { heroAbout.style.opacity = '1'; }, 500);
 }
 
-// Main observer — 30% visibility threshold
+function hideHero() {
+  if (heroState === 'hidden') return;
+  heroState = 'hidden';
+  heroAbout.style.opacity = '0';
+  setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
+}
+
+// Image observer for panels 1–7
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const idx = +entry.target.dataset.img;
-    entry.target.classList.add('visible');
-    setImg(idx);
-    if (idx === 0) triggerHero();
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      setImg(+entry.target.dataset.img);
+    }
   });
 }, { threshold: 0.3 });
 
-
 panels.forEach((p, i) => {
-  if (i < panels.length - 1) observer.observe(p);
+  if (i > 0 && i < panels.length - 1) observer.observe(p);
 });
 
-// Use scroll position for the last panel — IntersectionObserver
-// is unreliable for bottom elements inside iframes
-const lastPanel = panels[panels.length - 1];
-function checkLastPanel() {
-  const rect = lastPanel.getBoundingClientRect();
-  if (rect.top < window.innerHeight * 0.85) {
-    lastPanel.classList.add('visible');
-    setImg(+lastPanel.dataset.img);
+// Scroll listener handles: hero swap on panel 0, last panel image trigger,
+// and hero restoration when scrolling back to top
+function onScroll() {
+  const scrollY = window.scrollY;
+
+  // Hero: fade out on first scroll down, restore when back near top
+  if (scrollY > 10) {
+    hideHero();
+  } else {
+    showHero();
+  }
+
+  // Keep panel 0 image active while near the top
+  if (scrollY < window.innerHeight * 0.5) {
+    setImg(0);
+    panels[0].classList.add('visible');
+  }
+
+  // Last panel: trigger when its top edge is within the viewport
+  const last = panels[panels.length - 1];
+  const lastRect = last.getBoundingClientRect();
+  if (lastRect.top < window.innerHeight * 0.8) {
+    last.classList.add('visible');
+    setImg(+last.dataset.img);
   }
 }
-window.addEventListener('scroll', checkLastPanel, { passive: true });
-checkLastPanel();
 
-// Fire hero on load if not scrolled
-setTimeout(triggerHero, 800);
+window.addEventListener('scroll', onScroll, { passive: true });
 
-// Init first panel visible
+// Init
 panels[0].classList.add('visible');
 setImg(0);
 </script>
