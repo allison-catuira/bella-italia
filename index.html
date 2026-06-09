@@ -69,9 +69,9 @@ nav {
 */
 .shape-wrap {
   position: relative;
-  width: 80%;
+  width: 96%;
   aspect-ratio: 642 / 698;
-  max-height: calc((100vh - 80px) * 0.8);
+  max-height: calc((100vh - 80px) * 0.96);
   flex-shrink: 0;
 }
 .defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -354,11 +354,25 @@ function onScroll() {
   }
 }
 
+// Use document.addEventListener for scroll — more reliable inside iframes
+document.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('scroll', onScroll, { passive: true });
+
+// Also poll on a rAF loop so the last panel never gets missed
+function poll() {
+  const last = panels[panels.length - 1];
+  const rect = last.getBoundingClientRect();
+  if (rect.top < window.innerHeight) {
+    last.classList.add('visible');
+    setImg(+last.dataset.img);
+  }
+  requestAnimationFrame(poll);
+}
 
 // Init
 panels[0].classList.add('visible');
 setImg(0);
+poll();
 </script>
 </body>
 </html>
