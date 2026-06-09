@@ -20,8 +20,6 @@ nav {
 .nav-links a:hover { opacity: .75; }
 
 .page { display: grid; grid-template-columns: 1fr 1fr; padding-top: 80px; }
-
-/* LEFT: scrolling text */
 .text-col { position: relative; }
 
 .panel {
@@ -32,16 +30,15 @@ nav {
 }
 .panel.visible { opacity: 1; }
 
-/* First panel: "About Us" overlaid on section content */
 .panel-hero {
   min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 72px;
-  position: relative;
+  padding: 80px 72px; position: relative;
 }
 #hero-about {
   position: absolute;
-  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 80px; line-height: 90px;
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 80px; line-height: 90px;
   transition: opacity .5s ease;
 }
 #section-organic { opacity: 0; transition: opacity .5s ease; }
@@ -52,21 +49,11 @@ nav {
 .body-text p:last-child { margin-bottom: 0; }
 .panel.quote p { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 48px; line-height: 1.2; }
 
-/* RIGHT: sticky column, shape anchored top-right */
 .image-col {
   position: sticky; top: 80px; height: calc(100vh - 80px);
   align-self: start;
   display: flex; align-items: flex-start; justify-content: flex-end;
 }
-
-/*
-  Shape dimensions from Figma: width=642, left side=514px, right side=698px.
-  In objectBoundingBox units (width=1, height=698/698=1):
-    top-left:     0, 0
-    top-right:    1, 0
-    bottom-right: 1, 1
-    bottom-left:  0, 514/698 = 0.737
-*/
 .shape-wrap {
   position: relative;
   width: 96%;
@@ -75,20 +62,14 @@ nav {
   flex-shrink: 0;
 }
 .defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
-
-.clipped {
-  position: absolute; inset: 0;
-  clip-path: url(#yShape);
-}
+.clipped { position: absolute; inset: 0; clip-path: url(#yShape); }
 .clipped img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: right center;
   opacity: 0; transition: opacity .55s ease;
 }
 .clipped img.active { opacity: 1; }
 
-/* FOOTER */
 footer {
   grid-column: 1 / -1;
   background: #10193a; padding: 70px 72px 80px;
@@ -217,21 +198,17 @@ footer {
       </div>
     </div>
 
-    <div class="panel quote" data-img="8" id="last-panel">
+    <div class="panel quote" data-img="8">
       <p>Good taste lives here.</p>
     </div>
 
   </div>
 
-  <!-- RIGHT: sticky shape, flush top-right -->
   <div class="image-col">
     <div class="shape-wrap">
       <svg class="defs-svg" aria-hidden="true">
         <defs>
           <clipPath id="yShape" clipPathUnits="objectBoundingBox">
-            <!-- width=642, left side=514, right side=698
-                 In unit coords (height=698):
-                 top-left(0,0) top-right(1,0) bottom-right(1,1) bottom-left(0, 514/698=0.737) -->
             <polygon points="0,0 1,0 1,1 0,0.737"/>
           </clipPath>
         </defs>
@@ -287,92 +264,62 @@ footer {
 
 <script>
 const panels = Array.from(document.querySelectorAll('[data-img]'));
-const images = document.querySelectorAll('.clipped img');
+const images = Array.from(document.querySelectorAll('.clipped img'));
 const heroAbout = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
-let currentImg = -1;
-let heroState = 'visible'; // 'visible' | 'hidden'
+const vh = () => window.innerHeight;
+
+let activeImg = 0;
+let heroState = 'visible';
 
 function setImg(idx) {
-  if (idx === currentImg) return;
-  currentImg = idx;
+  if (idx === activeImg) return;
+  activeImg = idx;
   images.forEach((img, i) => img.classList.toggle('active', i === idx));
 }
 
 function showHero() {
-  if (heroState === 'visible') return;
-  heroState = 'visible';
-  sectionOrganic.style.opacity = '0';
-  setTimeout(() => { heroAbout.style.opacity = '1'; }, 500);
+  if (heroState === 'hidden') {
+    heroState = 'visible';
+    sectionOrganic.style.opacity = '0';
+    setTimeout(() => { heroAbout.style.opacity = '1'; }, 500);
+  }
 }
 
 function hideHero() {
-  if (heroState === 'hidden') return;
-  heroState = 'hidden';
-  heroAbout.style.opacity = '0';
-  setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
+  if (heroState === 'visible') {
+    heroState = 'hidden';
+    heroAbout.style.opacity = '0';
+    setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
+  }
 }
 
-// Image observer for panels 1–7
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      setImg(+entry.target.dataset.img);
-    }
+// Single rAF loop — checks every panel on every frame, no events needed
+function tick() {
+  const mid = vh() * 0.5;
+
+  // Hero
+  if (window.scrollY < 20) showHero();
+  else hideHero();
+
+  // Find which panel's centre is closest to viewport midpoint
+  let best = 0;
+  let bestDist = Infinity;
+  panels.forEach((p, i) => {
+    const r = p.getBoundingClientRect();
+    const centre = r.top + r.height / 2;
+    const dist = Math.abs(centre - mid);
+    if (dist < bestDist) { bestDist = dist; best = i; }
+    if (r.top < vh()) p.classList.add('visible');
   });
-}, { threshold: 0.3 });
+  setImg(best);
 
-panels.forEach((p, i) => {
-  if (i > 0 && i < panels.length - 1) observer.observe(p);
-});
-
-// Scroll listener handles: hero swap on panel 0, last panel image trigger,
-// and hero restoration when scrolling back to top
-function onScroll() {
-  const scrollY = window.scrollY;
-
-  // Hero: fade out on first scroll down, restore when back near top
-  if (scrollY > 10) {
-    hideHero();
-  } else {
-    showHero();
-  }
-
-  // Keep panel 0 image active while near the top
-  if (scrollY < window.innerHeight * 0.5) {
-    setImg(0);
-    panels[0].classList.add('visible');
-  }
-
-  // Last panel: trigger when its top edge is within the viewport
-  const last = panels[panels.length - 1];
-  const lastRect = last.getBoundingClientRect();
-  if (lastRect.top < window.innerHeight * 0.8) {
-    last.classList.add('visible');
-    setImg(+last.dataset.img);
-  }
-}
-
-// Use document.addEventListener for scroll — more reliable inside iframes
-document.addEventListener('scroll', onScroll, { passive: true });
-window.addEventListener('scroll', onScroll, { passive: true });
-
-// Also poll on a rAF loop so the last panel never gets missed
-function poll() {
-  const last = panels[panels.length - 1];
-  const rect = last.getBoundingClientRect();
-  if (rect.top < window.innerHeight) {
-    last.classList.add('visible');
-    setImg(+last.dataset.img);
-  }
-  requestAnimationFrame(poll);
+  requestAnimationFrame(tick);
 }
 
 // Init
 panels[0].classList.add('visible');
-setImg(0);
-poll();
+requestAnimationFrame(tick);
 </script>
 </body>
 </html>
