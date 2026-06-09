@@ -56,10 +56,9 @@ nav {
 /* Shape: fills the column flush to the right edge, anchored at the top */
 .shape-wrap {
   position: relative;
-  width: 100%;
-  /* 642w : 698h from Figma */
+  width: 80%;
   aspect-ratio: 642 / 698;
-  max-height: calc(100vh - 80px);
+  max-height: calc((100vh - 80px) * 0.8);
   flex-shrink: 0;
 }
 
@@ -295,7 +294,7 @@ function triggerHero() {
   setTimeout(() => {
     heroAbout.style.opacity = '0';
     setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
-  }, 800);
+  }, 1600);
 }
 
 // Main observer — 30% visibility threshold
@@ -309,21 +308,23 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.3 });
 
-// Last panel gets a dedicated observer with rootMargin so it fires
-// as soon as it enters the bottom of the viewport, even partially
-const lastObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const idx = +entry.target.dataset.img;
-    entry.target.classList.add('visible');
-    setImg(idx);
-  });
-}, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
 panels.forEach((p, i) => {
-  if (i === panels.length - 1) lastObserver.observe(p);
-  else observer.observe(p);
+  if (i < panels.length - 1) observer.observe(p);
 });
+
+// Use scroll position for the last panel — IntersectionObserver
+// is unreliable for bottom elements inside iframes
+const lastPanel = panels[panels.length - 1];
+function checkLastPanel() {
+  const rect = lastPanel.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.85) {
+    lastPanel.classList.add('visible');
+    setImg(+lastPanel.dataset.img);
+  }
+}
+window.addEventListener('scroll', checkLastPanel, { passive: true });
+checkLastPanel();
 
 // Fire hero on load if not scrolled
 setTimeout(triggerHero, 800);
