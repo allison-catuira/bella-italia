@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:auto}
 body{background:#0c1220;color:#fff;font-family:'Jost',sans-serif;overflow-x:hidden}
 
 nav{
@@ -21,25 +20,21 @@ nav{
 .nav-links a{color:#fff;text-decoration:none;font-size:16px;white-space:nowrap}
 .nav-links a:hover{opacity:.75}
 
-/* ── SCROLL STAGE ── */
-.stage{
-  padding-top:80px;
-  /* each section snaps the viewport */
-}
+.page{padding-top:80px;display:grid;grid-template-columns:1fr 1fr}
 
-/* Each section is full-viewport-height, two columns */
-.section{
-  display:grid;
-  grid-template-columns:1fr 1fr;
+/* LEFT: scrolling text column */
+.text-col{min-height:100vh}
+
+/* Each text panel is one full viewport tall */
+.panel{
   min-height:100vh;
-  position:relative;
-}
-
-/* LEFT: text, vertically centred */
-.text-side{
   display:flex;flex-direction:column;justify-content:center;
   padding:80px 72px;
+  opacity:0;
+  transition:opacity .45s ease;
 }
+.panel.visible{opacity:1}
+
 .section-title{
   font-weight:700;font-size:24px;line-height:1.75;
   text-transform:uppercase;margin-bottom:36px
@@ -48,26 +43,27 @@ nav{
 .body-text p{margin-bottom:1em}
 .body-text p:last-child{margin-bottom:0}
 
-/* Quote / large-text sections */
-.text-side.quote p{
+.panel.quote p{
   font-family:'Playfair Display',serif;font-weight:900;
   font-size:48px;line-height:1.2
 }
 
-/* Hero title (first panel — fades out, replaced by section block) */
-.hero-title{
-  font-family:'Playfair Display',serif;font-weight:900;
-  font-size:80px;line-height:1.1;
+/* Hero title layered behind section content */
+.panel-hero{position:relative}
+#hero-about{
   position:absolute;
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:72px;line-height:1.1;color:#fff;
   transition:opacity .5s ease
 }
+#section-organic{transition:opacity .5s ease}
 
-/* RIGHT: sticky shape container */
-.image-side{
+/* RIGHT: sticky image column */
+.image-col{
   position:sticky;top:80px;
   height:calc(100vh - 80px);
   display:flex;align-items:center;justify-content:center;
-  overflow:visible;
+  align-self:start;
 }
 
 .shape-wrap{
@@ -75,26 +71,22 @@ nav{
   width:92%;
   aspect-ratio:640/700;
 }
-
-/* Hidden SVG for the clip */
-.shape-wrap svg.defs-svg{position:absolute;width:0;height:0;overflow:hidden}
+.defs-svg{position:absolute;width:0;height:0;overflow:hidden}
 
 .clipped{
   position:absolute;inset:0;
   clip-path:url(#yellowShape);
 }
-
 .clipped img{
-  position:absolute;inset:0;
-  width:100%;height:100%;
+  position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;object-position:center;
-  opacity:0;
-  transition:opacity .55s ease;
+  opacity:0;transition:opacity .55s ease;
 }
 .clipped img.active{opacity:1}
 
-/* ── FOOTER ── */
+/* Footer */
 footer{
+  grid-column:1/-1;
   background:#10193a;padding:70px 72px 80px;
   position:relative;overflow:hidden
 }
@@ -122,7 +114,7 @@ footer{
   letter-spacing:1.68px;text-transform:uppercase;cursor:pointer
 }
 .footer-copy{margin-top:40px;font-size:16px}
-.footer-watermark{
+.footer-wm{
   position:absolute;bottom:-60px;left:-20px;opacity:.05;
   pointer-events:none;font-family:'Playfair Display',serif;
   font-weight:900;font-size:200px;color:#fff;white-space:nowrap;line-height:1
@@ -146,55 +138,27 @@ footer{
   </div>
 </nav>
 
-<div class="stage">
+<div class="page">
 
-  <!-- ① An Organic Beginning -->
-  <div class="section" data-index="0">
-    <div class="text-side" id="organic-side">
-      <!-- "About Us" hero title layered on top, fades out -->
-      <div style="position:relative">
-        <div id="hero-about" style="position:absolute;top:0;left:0;opacity:1;transition:opacity .5s ease">
-          <p style="font-family:'Playfair Display',serif;font-weight:900;font-size:72px;line-height:1.1;color:#fff">About Us</p>
-        </div>
-        <div id="section-organic" style="opacity:0;transition:opacity .5s ease">
-          <p class="section-title">An Organic Beginning</p>
-          <div class="body-text">
-            <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>
-            <p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>
-            <p>Why? Because we knew it was time for a change. While so many brands were telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>
-            <p><strong>That's The Organic Italian.</strong></p>
-          </div>
+  <!-- LEFT: scrolling text -->
+  <div class="text-col">
+
+    <!-- 0: An Organic Beginning (hero overlay) -->
+    <div class="panel panel-hero visible" data-img="0">
+      <div id="hero-about">About Us</div>
+      <div id="section-organic" style="opacity:0">
+        <p class="section-title">An Organic Beginning</p>
+        <div class="body-text">
+          <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>
+          <p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>
+          <p>Why? Because we knew it was time for a change. While so many brands were telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>
+          <p><strong>That's The Organic Italian.</strong></p>
         </div>
       </div>
     </div>
-    <div class="image-side">
-      <div class="shape-wrap">
-        <svg class="defs-svg" aria-hidden="true">
-          <defs>
-            <clipPath id="yellowShape" clipPathUnits="objectBoundingBox">
-              <!-- top-left, top-right, bottom-right, diagonal cut bottom-left -->
-              <polygon points="0,0 1,0 1,1 0.18,1 0,0.82"/>
-            </clipPath>
-          </defs>
-        </svg>
-        <div class="clipped">
-          <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/0b50a9a1-9c9f-433a-83d9-0ced87cfc4ef" alt="An Organic Beginning"/>
-          <img id="img-1" src="https://www.figma.com/api/mcp/asset/0bd7c8a0-3d81-4e6f-b9fd-211f0a0b578d" alt="Celebrating Organic Moments"/>
-          <img id="img-2" src="https://www.figma.com/api/mcp/asset/2d26d34a-d17d-4853-a304-d4096adda1d6" alt="The Organic Italian was created for those moments"/>
-          <img id="img-3" src="https://www.figma.com/api/mcp/asset/bb5dea30-5b61-4c9b-8d77-7f907ae4b0ec" alt="Organic Isn't Just a Headline"/>
-          <img id="img-4" src="https://www.figma.com/api/mcp/asset/bb5dca0b-0e5a-43a3-8e15-2698f6d216e6" alt="The Art of the Shape"/>
-          <img id="img-5" src="https://www.figma.com/api/mcp/asset/b39756b5-fdbc-41c7-ab97-162a668fdac4" alt="Made in Naples"/>
-          <img id="img-6" src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
-          <img id="img-7" src="https://www.figma.com/api/mcp/asset/d0aa411e-20f4-4741-bbf5-dadac1bb0395" alt="This is the Organic Italian"/>
-          <img id="img-8" src="https://www.figma.com/api/mcp/asset/c8536e13-8b7d-47b4-8fb7-c6ee4a6be501" alt="Good taste lives here"/>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ② Celebrating Organic Moments -->
-  <div class="section" data-index="1">
-    <div class="text-side">
+    <!-- 1: Celebrating Organic Moments -->
+    <div class="panel" data-img="1">
       <p class="section-title">Celebrating Organic Moments</p>
       <div class="body-text">
         <p>Good food brings people together.</p>
@@ -203,20 +167,14 @@ footer{
         <p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ③ Quote -->
-  <div class="section" data-index="2">
-    <div class="text-side quote">
+    <!-- 2: Quote -->
+    <div class="panel quote" data-img="2">
       <p>The Organic Italian was created for those moments.</p>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ④ Organic Isn't Just a Headline -->
-  <div class="section" data-index="3">
-    <div class="text-side">
+    <!-- 3: Organic Isn't Just a Headline -->
+    <div class="panel" data-img="3">
       <p class="section-title">Organic Isn't Just a Headline</p>
       <div class="body-text">
         <p>It's our standard.</p>
@@ -224,12 +182,9 @@ footer{
         <p>Simple ingredients.<br>Beautiful flavor.<br>Nothing unnecessary.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ⑤ The Art of the Shape -->
-  <div class="section" data-index="4">
-    <div class="text-side">
+    <!-- 4: The Art of the Shape -->
+    <div class="panel" data-img="4">
       <p class="section-title">The Art of the Shape</p>
       <div class="body-text">
         <p>Every pasta shape arrives with its own personality.</p>
@@ -237,12 +192,9 @@ footer{
         <p>Every shape in The Organic Italian collection was selected with intention and purpose — to carry flavor, create balance and make every bite worth savoring.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ⑥ Made in Naples -->
-  <div class="section" data-index="5">
-    <div class="text-side">
+    <!-- 5: Made in Naples -->
+    <div class="panel" data-img="5">
       <p class="section-title">Made in Naples…Brought to America</p>
       <div class="body-text">
         <p>Naples is one of the most celebrated pasta-making regions in Italy. And that's where The Organic Italian is made.</p>
@@ -251,23 +203,17 @@ footer{
         <p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ⑦ The People Behind the Brand -->
-  <div class="section" data-index="6">
-    <div class="text-side">
+    <!-- 6: People Behind the Brand -->
+    <div class="panel" data-img="6">
       <p class="section-title">The People Behind the Brand</p>
       <div class="body-text">
         <p style="color:rgba(255,255,255,.35);font-style:italic">Coming soon.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ⑧ This is The Organic Italian -->
-  <div class="section" data-index="7">
-    <div class="text-side">
+    <!-- 7: This is The Organic Italian -->
+    <div class="panel" data-img="7">
       <p class="section-title">This is The Organic Italian</p>
       <div class="body-text">
         <p>We created this pasta for people exactly like you.</p>
@@ -276,76 +222,87 @@ footer{
         <p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>
       </div>
     </div>
-    <div class="image-side"></div>
-  </div>
 
-  <!-- ⑨ Good taste lives here -->
-  <div class="section" data-index="8">
-    <div class="text-side quote">
+    <!-- 8: Good taste lives here -->
+    <div class="panel quote" data-img="8">
       <p>Good taste lives here.</p>
     </div>
-    <div class="image-side"></div>
+
   </div>
 
-</div><!-- /stage -->
-
-<footer>
-  <div class="footer-grid">
-    <div class="footer-col">
-      <span class="fcol-head">Our Products</span>
-      <a href="#">Our Pastas</a>
-      <a href="#">Discover our other products</a>
-      <a href="#">Privacy Policy</a>
-    </div>
-    <div class="footer-col">
-      <span class="fcol-head">Company</span>
-      <a href="#">About Us</a>
-      <a href="#">Where to Find Us</a>
-      <a href="#">Explore Recipes</a>
-    </div>
-    <div class="footer-col footer-social">
-      <span class="fcol-head">Social</span>
-      <div class="social-icons">
-        <a href="#" aria-label="Facebook"><svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="#" aria-label="YouTube"><svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#10193a" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
-        <a href="#" aria-label="Instagram"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  <!-- RIGHT: sticky image shape -->
+  <div class="image-col">
+    <div class="shape-wrap">
+      <svg class="defs-svg" aria-hidden="true">
+        <defs>
+          <clipPath id="yellowShape" clipPathUnits="objectBoundingBox">
+            <polygon points="0,0 1,0 1,1 0.18,1 0,0.82"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <div class="clipped">
+        <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/0b50a9a1-9c9f-433a-83d9-0ced87cfc4ef" alt="An Organic Beginning"/>
+        <img id="img-1" src="https://www.figma.com/api/mcp/asset/0bd7c8a0-3d81-4e6f-b9fd-211f0a0b578d" alt="Celebrating Organic Moments"/>
+        <img id="img-2" src="https://www.figma.com/api/mcp/asset/2d26d34a-d17d-4853-a304-d4096adda1d6" alt="The Organic Italian was created for those moments"/>
+        <img id="img-3" src="https://www.figma.com/api/mcp/asset/bb5dea30-5b61-4c9b-8d77-7f907ae4b0ec" alt="Organic Isn't Just a Headline"/>
+        <img id="img-4" src="https://www.figma.com/api/mcp/asset/bb5dca0b-0e5a-43a3-8e15-2698f6d216e6" alt="The Art of the Shape"/>
+        <img id="img-5" src="https://www.figma.com/api/mcp/asset/b39756b5-fdbc-41c7-ab97-162a668fdac4" alt="Made in Naples"/>
+        <img id="img-6" src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
+        <img id="img-7" src="https://www.figma.com/api/mcp/asset/d0aa411e-20f4-4741-bbf5-dadac1bb0395" alt="This is the Organic Italian"/>
+        <img id="img-8" src="https://www.figma.com/api/mcp/asset/c8536e13-8b7d-47b4-8fb7-c6ee4a6be501" alt="Good taste lives here"/>
       </div>
     </div>
   </div>
-  <div class="footer-sub">
-    <h4>Stay up to date</h4>
-    <div class="email-row">
-      <input class="email-input" type="email" placeholder="Enter your email"/>
-      <button class="sub-btn">Subscribe</button>
+
+  <!-- FOOTER spans full width -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="fcol-head">Our Products</span>
+        <a href="#">Our Pastas</a>
+        <a href="#">Discover our other products</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <span class="fcol-head">Company</span>
+        <a href="#">About Us</a>
+        <a href="#">Where to Find Us</a>
+        <a href="#">Explore Recipes</a>
+      </div>
+      <div class="footer-col footer-social">
+        <span class="fcol-head">Social</span>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#10193a" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
+      </div>
     </div>
-  </div>
-  <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
-  <div class="footer-watermark">Bella Italia</div>
-</footer>
+    <div class="footer-sub">
+      <h4>Stay up to date</h4>
+      <div class="email-row">
+        <input class="email-input" type="email" placeholder="Enter your email"/>
+        <button class="sub-btn">Subscribe</button>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
+    <div class="footer-wm">Bella Italia</div>
+  </footer>
+
+</div>
 
 <script>
-const sections = document.querySelectorAll('.section');
+const panels = document.querySelectorAll('.panel');
 const images = document.querySelectorAll('.clipped img');
 const heroAbout = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
-// The shape-wrap lives in section 0's image-side; we move it to each active section
-const shapeWrap = document.querySelector('.shape-wrap');
-
-let currentIdx = -1;
+let currentImg = 0;
 let heroGone = false;
 
-// Move the sticky shape into whichever section's image-side is active
-function moveShape(idx) {
-  const target = sections[idx].querySelector('.image-side');
-  if (shapeWrap.parentElement !== target) target.appendChild(shapeWrap);
-}
-
-function setSection(idx) {
-  if (idx === currentIdx) return;
-  currentIdx = idx;
-  // swap image
+function setImg(idx) {
+  if (idx === currentImg) return;
+  currentImg = idx;
   images.forEach((img, i) => img.classList.toggle('active', i === idx));
-  moveShape(idx);
 }
 
 function triggerHero() {
@@ -357,21 +314,22 @@ function triggerHero() {
   }, 800);
 }
 
-function onScroll() {
-  const mid = window.scrollY + window.innerHeight * 0.5;
-  sections.forEach((sec, i) => {
-    const top = sec.getBoundingClientRect().top + window.scrollY;
-    const bot = top + sec.offsetHeight;
-    if (mid >= top && mid < bot) setSection(i);
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = +entry.target.dataset.img;
+      entry.target.classList.add('visible');
+      setImg(idx);
+      // trigger hero swap when panel 0 enters
+      if (idx === 0) triggerHero();
+    }
   });
-  if (!heroGone && window.scrollY > 20) triggerHero();
-}
+}, { threshold: 0.4 });
 
-window.addEventListener('scroll', onScroll, {passive: true});
-// Fire hero swap on load after 800ms if user hasn't scrolled
+panels.forEach(p => observer.observe(p));
+
+// fallback: fire hero after 800ms if still on page
 setTimeout(triggerHero, 800);
-// Init
-setSection(0);
 </script>
 </body>
 </html>
