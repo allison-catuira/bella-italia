@@ -320,13 +320,26 @@ const observer = new IntersectionObserver(entries => {
       const idx = +entry.target.dataset.img;
       entry.target.classList.add('visible');
       setImg(idx);
-      // trigger hero swap when panel 0 enters
       if (idx === 0) triggerHero();
     }
   });
-}, { threshold: 0.4 });
+}, { threshold: 0.25 });
 
-panels.forEach(p => observer.observe(p));
+// Last panel gets its own observer with a very low threshold
+const lastPanel = panels[panels.length - 1];
+const lastObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      lastPanel.classList.add('visible');
+      setImg(+lastPanel.dataset.img);
+    }
+  });
+}, { threshold: 0.05 });
+
+panels.forEach((p, i) => {
+  if (i === panels.length - 1) lastObserver.observe(p);
+  else observer.observe(p);
+});
 
 // fallback: fire hero after 800ms if still on page
 setTimeout(triggerHero, 800);
