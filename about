@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About Us — Bella Italia</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0c1220; color: #fff; font-family: 'Jost', sans-serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+    background: #000; border-bottom: 1px solid #bf2e2e;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+  }
+  .nav-logo {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  }
+  .nav-logo img { height: 48px; }
+  .nav-links {
+    display: flex; gap: 62px; align-items: center;
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  }
+  .nav-links a { color: #fff; text-decoration: none; font-size: 16px; font-weight: 400; white-space: nowrap; }
+  .nav-links a:hover { opacity: 0.75; }
+
+  /* LAYOUT */
+  .page { padding-top: 80px; }
+
+  /* STICKY IMAGE COLUMN */
+  .scroll-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  /* LEFT: text panels */
+  .text-col { position: relative; }
+
+  .text-panel {
+    min-height: 649px;
+    padding: 0 80px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .text-panel.hero {
+    min-height: 649px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .text-panel .section-title {
+    font-family: 'Jost', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.75;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .text-panel .body-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #fff;
+  }
+  .text-panel .body-text p { margin-bottom: 1em; }
+  .text-panel .body-text p:last-child { margin-bottom: 0; }
+  .text-panel .body-text strong { font-weight: 700; }
+
+  /* Hero title with fade/replace animation */
+  .hero-title-wrap { position: relative; height: 100px; }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 1.1;
+    color: #fff;
+    position: absolute; left: 0; top: 0;
+    transition: opacity 0.5s ease;
+  }
+  #hero-about { opacity: 1; }
+  #hero-organic { opacity: 0; }
+
+  /* Quote panels (large centered text) */
+  .quote-panel {
+    min-height: 649px;
+    padding: 0 80px;
+    display: flex; align-items: center;
+  }
+  .quote-panel p {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  /* RIGHT: sticky image */
+  .image-col {
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+    background: #d4b483;
+  }
+  .image-col img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute; top: 0; left: 0;
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
+  .image-col img.active { opacity: 1; }
+
+  /* FOOTER */
+  footer {
+    background: #10193a;
+    height: 535px;
+    position: relative;
+    overflow: hidden;
+    padding: 70px 72px 0;
+  }
+  .footer-grid { display: flex; gap: 0; }
+  .footer-col { display: flex; flex-direction: column; gap: 16px; min-width: 200px; margin-right: 60px; }
+  .footer-col-head { font-size: 14px; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.8); line-height: 30px; }
+  .footer-col a { font-size: 16px; color: #fff; text-decoration: none; text-transform: capitalize; }
+  .footer-col a:hover { opacity: 0.75; }
+  .footer-social { margin-left: auto; }
+  .footer-social .footer-col-head { margin-bottom: 0; }
+  .social-icons { display: flex; gap: 16px; margin-top: 16px; }
+  .social-icons a { color: #fff; font-size: 28px; text-decoration: none; }
+  .footer-subscribe { position: absolute; left: 658px; top: 379px; }
+  .footer-subscribe h4 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 18px; color: #fff; margin-bottom: 21px; }
+  .email-row { display: flex; gap: 12px; align-items: center; }
+  .email-input {
+    width: 388px; height: 44px;
+    border: 1px solid #fff; border-radius: 50px;
+    background: transparent; color: #fff;
+    padding: 0 18px; font-size: 16px; font-family: 'Jost', sans-serif;
+    outline: none;
+  }
+  .email-input::placeholder { color: #98989f; }
+  .subscribe-btn {
+    background: #bf2e2e; border: 1px solid #bf2e2e; color: #fff;
+    border-radius: 50px; padding: 0 24px; height: 44px;
+    font-family: 'Jost', sans-serif; font-weight: 700; font-size: 14px;
+    letter-spacing: 1.68px; text-transform: uppercase; cursor: pointer;
+    white-space: nowrap;
+  }
+  .footer-copy { position: absolute; left: 72px; bottom: 80px; font-size: 16px; color: #fff; }
+
+  /* Bella Italia logo footer */
+  .footer-logo-bg {
+    position: absolute; bottom: -60px; left: -20px;
+    opacity: 0.08; pointer-events: none;
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: 200px; color: #fff; white-space: nowrap; line-height: 1;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <svg width="64" height="56" viewBox="0 0 64 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="36" font-family="Playfair Display, serif" font-weight="900" font-size="28" fill="#fff">Bella</text>
+      <text x="0" y="56" font-family="Playfair Display, serif" font-weight="900" font-size="28" fill="#bf2e2e">Italia</text>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <a href="#">Shop Our Pastas</a>
+    <a href="#">About Us</a>
+    <a href="#">Explore Recipes</a>
+    <a href="#">Where to Find Us</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="scroll-container">
+
+    <!-- LEFT TEXT COLUMN -->
+    <div class="text-col" id="text-col">
+
+      <!-- Panel 0: Hero -->
+      <div class="text-panel hero" data-panel="0">
+        <div class="hero-title-wrap">
+          <h1 class="hero-title" id="hero-about">About Us</h1>
+          <h1 class="hero-title" id="hero-organic">An Organic<br>Beginning</h1>
+        </div>
+      </div>
+
+      <!-- Panel 1: An Organic Beginning -->
+      <div class="text-panel" data-panel="1">
+        <p class="section-title">An Organic Beginning</p>
+        <div class="body-text">
+          <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>
+          <p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>
+          <p>Why? Because we knew it was time for a change. While so many brands were telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>
+          <p><strong>That's The Organic Italian.</strong></p>
+        </div>
+      </div>
+
+      <!-- Panel 2: Celebrating Organic Moments -->
+      <div class="text-panel" data-panel="2">
+        <p class="section-title">Celebrating Organic Moments</p>
+        <div class="body-text">
+          <p>Good food brings people together.</p>
+          <p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p>
+          <p>The impromptu dinner party.<br>The comfortably crowded table.<br>The second bottle…the third.<br>The friend who stays a little too late.<br>The night that drifts into dawn.<br>The quiet luxury of actually slowing down for dinner.</p>
+          <p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>
+        </div>
+      </div>
+
+      <!-- Panel 3: Quote -->
+      <div class="quote-panel" data-panel="3">
+        <p>The Organic Italian was created for those moments.</p>
+      </div>
+
+      <!-- Panel 4: Organic Isn't Just a Headline -->
+      <div class="text-panel" data-panel="4">
+        <p class="section-title">Organic Isn't Just a Headline</p>
+        <div class="body-text">
+          <p>It's our standard.</p>
+          <p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p>
+          <p>Simple ingredients.<br>Beautiful flavor.<br>Nothing unnecessary.</p>
+        </div>
+      </div>
+
+      <!-- Panel 5: The Art of the Shape -->
+      <div class="text-panel" data-panel="5">
+        <p class="section-title">The Art of the Shape</p>
+        <div class="body-text">
+          <p>Every pasta shape arrives with its own personality.</p>
+          <p>Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
+          <p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>
+        </div>
+      </div>
+
+      <!-- Panel 6: Made in Naples -->
+      <div class="text-panel" data-panel="6">
+        <p class="section-title">Made in Naples…Brought to America</p>
+        <div class="body-text">
+          <p>Naples is one of the most celebrated pasta-making regions in Italy. And that's where The Organic Italian is made.</p>
+          <p>Working with experienced pasta makers and trusted partners, we combine generations of Italian expertise with modern production standards to create pasta with authentic flavor and exceptional texture.</p>
+          <p>It's the best of Italian tradition. Made for a modern American lifestyle.</p>
+          <p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>
+        </div>
+      </div>
+
+      <!-- Panel 7: People Behind the Brand -->
+      <div class="text-panel" data-panel="7">
+        <p class="section-title">The People Behind the Brand</p>
+        <div class="body-text">
+          <p style="color:rgba(255,255,255,0.4); font-style:italic;">Coming soon.</p>
+        </div>
+      </div>
+
+      <!-- Panel 8: This is the Organic Italian -->
+      <div class="text-panel" data-panel="8">
+        <p class="section-title">This is The Organic Italian</p>
+        <div class="body-text">
+          <p>We created this pasta for people exactly like you.</p>
+          <p>People who care as much about the ingredients, as they do about the vibe. That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life.</p>
+          <p>Authentic Italian craftsmanship.<br>Organic Italian ingredients.<br>Thoughtfully selected shapes.<br>Made in Naples for modern American life.</p>
+          <p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>
+        </div>
+      </div>
+
+      <!-- Panel 9: Good Taste Lives Here -->
+      <div class="quote-panel" data-panel="9">
+        <p>Good taste lives here.</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT STICKY IMAGE COLUMN -->
+    <div class="image-col" id="image-col">
+      <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/0b50a9a1-9c9f-433a-83d9-0ced87cfc4ef" alt="An Organic Beginning" />
+      <img id="img-1" src="https://www.figma.com/api/mcp/asset/0b50a9a1-9c9f-433a-83d9-0ced87cfc4ef" alt="An Organic Beginning" />
+      <img id="img-2" src="https://www.figma.com/api/mcp/asset/0bd7c8a0-3d81-4e6f-b9fd-211f0a0b578d" alt="Celebrating Organic Moments" />
+      <img id="img-3" src="https://www.figma.com/api/mcp/asset/2d26d34a-d17d-4853-a304-d4096adda1d6" alt="The Organic Italian was created for those moments" />
+      <img id="img-4" src="https://www.figma.com/api/mcp/asset/bb5dea30-5b61-4c9b-8d77-7f907ae4b0ec" alt="The Art of the Shape" />
+      <img id="img-5" src="https://www.figma.com/api/mcp/asset/bb5dca0b-0e5a-43a3-8e15-2698f6d216e6" alt="Every shape in the Organic Italian collection" />
+      <img id="img-6" src="https://www.figma.com/api/mcp/asset/b39756b5-fdbc-41c7-ab97-162a668fdac4" alt="Made in Naples" />
+      <img id="img-7" src="" alt="The People Behind the Brand" style="background:#d9d9d9;" />
+      <img id="img-8" src="https://www.figma.com/api/mcp/asset/d0aa411e-20f4-4741-bbf5-dadac1bb0395" alt="This is the Organic Italian" />
+      <img id="img-9" src="https://www.figma.com/api/mcp/asset/c8536e13-8b7d-47b4-8fb7-c6ee4a6be501" alt="Good taste lives here" />
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-col-head">Our Products</span>
+        <a href="#">Our Pastas</a>
+        <a href="#">Discover our other products</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-head">Company</span>
+        <a href="#">About Us</a>
+        <a href="#">Where to Find Us</a>
+        <a href="#">Explore Recipes</a>
+      </div>
+      <div class="footer-col footer-social" style="margin-left: auto; margin-right: 0;">
+        <span class="footer-col-head">Social</span>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#10193a" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-subscribe">
+      <h4>Stay up to date</h4>
+      <div class="email-row">
+        <input class="email-input" type="email" placeholder="Enter your email" />
+        <button class="subscribe-btn">Subscribe</button>
+      </div>
+    </div>
+
+    <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
+    <div class="footer-logo-bg">Bella Italia</div>
+  </footer>
+</div>
+
+<script>
+  const panels = document.querySelectorAll('[data-panel]');
+  const images = document.querySelectorAll('.image-col img');
+  const heroAbout = document.getElementById('hero-about');
+  const heroOrganic = document.getElementById('hero-organic');
+
+  let heroAnimated = false;
+  let currentPanel = 0;
+
+  function setImage(idx) {
+    if (idx === currentPanel) return;
+    currentPanel = idx;
+    images.forEach((img, i) => {
+      img.classList.toggle('active', i === idx);
+    });
+  }
+
+  function onScroll() {
+    const scrollY = window.scrollY;
+    const viewMid = scrollY + window.innerHeight * 0.5;
+
+    panels.forEach(panel => {
+      const rect = panel.getBoundingClientRect();
+      const top = rect.top + scrollY;
+      const bot = top + rect.height;
+      if (viewMid >= top && viewMid < bot) {
+        const idx = parseInt(panel.dataset.panel, 10);
+        setImage(idx);
+      }
+    });
+
+    // Hero fade: "About Us" fades out at 800ms after page lands (on scroll start)
+    if (!heroAnimated && scrollY > 10) {
+      heroAnimated = true;
+      setTimeout(() => {
+        heroAbout.style.opacity = '0';
+        setTimeout(() => {
+          heroOrganic.style.opacity = '1';
+        }, 500);
+      }, 800);
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Also trigger hero animation on load after 800ms if at top
+  setTimeout(() => {
+    if (!heroAnimated) {
+      heroAnimated = true;
+      heroAbout.style.opacity = '0';
+      setTimeout(() => { heroOrganic.style.opacity = '1'; }, 500);
+    }
+  }, 800);
+</script>
+</body>
+</html>
