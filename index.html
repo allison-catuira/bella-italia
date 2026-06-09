@@ -6,118 +6,110 @@
 <title>About Us — Bella Italia</title>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#0c1220;color:#fff;font-family:'Jost',sans-serif;overflow-x:hidden}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0c1220; color: #fff; font-family: 'Jost', sans-serif; overflow-x: hidden; }
 
-nav{
-  position:fixed;top:0;left:0;width:100%;height:80px;
-  background:#000;border-bottom:1px solid #bf2e2e;
-  display:flex;align-items:flex-end;justify-content:center;
-  padding-bottom:14px;z-index:200
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 200;
+  background: #000; border-bottom: 1px solid #bf2e2e;
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px;
 }
-.nav-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%)}
-.nav-links{display:flex;gap:62px}
-.nav-links a{color:#fff;text-decoration:none;font-size:16px;white-space:nowrap}
-.nav-links a:hover{opacity:.75}
+.nav-logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); }
+.nav-links { display: flex; gap: 62px; }
+.nav-links a { color: #fff; text-decoration: none; font-size: 16px; white-space: nowrap; }
+.nav-links a:hover { opacity: .75; }
 
-.page{padding-top:80px;display:grid;grid-template-columns:1fr 1fr}
+/* PAGE GRID: left text scrolls, right column holds the fixed shape */
+.page { display: grid; grid-template-columns: 1fr 1fr; padding-top: 80px; }
 
-/* LEFT: scrolling text column */
-.text-col{min-height:100vh}
+/* LEFT: continuous scroll */
+.text-col { position: relative; }
 
-/* Each text panel is one full viewport tall */
-.panel{
-  min-height:100vh;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 72px;
-  opacity:0;
-  transition:opacity .45s ease;
+.panel {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 72px;
+  opacity: 0; transition: opacity .4s ease;
 }
-.panel.visible{opacity:1}
+.panel.visible { opacity: 1; }
 
-.section-title{
-  font-weight:700;font-size:24px;line-height:1.75;
-  text-transform:uppercase;margin-bottom:36px
-}
-.body-text{font-size:18px;line-height:1.65}
-.body-text p{margin-bottom:1em}
-.body-text p:last-child{margin-bottom:0}
+.panel-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 72px; }
+#hero-about { transition: opacity .5s ease; }
+#hero-about p { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 72px; line-height: 1.1; }
+#section-organic { opacity: 0; transition: opacity .5s ease; }
 
-.panel.quote p{
-  font-family:'Playfair Display',serif;font-weight:900;
-  font-size:48px;line-height:1.2
-}
+.section-title { font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.75; margin-bottom: 36px; }
+.body-text { font-size: 18px; line-height: 1.65; }
+.body-text p { margin-bottom: 1em; }
+.body-text p:last-child { margin-bottom: 0; }
+.panel.quote p { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 48px; line-height: 1.2; }
 
-/* Hero title layered behind section content */
-.panel-hero{position:relative}
-#hero-about{
-  position:absolute;
-  font-family:'Playfair Display',serif;font-weight:900;
-  font-size:72px;line-height:1.1;color:#fff;
-  transition:opacity .5s ease
-}
-#section-organic{transition:opacity .5s ease}
-
-/* RIGHT: sticky image column */
-.image-col{
-  position:sticky;top:80px;
-  height:calc(100vh - 80px);
-  display:flex;align-items:center;justify-content:center;
-  align-self:start;
+/* RIGHT: sticky column, shape anchored top-right */
+.image-col {
+  position: sticky; top: 80px; height: calc(100vh - 80px);
+  align-self: start;
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  overflow: visible;
 }
 
-.shape-wrap{
-  position:relative;
-  width:92%;
-  aspect-ratio:640/700;
+/* Shape: fills the column flush to the right edge, anchored at the top */
+.shape-wrap {
+  position: relative;
+  width: 100%;
+  /* 642w : 698h from Figma */
+  aspect-ratio: 642 / 698;
+  max-height: calc(100vh - 80px);
+  flex-shrink: 0;
 }
-.defs-svg{position:absolute;width:0;height:0;overflow:hidden}
 
-.clipped{
-  position:absolute;inset:0;
-  clip-path:url(#yellowShape);
-}
-.clipped img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center;
-  opacity:0;transition:opacity .55s ease;
-}
-.clipped img.active{opacity:1}
+.defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-/* Footer */
-footer{
-  grid-column:1/-1;
-  background:#10193a;padding:70px 72px 80px;
-  position:relative;overflow:hidden
+.clipped {
+  position: absolute; inset: 0;
+  clip-path: url(#yShape);
 }
-.footer-grid{display:flex;gap:60px}
-.footer-col{display:flex;flex-direction:column;gap:16px}
-.fcol-head{font-size:14px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,.8)}
-.footer-col a{font-size:16px;color:#fff;text-decoration:none}
-.footer-col a:hover{opacity:.75}
-.footer-social{margin-left:auto}
-.social-icons{display:flex;gap:16px;margin-top:16px}
-.social-icons a{color:#fff}
-.footer-sub{margin-top:56px}
-.footer-sub h4{font-family:'Playfair Display',serif;font-weight:900;font-size:18px;margin-bottom:21px}
-.email-row{display:flex;gap:12px;align-items:center}
-.email-input{
-  width:320px;height:44px;border:1px solid #fff;border-radius:50px;
-  background:transparent;color:#fff;padding:0 18px;
-  font-size:16px;font-family:'Jost',sans-serif;outline:none
+
+.clipped img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: right center;
+  opacity: 0; transition: opacity .55s ease;
 }
-.email-input::placeholder{color:#98989f}
-.sub-btn{
-  background:#bf2e2e;border:1px solid #bf2e2e;color:#fff;
-  border-radius:50px;padding:0 24px;height:44px;
-  font-family:'Jost',sans-serif;font-weight:700;font-size:14px;
-  letter-spacing:1.68px;text-transform:uppercase;cursor:pointer
+.clipped img.active { opacity: 1; }
+
+/* FOOTER */
+footer {
+  grid-column: 1 / -1;
+  background: #10193a; padding: 70px 72px 80px;
+  position: relative; overflow: hidden;
 }
-.footer-copy{margin-top:40px;font-size:16px}
-.footer-wm{
-  position:absolute;bottom:-60px;left:-20px;opacity:.05;
-  pointer-events:none;font-family:'Playfair Display',serif;
-  font-weight:900;font-size:200px;color:#fff;white-space:nowrap;line-height:1
+.footer-grid { display: flex; gap: 60px; }
+.footer-col { display: flex; flex-direction: column; gap: 16px; }
+.fcol-head { font-size: 14px; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,.8); }
+.footer-col a { font-size: 16px; color: #fff; text-decoration: none; }
+.footer-col a:hover { opacity: .75; }
+.footer-social { margin-left: auto; }
+.social-icons { display: flex; gap: 16px; margin-top: 16px; }
+.social-icons a { color: #fff; }
+.footer-sub { margin-top: 56px; }
+.footer-sub h4 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 18px; margin-bottom: 21px; }
+.email-row { display: flex; gap: 12px; align-items: center; }
+.email-input {
+  width: 320px; height: 44px; border: 1px solid #fff; border-radius: 50px;
+  background: transparent; color: #fff; padding: 0 18px;
+  font-size: 16px; font-family: 'Jost', sans-serif; outline: none;
+}
+.email-input::placeholder { color: #98989f; }
+.sub-btn {
+  background: #bf2e2e; border: 1px solid #bf2e2e; color: #fff;
+  border-radius: 50px; padding: 0 24px; height: 44px; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1.68px; text-transform: uppercase;
+}
+.footer-copy { margin-top: 40px; font-size: 16px; }
+.footer-wm {
+  position: absolute; bottom: -60px; left: -20px; opacity: .05; pointer-events: none;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 200px; color: #fff; white-space: nowrap; line-height: 1;
 }
 </style>
 </head>
@@ -140,13 +132,12 @@ footer{
 
 <div class="page">
 
-  <!-- LEFT: scrolling text -->
+  <!-- LEFT: scrolling text panels -->
   <div class="text-col">
 
-    <!-- 0: An Organic Beginning (hero overlay) -->
-    <div class="panel panel-hero visible" data-img="0">
-      <div id="hero-about">About Us</div>
-      <div id="section-organic" style="opacity:0">
+    <div class="panel-hero" data-img="0">
+      <div id="hero-about"><p>About Us</p></div>
+      <div id="section-organic">
         <p class="section-title">An Organic Beginning</p>
         <div class="body-text">
           <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>
@@ -157,7 +148,6 @@ footer{
       </div>
     </div>
 
-    <!-- 1: Celebrating Organic Moments -->
     <div class="panel" data-img="1">
       <p class="section-title">Celebrating Organic Moments</p>
       <div class="body-text">
@@ -168,12 +158,10 @@ footer{
       </div>
     </div>
 
-    <!-- 2: Quote -->
     <div class="panel quote" data-img="2">
       <p>The Organic Italian was created for those moments.</p>
     </div>
 
-    <!-- 3: Organic Isn't Just a Headline -->
     <div class="panel" data-img="3">
       <p class="section-title">Organic Isn't Just a Headline</p>
       <div class="body-text">
@@ -183,7 +171,6 @@ footer{
       </div>
     </div>
 
-    <!-- 4: The Art of the Shape -->
     <div class="panel" data-img="4">
       <p class="section-title">The Art of the Shape</p>
       <div class="body-text">
@@ -193,7 +180,6 @@ footer{
       </div>
     </div>
 
-    <!-- 5: Made in Naples -->
     <div class="panel" data-img="5">
       <p class="section-title">Made in Naples…Brought to America</p>
       <div class="body-text">
@@ -204,7 +190,6 @@ footer{
       </div>
     </div>
 
-    <!-- 6: People Behind the Brand -->
     <div class="panel" data-img="6">
       <p class="section-title">The People Behind the Brand</p>
       <div class="body-text">
@@ -212,7 +197,6 @@ footer{
       </div>
     </div>
 
-    <!-- 7: This is The Organic Italian -->
     <div class="panel" data-img="7">
       <p class="section-title">This is The Organic Italian</p>
       <div class="body-text">
@@ -223,19 +207,19 @@ footer{
       </div>
     </div>
 
-    <!-- 8: Good taste lives here -->
-    <div class="panel quote" data-img="8">
+    <div class="panel quote" data-img="8" id="last-panel">
       <p>Good taste lives here.</p>
     </div>
 
   </div>
 
-  <!-- RIGHT: sticky image shape -->
+  <!-- RIGHT: sticky image shape, flush top-right -->
   <div class="image-col">
     <div class="shape-wrap">
       <svg class="defs-svg" aria-hidden="true">
         <defs>
-          <clipPath id="yellowShape" clipPathUnits="objectBoundingBox">
+          <clipPath id="yShape" clipPathUnits="objectBoundingBox">
+            <!-- Rectangle with diagonal cut at bottom-left: matches Figma shape -->
             <polygon points="0,0 1,0 1,1 0.18,1 0,0.82"/>
           </clipPath>
         </defs>
@@ -254,7 +238,7 @@ footer{
     </div>
   </div>
 
-  <!-- FOOTER spans full width -->
+  <!-- FOOTER -->
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
@@ -292,11 +276,11 @@ footer{
 </div>
 
 <script>
-const panels = document.querySelectorAll('.panel');
+const panels = Array.from(document.querySelectorAll('[data-img]'));
 const images = document.querySelectorAll('.clipped img');
 const heroAbout = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
-let currentImg = 0;
+let currentImg = -1;
 let heroGone = false;
 
 function setImg(idx) {
@@ -314,35 +298,39 @@ function triggerHero() {
   }, 800);
 }
 
+// Main observer — 30% visibility threshold
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const idx = +entry.target.dataset.img;
-      entry.target.classList.add('visible');
-      setImg(idx);
-      if (idx === 0) triggerHero();
-    }
+    if (!entry.isIntersecting) return;
+    const idx = +entry.target.dataset.img;
+    entry.target.classList.add('visible');
+    setImg(idx);
+    if (idx === 0) triggerHero();
   });
-}, { threshold: 0.25 });
+}, { threshold: 0.3 });
 
-// Last panel gets its own observer with a very low threshold
-const lastPanel = panels[panels.length - 1];
+// Last panel gets a dedicated observer with rootMargin so it fires
+// as soon as it enters the bottom of the viewport, even partially
 const lastObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      lastPanel.classList.add('visible');
-      setImg(+lastPanel.dataset.img);
-    }
+    if (!entry.isIntersecting) return;
+    const idx = +entry.target.dataset.img;
+    entry.target.classList.add('visible');
+    setImg(idx);
   });
-}, { threshold: 0.05 });
+}, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
 panels.forEach((p, i) => {
   if (i === panels.length - 1) lastObserver.observe(p);
   else observer.observe(p);
 });
 
-// fallback: fire hero after 800ms if still on page
+// Fire hero on load if not scrolled
 setTimeout(triggerHero, 800);
+
+// Init first panel visible
+panels[0].classList.add('visible');
+setImg(0);
 </script>
 </body>
 </html>
