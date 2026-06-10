@@ -71,10 +71,15 @@ nav {
 }
 .clipped img.active { opacity: 1; }
 
-/* Window bars: sits above images, aligned to shape bounds */
+/* Window bars: sits above images, replicates Figma frame clipping.
+   Inner group is 761.666px wide offset -30.33px left within a 642px frame.
+   Expressed as percentages: left = -30.33/642 = -4.7%, width = 761.666/642 = 118.6% */
 .window-overlay {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  top: 0;
+  left: -4.7%;
+  width: 118.6%;
+  height: 100%;
   object-fit: fill;
   pointer-events: none;
   z-index: 2;
@@ -235,7 +240,7 @@ footer {
         <img id="img-8" src="https://www.figma.com/api/mcp/asset/b7526de9-1280-4874-ae77-bc79ac97e4c1" alt="Good taste lives here"/>
       </div>
       <!-- Window bars overlay: always on top of images, clipped to same shape -->
-      <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/72315103-4b42-49af-86b9-84434d89cf9e" alt=""/>
+      <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/15863a57-5ff4-4016-b2e1-cfd2b580354f" alt=""/>
     </div>
   </div>
 
