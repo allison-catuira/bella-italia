@@ -70,15 +70,26 @@ nav {
 }
 .clipped img.active { opacity: 1; }
 
-/* Window bars overlay — exact Figma offset: inner group 666px wide, left -6px */
-.window-overlay {
-  position: absolute;
-  top: 0; left: -6px;
-  width: 666px; height: 698px;
-  object-fit: fill;
-  pointer-events: none;
-  z-index: 10;
-  transition: opacity .4s ease;
+/* Window bars — drawn in CSS to avoid asset export issues.
+   Vertical bar: ~40% from left. Horizontal bar: ~35% from top, slightly angled. */
+.window-bars {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 10;
+  overflow: hidden;
+}
+.window-bars::before {
+  /* Vertical bar */
+  content: ''; position: absolute;
+  left: 40%; top: 0; bottom: 0;
+  width: 8px; background: #0c1220;
+}
+.window-bars::after {
+  /* Horizontal bar — angled to match the diagonal shape */
+  content: ''; position: absolute;
+  left: 0; right: 0; top: 35%;
+  height: 8px; background: #0c1220;
+  transform: rotate(-2.5deg) scaleX(1.05);
+  transform-origin: left center;
 }
 
 /* FOOTER */
@@ -218,7 +229,7 @@ footer {
         <img src="https://www.figma.com/api/mcp/asset/937abd5f-0a9a-44ff-96ad-b2b15be3acf5" alt="This is the Organic Italian"/>
         <img src="https://www.figma.com/api/mcp/asset/c2977eaf-b383-44b7-b515-0972d2b97afa" alt="Good taste lives here"/>
       </div>
-      <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/5afff679-d6fe-445c-a0ce-d2a0007dda94" alt=""/>
+      <div class="window-bars" id="window-bars"></div>
     </div>
   </div>
 
@@ -266,7 +277,7 @@ const PANELS = ['p0','p1','p2','p3','p4','p5','p6','p7','p8'].map(id => document
 const imgs           = Array.from(document.querySelectorAll('.clipped img'));
 const heroAbout      = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
-const windowOverlay  = document.querySelector('.window-overlay');
+const windowBars  = document.getElementById('window-bars');
 const dbg            = document.getElementById('dbg');
 let heroState = 'visible';
 
@@ -290,8 +301,8 @@ function tick() {
     setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
   }
 
-  // Window overlay fades out on scroll
-  windowOverlay.style.opacity = String(Math.max(0, 1 - scrollY / 80));
+  // Window bars fade out on scroll (reveal on return to top)
+  windowBars.style.opacity = String(Math.max(0, 1 - scrollY / 80));
 
   // Active panel = closest centre to viewport midpoint
   let best = -1, bestDist = Infinity;
@@ -301,10 +312,14 @@ function tick() {
     if (dist < bestDist) { bestDist = dist; best = i; }
   });
 
-  // No image until panel 0 centre crosses midpoint
+  // Show yellow (no image) until panel 0 centre crosses midpoint
   const p0 = PANELS[0].getBoundingClientRect();
-  if (best === 0 && (p0.top + p0.height / 2) > mid) setImg(-1);
-  else setImg(best);
+  if (best === 0 && (p0.top + p0.height / 2) > mid) {
+    setImg(-1);
+    dbg.textContent = 'About Us (yellow)';
+  } else {
+    setImg(best);
+  }
 
   requestAnimationFrame(tick);
 }
