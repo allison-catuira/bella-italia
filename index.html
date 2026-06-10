@@ -9,47 +9,37 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #0c1220; color: #fff; font-family: 'Jost', sans-serif; overflow-x: hidden; }
 
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   background: #000; border-bottom: 1px solid #bf2e2e;
   display: flex; flex-direction: column; align-items: center;
   padding: 20px 0 16px;
 }
-.nav-logo { display: flex; justify-content: center; }
 .nav-links { display: flex; gap: 62px; margin-top: 24px; }
 .nav-links a { color: #fff; text-decoration: none; font-size: 16px; white-space: nowrap; }
 .nav-links a:hover { opacity: .75; }
 
+/* PAGE */
 .page { display: grid; grid-template-columns: 1fr 1fr; padding-top: 136px; }
-.text-col { position: relative; }
 
+/* TEXT COLUMN */
 .panel {
   min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
   padding: 80px 72px;
-  opacity: 0; transition: opacity .4s ease;
 }
-.panel.visible { opacity: 1; }
-
-.panel-hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 72px; position: relative;
-}
-#hero-about {
-  position: absolute;
-  font-family: 'Playfair Display', serif; font-weight: 900;
-  font-size: 80px; line-height: 90px;
-  transition: opacity .5s ease;
-}
-#section-organic { opacity: 0; transition: opacity .5s ease; }
-
 .section-title { font-weight: 700; font-size: 24px; text-transform: uppercase; line-height: 1.75; margin-bottom: 36px; }
 .body-text { font-size: 18px; line-height: 1.65; }
 .body-text p { margin-bottom: 1em; }
 .body-text p:last-child { margin-bottom: 0; }
 .panel.quote p { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 48px; line-height: 1.2; }
 
+/* Hero panel */
+#hero-about { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 80px; line-height: 90px; transition: opacity .5s ease; }
+#section-organic { opacity: 0; transition: opacity .5s ease; }
+
+/* IMAGE COLUMN */
 .image-col {
   position: sticky; top: 136px; height: calc(100vh - 136px);
   align-self: start;
@@ -57,10 +47,8 @@ nav {
 }
 .shape-wrap {
   position: relative;
-  width: 96%;
-  aspect-ratio: 642 / 698;
+  width: 96%; aspect-ratio: 642/698;
   max-height: calc((100vh - 136px) * 0.96);
-  flex-shrink: 0;
 }
 .defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
 .clipped { position: absolute; inset: 0; clip-path: url(#yShape); }
@@ -70,34 +58,15 @@ nav {
   opacity: 0; transition: opacity .55s ease;
 }
 .clipped img.active { opacity: 1; }
-
-/* Window bars overlay */
 .window-overlay {
-  position: absolute;
-  top: 0;
-  left: -4.7%;
-  width: 118.6%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-  z-index: 2;
-  mix-blend-mode: multiply;
-  transition: opacity .6s ease;
+  position: absolute; top: 0; left: -4.7%; width: 118.6%; height: 100%;
+  object-fit: fill; pointer-events: none; z-index: 2;
+  mix-blend-mode: multiply; transition: opacity .4s ease;
 }
 
-/* Yellow shape shown on land, fades out on scroll */
-
-/* Debug label */
-#dbg {
-  position: fixed; bottom: 16px; right: 16px;
-  background: rgba(0,0,0,.7); color: #fff;
-  font-size: 13px; padding: 6px 12px; border-radius: 4px;
-  z-index: 999; font-family: monospace;
-}
-
+/* FOOTER */
 footer {
-  grid-column: 1 / -1;
-  background: #10193a; padding: 70px 72px 80px;
+  grid-column: 1/-1; background: #10193a; padding: 70px 72px 80px;
   position: relative; overflow: hidden;
 }
 .footer-grid { display: flex; gap: 60px; }
@@ -118,8 +87,8 @@ footer {
 }
 .email-input::placeholder { color: #98989f; }
 .sub-btn {
-  background: #bf2e2e; border: 1px solid #bf2e2e; color: #fff;
-  border-radius: 50px; padding: 0 24px; height: 44px; cursor: pointer;
+  background: #bf2e2e; border: none; color: #fff; border-radius: 50px;
+  padding: 0 24px; height: 44px; cursor: pointer;
   font-family: 'Jost', sans-serif; font-weight: 700; font-size: 14px;
   letter-spacing: 1.68px; text-transform: uppercase;
 }
@@ -129,18 +98,22 @@ footer {
   font-family: 'Playfair Display', serif; font-weight: 900; font-size: 200px;
   color: #fff; white-space: nowrap; line-height: 1;
 }
+
+/* Debug */
+#dbg {
+  position: fixed; bottom: 12px; right: 12px; z-index: 999;
+  background: rgba(0,0,0,.75); color: #fff; font: 12px monospace;
+  padding: 4px 10px; border-radius: 4px; pointer-events: none;
+}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">
-    <svg width="60" height="52" viewBox="0 0 60 52" fill="none">
-      <text x="0" y="24" font-family="Playfair Display,serif" font-weight="900" font-size="24" fill="#fff">Bella</text>
-      <text x="0" y="50" font-family="Playfair Display,serif" font-weight="900" font-size="24" fill="#bf2e2e">Italia</text>
-    </svg>
-  </div>
-<div id="dbg">img: 0</div>
+  <svg width="60" height="52" viewBox="0 0 60 52" fill="none">
+    <text x="0" y="24" font-family="Playfair Display,serif" font-weight="900" font-size="24" fill="#fff">Bella</text>
+    <text x="0" y="50" font-family="Playfair Display,serif" font-weight="900" font-size="24" fill="#bf2e2e">Italia</text>
+  </svg>
   <div class="nav-links">
     <a href="#">Shop Our Pastas</a>
     <a href="#">About Us</a>
@@ -150,86 +123,86 @@ footer {
 </nav>
 
 <div class="page">
-  <div class="text-col">
 
-    <div class="panel-hero" data-img="0">
+  <!-- TEXT PANELS -->
+  <div>
+
+    <div class="panel" id="panel-0">
       <div id="hero-about">About Us</div>
       <div id="section-organic">
         <p class="section-title">An Organic Beginning</p>
         <div class="body-text">
-          <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>
-          <p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>
-          <p>Why? Because we knew it was time for a change. While so many brands were telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>
+          <p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table.</p>
+          <p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle.</p>
+          <p>Why? Because we knew it was time for a change. We created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>
           <p><strong>That's The Organic Italian.</strong></p>
         </div>
       </div>
     </div>
 
-    <div class="panel" data-img="1">
+    <div class="panel" id="panel-1">
       <p class="section-title">Celebrating Organic Moments</p>
       <div class="body-text">
         <p>Good food brings people together.</p>
-        <p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p>
-        <p>The impromptu dinner party.<br>The comfortably crowded table.<br>The second bottle…the third.<br>The friend who stays a little too late.<br>The night that drifts into dawn.<br>The quiet luxury of actually slowing down for dinner.</p>
+        <p>The impromptu dinner party. The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn.</p>
         <p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>
       </div>
     </div>
 
-    <div class="panel quote" data-img="2">
+    <div class="panel quote" id="panel-2">
       <p>The Organic Italian was created for those moments.</p>
     </div>
 
-    <div class="panel" data-img="3">
+    <div class="panel" id="panel-3">
       <p class="section-title">Organic Isn't Just a Headline</p>
       <div class="body-text">
         <p>It's our standard.</p>
-        <p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p>
-        <p>Simple ingredients.<br>Beautiful flavor.<br>Nothing unnecessary.</p>
+        <p>Everything we do starts with organic Italian wheat — it's what gives our pasta that naturally golden color and perfect al dente bite.</p>
+        <p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>
       </div>
     </div>
 
-    <div class="panel" data-img="4">
+    <div class="panel" id="panel-4">
       <p class="section-title">The Art of the Shape</p>
       <div class="body-text">
         <p>Every pasta shape arrives with its own personality.</p>
-        <p>Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
-        <p>Every shape in The Organic Italian collection was selected with intention and purpose — to carry flavor, create balance and make every bite worth savoring.</p>
+        <p>Ribbons slink through rich sauces like silk. Spirals gather every last drop. Ribbed tubes catch the chunkiest ragus. Bow ties scoop up creamy, cheesy goodness.</p>
+        <p>Every shape was selected with purpose — to carry flavor, create balance, and make every bite worth savoring.</p>
       </div>
     </div>
 
-    <div class="panel" data-img="5">
+    <div class="panel" id="panel-5">
       <p class="section-title">Made in Naples…Brought to America</p>
       <div class="body-text">
         <p>Naples is one of the most celebrated pasta-making regions in Italy. And that's where The Organic Italian is made.</p>
-        <p>Working with experienced pasta makers and trusted partners, we combine generations of Italian expertise with modern production standards to create pasta with authentic flavor and exceptional texture.</p>
-        <p>It's the best of Italian tradition. Made for a modern American lifestyle.</p>
-        <p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey.</p>
+        <p>We combine generations of Italian expertise with modern production standards to create pasta with authentic flavor and exceptional texture.</p>
+        <p>The best of Italian tradition. Made for a modern American lifestyle.</p>
       </div>
     </div>
 
-    <div class="panel" data-img="6">
+    <div class="panel" id="panel-6">
       <p class="section-title">The People Behind the Brand</p>
       <div class="body-text">
         <p style="color:rgba(255,255,255,.35);font-style:italic">Coming soon.</p>
       </div>
     </div>
 
-    <div class="panel" data-img="7">
+    <div class="panel" id="panel-7">
       <p class="section-title">This is The Organic Italian</p>
       <div class="body-text">
-        <p>We created this pasta for people exactly like you.</p>
-        <p>People who care as much about the ingredients, as they do about the vibe. That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life.</p>
-        <p>Authentic Italian craftsmanship.<br>Organic Italian ingredients.<br>Thoughtfully selected shapes.<br>Made in Naples for modern American life.</p>
-        <p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>
+        <p>We created this pasta for people exactly like you — people who care as much about the ingredients as the vibe.</p>
+        <p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p>
+        <p>Really good pasta for people who know the best nights happen around the table.</p>
       </div>
     </div>
 
-    <div class="panel quote" data-img="8">
+    <div class="panel quote" id="panel-8">
       <p>Good taste lives here.</p>
     </div>
 
   </div>
 
+  <!-- IMAGE COLUMN -->
   <div class="image-col">
     <div class="shape-wrap">
       <svg class="defs-svg" aria-hidden="true">
@@ -240,21 +213,21 @@ footer {
         </defs>
       </svg>
       <div class="clipped">
-        <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/6e7e8e01-a6c6-49a1-a6ca-ae709a0f79bf" alt="An Organic Beginning"/>
-        <img id="img-1" src="https://www.figma.com/api/mcp/asset/3eccb30b-a7d3-4f2c-aea5-16f9acc081eb" alt="Celebrating Organic Moments"/>
-        <img id="img-2" src="https://www.figma.com/api/mcp/asset/94e9a4cd-ac39-4697-b68c-25442c2350ba" alt="The Organic Italian was created for those moments"/>
-        <img id="img-3" src="https://www.figma.com/api/mcp/asset/46c3b1ce-574d-48a3-972b-1703e92c4057" alt="Organic Isn't Just a Headline"/>
-        <img id="img-4" src="https://www.figma.com/api/mcp/asset/53673723-8f42-46ff-a082-6a31efe86ab1" alt="The Art of the Shape"/>
-        <img id="img-5" src="https://www.figma.com/api/mcp/asset/39e8688e-15c5-4693-819d-558263f70ae3" alt="Made in Naples"/>
-        <img id="img-6" src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
-        <img id="img-7" src="https://www.figma.com/api/mcp/asset/d7785ea9-e30a-4ae6-a55e-c81f710b1795" alt="This is the Organic Italian"/>
-        <img id="img-8" src="https://www.figma.com/api/mcp/asset/b7526de9-1280-4874-ae77-bc79ac97e4c1" alt="Good taste lives here"/>
+        <img src="https://www.figma.com/api/mcp/asset/6e7e8e01-a6c6-49a1-a6ca-ae709a0f79bf" alt="An Organic Beginning"/>
+        <img src="https://www.figma.com/api/mcp/asset/3eccb30b-a7d3-4f2c-aea5-16f9acc081eb" alt="Celebrating Organic Moments"/>
+        <img src="https://www.figma.com/api/mcp/asset/94e9a4cd-ac39-4697-b68c-25442c2350ba" alt="The Organic Italian"/>
+        <img src="https://www.figma.com/api/mcp/asset/46c3b1ce-574d-48a3-972b-1703e92c4057" alt="Organic Isn't Just a Headline"/>
+        <img src="https://www.figma.com/api/mcp/asset/53673723-8f42-46ff-a082-6a31efe86ab1" alt="The Art of the Shape"/>
+        <img src="https://www.figma.com/api/mcp/asset/39e8688e-15c5-4693-819d-558263f70ae3" alt="Made in Naples"/>
+        <img src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
+        <img src="https://www.figma.com/api/mcp/asset/d7785ea9-e30a-4ae6-a55e-c81f710b1795" alt="This is the Organic Italian"/>
+        <img src="https://www.figma.com/api/mcp/asset/b7526de9-1280-4874-ae77-bc79ac97e4c1" alt="Good taste lives here"/>
       </div>
-      <!-- Window bars overlay: always on top of images, clipped to same shape -->
       <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/15863a57-5ff4-4016-b2e1-cfd2b580354f" alt=""/>
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
@@ -288,65 +261,74 @@ footer {
     <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
     <div class="footer-wm">Bella Italia</div>
   </footer>
+
 </div>
 
+<div id="dbg">img: —</div>
+
 <script>
-const panels = Array.from(document.querySelectorAll('[data-img]'));
+// All panels in order, each mapped to an image index
+const panels = [
+  document.getElementById('panel-0'),
+  document.getElementById('panel-1'),
+  document.getElementById('panel-2'),
+  document.getElementById('panel-3'),
+  document.getElementById('panel-4'),
+  document.getElementById('panel-5'),
+  document.getElementById('panel-6'),
+  document.getElementById('panel-7'),
+  document.getElementById('panel-8'),
+];
+
 const images = Array.from(document.querySelectorAll('.clipped img'));
 const heroAbout = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
-const vh = () => window.innerHeight;
+const windowOverlay = document.querySelector('.window-overlay');
+const dbg = document.getElementById('dbg');
 
-let activeImg = 0;
 let heroState = 'visible';
 
 function setImg(idx) {
-  if (idx === activeImg) return;
-  activeImg = idx;
   images.forEach((img, i) => img.classList.toggle('active', i === idx));
+  dbg.textContent = `img: ${idx}`;
 }
 
-function showHero() {
-  if (heroState === 'hidden') {
-    heroState = 'visible';
-    sectionOrganic.style.opacity = '0';
-    setTimeout(() => { heroAbout.style.opacity = '1'; }, 500);
-  }
-}
-
-function hideHero() {
-  if (heroState === 'visible') {
-    heroState = 'hidden';
-    heroAbout.style.opacity = '0';
-    setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
-  }
-}
-
-// Single rAF loop — checks every panel on every frame, no events needed
 function tick() {
-  const mid = vh() * 0.5;
+  const scrollY = window.scrollY;
+  const mid = window.innerHeight / 2;
 
-  // Hero
-  if (window.scrollY < 20) showHero();
-  else hideHero();
+  // Hero swap
+  if (scrollY < 20) {
+    if (heroState === 'hidden') {
+      heroState = 'visible';
+      sectionOrganic.style.opacity = '0';
+      setTimeout(() => { heroAbout.style.opacity = '1'; }, 500);
+    }
+  } else {
+    if (heroState === 'visible') {
+      heroState = 'hidden';
+      heroAbout.style.opacity = '0';
+      setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
+    }
+  }
 
-  // Find which panel's centre is closest to viewport midpoint
-  let best = 0;
-  let bestDist = Infinity;
+  // Window overlay fades out on scroll
+  windowOverlay.style.opacity = String(Math.max(0, 1 - scrollY / 80));
+
+  // Pick the panel whose vertical centre is closest to viewport midpoint
+  let best = 0, bestDist = Infinity;
   panels.forEach((p, i) => {
     const r = p.getBoundingClientRect();
-    const centre = r.top + r.height / 2;
-    const dist = Math.abs(centre - mid);
+    const dist = Math.abs((r.top + r.height / 2) - mid);
     if (dist < bestDist) { bestDist = dist; best = i; }
-    if (r.top < vh()) p.classList.add('visible');
   });
-  setImg(best);
 
+  setImg(best);
   requestAnimationFrame(tick);
 }
 
-// Init
-panels[0].classList.add('visible');
+// Initialise
+setImg(0);
 requestAnimationFrame(tick);
 </script>
 </body>
