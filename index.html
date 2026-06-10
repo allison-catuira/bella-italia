@@ -70,21 +70,21 @@ nav {
 }
 .clipped img.active { opacity: 1; }
 
-/* Window bars — drawn in CSS to avoid asset export issues.
-   Vertical bar: ~40% from left. Horizontal bar: ~35% from top, slightly angled. */
+/* Yellow base — always present, sits below images */
+.shape-wrap { background: #ffc95f; }
+
+/* Window bars — absolutely positioned above everything */
 .window-bars {
   position: absolute; inset: 0;
-  pointer-events: none; z-index: 10;
+  pointer-events: none; z-index: 20;
   overflow: hidden;
 }
 .window-bars::before {
-  /* Vertical bar */
   content: ''; position: absolute;
   left: 40%; top: 0; bottom: 0;
   width: 8px; background: #0c1220;
 }
 .window-bars::after {
-  /* Horizontal bar — angled to match the diagonal shape */
   content: ''; position: absolute;
   left: 0; right: 0; top: 35%;
   height: 8px; background: #0c1220;
