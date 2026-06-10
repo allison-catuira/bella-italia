@@ -35,35 +35,50 @@ nav {
 #hero-about { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 80px; line-height: 90px; transition: opacity .5s ease; }
 #section-organic { opacity: 0; transition: opacity .5s ease; }
 
+/* IMAGE COLUMN
+   .image-col is the sticky container — position:relative so children
+   with position:absolute are scoped to it.
+   .shape-wrap holds the clipped images.
+   .window-overlay is a direct child of .image-col, NOT inside .shape-wrap,
+   so clip-path stacking context cannot interfere with it. */
 .image-col {
   position: sticky; top: 136px; height: calc(100vh - 136px);
   align-self: start;
   display: flex; align-items: flex-start; justify-content: flex-end;
-  padding: 0;
-  overflow: visible;
 }
+
 .shape-wrap {
   position: relative;
   width: 100%;
   aspect-ratio: 642/698;
   max-height: calc((100vh - 136px) * 0.96);
+  isolation: isolate; /* contain stacking to shape-wrap only */
 }
-.shape-wrap {
-  position: relative;
-  width: 96%; aspect-ratio: 642/698;
-  max-height: calc((100vh - 136px) * 0.96);
-}
+
 .defs-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
-.clipped { position: absolute; inset: 0; clip-path: url(#yShape); }
+
+.clipped {
+  position: absolute; inset: 0;
+  clip-path: url(#yShape);
+}
 .clipped img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: right center;
+  object-fit: cover; object-position: center;
   opacity: 0; transition: opacity .55s ease;
 }
 .clipped img.active { opacity: 1; }
+
+/* Window overlay: direct child of .image-col, absolutely covers .shape-wrap.
+   Because it is OUTSIDE .shape-wrap's isolation context it always renders on top. */
 .window-overlay {
-  position: absolute; top: 0; left: -4.7%; width: 118.6%; height: 100%;
-  object-fit: fill; pointer-events: none; z-index: 10;
+  position: absolute;
+  top: 0; right: 0;
+  width: 100%;
+  aspect-ratio: 642/698;
+  max-height: calc((100vh - 136px) * 0.96);
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 100;
   transition: opacity .4s ease;
 }
 
@@ -124,6 +139,8 @@ footer {
 </nav>
 
 <div class="page">
+
+  <!-- TEXT PANELS -->
   <div>
     <div class="panel" id="p0">
       <div id="hero-about">About Us</div>
@@ -185,6 +202,7 @@ footer {
     <div class="panel quote" id="p8"><p>Good taste lives here.</p></div>
   </div>
 
+  <!-- IMAGE COLUMN -->
   <div class="image-col">
     <div class="shape-wrap">
       <svg class="defs-svg" aria-hidden="true">
@@ -195,20 +213,31 @@ footer {
         </defs>
       </svg>
       <div class="clipped">
-        <img src="https://www.figma.com/api/mcp/asset/cc5115e1-3516-4337-8906-4d394b597a7f" alt="An Organic Beginning"/>
-        <img src="https://www.figma.com/api/mcp/asset/757bb274-023a-4360-bf6f-d517ca24e7f4" alt="Celebrating Organic Moments"/>
-        <img src="https://www.figma.com/api/mcp/asset/47b17b9e-37a1-48ef-a3ff-7c75d0aa4a65" alt="The Organic Italian was created for those moments"/>
-        <img src="https://www.figma.com/api/mcp/asset/881bbee4-8401-470b-97e0-8221a76af6c6" alt="The Art of the Shape"/>
-        <img src="https://www.figma.com/api/mcp/asset/bd238c07-5bd8-4411-9450-da99fe3fc3ab" alt="Every shape in the Organic Italian collection"/>
-        <img src="https://www.figma.com/api/mcp/asset/cb683903-8b3f-4762-b485-b4b65e7f6ce8" alt="Made in Naples"/>
+        <!-- img 0: An Organic Beginning -->
+        <img src="https://www.figma.com/api/mcp/asset/2a4ac962-92a6-49d9-8113-03233f91472b" alt="An Organic Beginning"/>
+        <!-- img 1: Celebrating Organic Moments -->
+        <img src="https://www.figma.com/api/mcp/asset/363956cf-ec84-457c-abd8-eb476887df61" alt="Celebrating Organic Moments"/>
+        <!-- img 2: The Organic Italian was created for those moments -->
+        <img src="https://www.figma.com/api/mcp/asset/b3e1c765-f040-4ae0-9bbf-d3a3238f72ef" alt="The Organic Italian was created for those moments"/>
+        <!-- img 3: The Art of the Shape -->
+        <img src="https://www.figma.com/api/mcp/asset/d0ef0862-f893-48de-a9ac-176403a7727c" alt="The Art of the Shape"/>
+        <!-- img 4: Every shape in the Organic Italian collection -->
+        <img src="https://www.figma.com/api/mcp/asset/55128cec-7205-487d-92bc-4fa142f2827d" alt="Every shape in the Organic Italian collection"/>
+        <!-- img 5: Made in Naples -->
+        <img src="https://www.figma.com/api/mcp/asset/68ab44d0-d261-45f7-a2b0-01075ed35e53" alt="Made in Naples"/>
+        <!-- img 6: The People Behind the Brand -->
         <img src="" alt="The People Behind the Brand" style="background:#ffe3a0"/>
-        <img src="https://www.figma.com/api/mcp/asset/9f78fdea-ccb8-4488-9cbe-75f678d0409f" alt="This is the Organic Italian"/>
-        <img src="https://www.figma.com/api/mcp/asset/845408a2-a028-4ec2-b8a5-c3659c807b48" alt="Good taste lives here" style="object-position:left 5% top 31%"/>
+        <!-- img 7: This is the Organic Italian -->
+        <img src="https://www.figma.com/api/mcp/asset/76a2c85a-1cda-4406-82de-1de3d5a38654" alt="This is the Organic Italian"/>
+        <!-- img 8: Good taste lives here -->
+        <img src="https://www.figma.com/api/mcp/asset/2a4cd6d7-2937-4bd9-873b-069fb22b023b" alt="Good taste lives here"/>
       </div>
     </div>
-      <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/15863a57-5ff4-4016-b2e1-cfd2b580354f" alt=""/>
+    <!-- Window overlay lives OUTSIDE .shape-wrap so isolation:isolate cannot trap it -->
+    <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/15863a57-5ff4-4016-b2e1-cfd2b580354f" alt=""/>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
@@ -248,17 +277,14 @@ footer {
 
 <script>
 const PANELS = ['p0','p1','p2','p3','p4','p5','p6','p7','p8'].map(id => document.getElementById(id));
-const imgs   = Array.from(document.querySelectorAll('.clipped img'));
+const imgs          = Array.from(document.querySelectorAll('.clipped img'));
 const heroAbout     = document.getElementById('hero-about');
 const sectionOrganic = document.getElementById('section-organic');
 const windowOverlay = document.querySelector('.window-overlay');
 const dbg           = document.getElementById('dbg');
 let heroState = 'visible';
 
-
-
 function setImg(idx) {
-  // idx -1 = no image, yellow overlay only
   imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
   dbg.textContent = `img: ${idx}`;
 }
@@ -267,7 +293,7 @@ function tick() {
   const scrollY = window.scrollY;
   const mid     = window.innerHeight / 2;
 
-  // Hero swap
+  // Hero swap on scroll
   if (scrollY < 20 && heroState === 'hidden') {
     heroState = 'visible';
     sectionOrganic.style.opacity = '0';
@@ -278,10 +304,10 @@ function tick() {
     setTimeout(() => { sectionOrganic.style.opacity = '1'; }, 500);
   }
 
-  // Window overlay fades out on scroll
+  // Window overlay fades out as user scrolls away from top
   windowOverlay.style.opacity = String(Math.max(0, 1 - scrollY / 80));
 
-  // Active panel = whose centre is closest to viewport midpoint
+  // Find panel whose centre is closest to viewport midpoint
   let best = -1, bestDist = Infinity;
   PANELS.forEach((p, i) => {
     const r    = p.getBoundingClientRect();
@@ -289,18 +315,15 @@ function tick() {
     if (dist < bestDist) { bestDist = dist; best = i; }
   });
 
-  // Panel 0 is "An Organic Beginning" — no image until it's active.
-  // Before that, show only the yellow window overlay (no photo).
-  if (best === -1 || (best === 0 && PANELS[0].getBoundingClientRect().top > mid)) {
-    setImg(-1);
-  } else {
-    setImg(best);
-  }
+  // No image until "An Organic Beginning" (panel 0) reaches midpoint
+  const p0top = PANELS[0].getBoundingClientRect().top;
+  if (best === 0 && p0top > mid) setImg(-1);
+  else setImg(best);
 
   requestAnimationFrame(tick);
 }
 
-setImg(0);
+setImg(-1);
 requestAnimationFrame(tick);
 </script>
 </body>
