@@ -247,17 +247,7 @@ const windowOverlay = document.querySelector('.window-overlay');
 const dbg           = document.getElementById('dbg');
 let heroState = 'visible';
 
-// Load uploaded image
-(async () => {
-  try {
-    const data = await window.fs.readFile('Good taste lives here');
-    const url  = URL.createObjectURL(new Blob([data], { type: 'image/jpeg' }));
-    document.getElementById('img-last').src = url;
-    dbg.textContent = 'img loaded ✓';
-  } catch(e) {
-    dbg.textContent = 'img load failed: ' + e.message;
-  }
-})();
+
 
 function setImg(idx) {
   imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
