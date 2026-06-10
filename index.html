@@ -86,14 +86,6 @@ nav {
 }
 
 /* Yellow shape shown on land, fades out on scroll */
-.yellow-shape {
-  position: absolute; inset: 0;
-  background: #fde89a;
-  clip-path: url(#yShape);
-  z-index: 1;
-  transition: opacity .6s ease;
-  pointer-events: none;
-}
 
 /* Debug label */
 #dbg {
@@ -247,8 +239,6 @@ footer {
           </clipPath>
         </defs>
       </svg>
-      <!-- Yellow shape: visible on land, fades on scroll -->
-      <div class="yellow-shape" id="yellow-shape"></div>
       <div class="clipped">
         <img id="img-0" class="active" src="https://www.figma.com/api/mcp/asset/6e7e8e01-a6c6-49a1-a6ca-ae709a0f79bf" alt="An Organic Beginning"/>
         <img id="img-1" src="https://www.figma.com/api/mcp/asset/3eccb30b-a7d3-4f2c-aea5-16f9acc081eb" alt="Celebrating Organic Moments"/>
