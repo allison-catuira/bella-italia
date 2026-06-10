@@ -332,20 +332,10 @@ function tick() {
 (async () => {
   const gt = document.getElementById('img-goodtaste');
   try {
-    const data = await window.fs.readFile('pasta_image.jpg');
+    const data = await window.fs.readFile('Good taste lives here');
     const blob = new Blob([data], { type: 'image/jpeg' });
     gt.src = URL.createObjectURL(blob);
-    dbg.textContent += ' | loaded pasta_image.jpg';
-  } catch(e) {
-    try {
-      const data = await window.fs.readFile('pasta_image.png');
-      const blob = new Blob([data], { type: 'image/png' });
-      gt.src = URL.createObjectURL(blob);
-      dbg.textContent += ' | loaded pasta_image.png';
-    } catch(e2) {
-      dbg.textContent += ' | img-8 load failed';
-    }
-  }
+  } catch(e) { dbg.textContent += ' ✗ load failed'; }
 })();
 
 // Initialise
