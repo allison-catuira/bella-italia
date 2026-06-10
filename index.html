@@ -71,9 +71,7 @@ nav {
 }
 .clipped img.active { opacity: 1; }
 
-/* Window bars: sits above images, replicates Figma frame clipping.
-   Inner group is 761.666px wide offset -30.33px left within a 642px frame.
-   Expressed as percentages: left = -30.33/642 = -4.7%, width = 761.666/642 = 118.6% */
+/* Window bars: dark lines show, yellow areas are transparent via multiply */
 .window-overlay {
   position: absolute;
   top: 0;
@@ -83,6 +81,7 @@ nav {
   object-fit: fill;
   pointer-events: none;
   z-index: 2;
+  mix-blend-mode: multiply;
 }
 
 footer {
