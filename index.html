@@ -221,7 +221,7 @@ footer {
         <img src="https://www.figma.com/api/mcp/asset/39e8688e-15c5-4693-819d-558263f70ae3" alt="Made in Naples"/>
         <img src="" alt="The People Behind the Brand" style="background:#d9d9d9"/>
         <img src="https://www.figma.com/api/mcp/asset/d7785ea9-e30a-4ae6-a55e-c81f710b1795" alt="This is the Organic Italian"/>
-        <img src="https://www.figma.com/api/mcp/asset/55901b1b-3878-4293-997a-91474c038099" alt="Good taste lives here"/>
+        <img id="img-goodtaste" alt="Good taste lives here"/>
       </div>
       <img class="window-overlay" src="https://www.figma.com/api/mcp/asset/15863a57-5ff4-4016-b2e1-cfd2b580354f" alt=""/>
     </div>
@@ -326,6 +326,27 @@ function tick() {
   setImg(best);
   requestAnimationFrame(tick);
 }
+
+// Load the uploaded image via FileReader and embed as base64
+// Load the uploaded "Good taste lives here" image
+(async () => {
+  const gt = document.getElementById('img-goodtaste');
+  try {
+    const data = await window.fs.readFile('pasta_image.jpg');
+    const blob = new Blob([data], { type: 'image/jpeg' });
+    gt.src = URL.createObjectURL(blob);
+    dbg.textContent += ' | loaded pasta_image.jpg';
+  } catch(e) {
+    try {
+      const data = await window.fs.readFile('pasta_image.png');
+      const blob = new Blob([data], { type: 'image/png' });
+      gt.src = URL.createObjectURL(blob);
+      dbg.textContent += ' | loaded pasta_image.png';
+    } catch(e2) {
+      dbg.textContent += ' | img-8 load failed';
+    }
+  }
+})();
 
 // Initialise
 setImg(0);
