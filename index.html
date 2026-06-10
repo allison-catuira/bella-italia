@@ -258,6 +258,7 @@ let heroState = 'visible';
 
 
 function setImg(idx) {
+  // idx -1 = no image, yellow overlay only
   imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
   dbg.textContent = `img: ${idx}`;
 }
@@ -281,13 +282,20 @@ function tick() {
   windowOverlay.style.opacity = String(Math.max(0, 1 - scrollY / 80));
 
   // Active panel = whose centre is closest to viewport midpoint
-  let best = 0, bestDist = Infinity;
+  let best = -1, bestDist = Infinity;
   PANELS.forEach((p, i) => {
     const r    = p.getBoundingClientRect();
     const dist = Math.abs((r.top + r.height / 2) - mid);
     if (dist < bestDist) { bestDist = dist; best = i; }
   });
-  setImg(best);
+
+  // Panel 0 is "An Organic Beginning" — no image until it's active.
+  // Before that, show only the yellow window overlay (no photo).
+  if (best === -1 || (best === 0 && PANELS[0].getBoundingClientRect().top > mid)) {
+    setImg(-1);
+  } else {
+    setImg(best);
+  }
 
   requestAnimationFrame(tick);
 }
