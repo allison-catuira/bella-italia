@@ -2,37 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=1440"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Bella Italia – About Us</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Jost:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
+html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
-/* NAV */
-.nav{position:fixed;top:0;left:0;width:1440px;height:140px;background:#000;border-bottom:1px solid #bf2e2e;box-shadow:0 4px 2px rgba(0,0,0,.25);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:18px}
-.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;position:absolute;left:50%;top:22px;transform:translateX(-50%)}
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;width:100%;background:#000;border-bottom:1px solid #bf2e2e;box-shadow:0 4px 2px rgba(0,0,0,.25);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14px;height:140px}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;position:absolute;left:50%;top:18px;transform:translateX(-50%)}
 .nav-links{display:flex;gap:48px}
 .nav-links a{font-size:16px;color:#fff;text-decoration:none;line-height:24px}
 .nav-links a:hover{opacity:.75}
 
-/* HERO */
-.hero{padding-top:201px;padding-left:552px}
-.hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;line-height:90px;color:#fff;white-space:nowrap}
+/* ── HERO ── */
+.hero{padding-top:201px;text-align:center}
+.hero h1{font-family:'Playfair Display',serif;font-weight:900;color:#fff;display:inline-block}
 
-/* MAIN WINDOW */
-.main-window{position:relative;margin:15px 52px 0;width:1332px;height:745px;background:#ffeecd;overflow:hidden}
+/* ── DESKTOP MAIN WINDOW ── */
+.main-window{position:relative;margin:15px auto 0;background:#ffeecd;overflow:hidden}
 
-/* LEFT BOX */
-.left-box{position:absolute;left:24px;top:19px;width:632px;height:698px;overflow:hidden;z-index:2}
+/* Left box — desktop only, absolute */
+.left-box{position:absolute;top:19px;overflow:hidden;z-index:2}
 .lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .lb-panel.active{opacity:1;pointer-events:auto}
 .lb-bg{position:absolute;inset:0}
 .lb-bg img{width:100%;height:100%;object-fit:cover;display:block}
 .lb-overlay{position:absolute;inset:0;background:rgba(46,57,101,.9);mix-blend-mode:hard-light}
 .lb-content{position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;padding:24px 48px;height:100%;justify-content:center}
-.sun-icon{width:154px;height:156px;flex-shrink:0}
-.sun-icon img{width:100%;height:100%;object-fit:contain}
+.sun-icon img{width:100%;height:100%;object-fit:contain;display:block}
 .titles{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
 .menu-item{display:inline-flex;align-items:center;padding:4px 16px;flex-shrink:0;cursor:pointer}
 .menu-item span{font-weight:600;font-size:24px;line-height:40px;color:#fff;white-space:nowrap;opacity:.4;transition:opacity .2s}
@@ -46,43 +45,164 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .c-frame.active{opacity:1}
 .c-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* RIGHT SCROLL */
-.right-scroll{position:absolute;left:686px;top:0;width:608px;height:745px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+/* Right scroll — desktop */
+.right-scroll{position:absolute;top:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;height:100%}
 .right-scroll::-webkit-scrollbar{display:none}
-
-/* Each screen — min one full viewport height, grows with content */
 .rs-screen{min-height:745px;display:flex;align-items:center;padding:56px 32px}
 .rs-screen .copy{width:100%}
 .rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
 .rs-screen p+p{margin-top:18px}
 
-/* PROGRESS BAR */
-.prog-track{position:absolute;right:38px;top:35px;width:8px;height:682px;background:#ffc95f;border-radius:4px}
-.prog-thumb{position:absolute;right:37px;width:10px;border-radius:5px;background:#bf2e2e;transition:top .35s cubic-bezier(.4,0,.2,1),height .35s cubic-bezier(.4,0,.2,1)}
+/* Progress bar — desktop only */
+.prog-track{position:absolute;top:35px;width:8px;height:682px;background:#ffc95f;border-radius:4px}
+.prog-thumb{position:absolute;width:10px;border-radius:5px;background:#bf2e2e;transition:top .35s cubic-bezier(.4,0,.2,1),height .35s cubic-bezier(.4,0,.2,1)}
 
-/* TAGLINE */
-.tagline{padding:60px 0;text-align:center}
-.tagline p{font-family:'Playfair Display',serif;font-weight:900;font-size:56px;line-height:56px;color:#fff;white-space:nowrap}
+/* ── MOBILE / TABLET TOP BAR ── */
+.top-bar{display:none;position:sticky;top:140px;z-index:100;width:100%;overflow:hidden;flex-shrink:0}
+.top-bar-inner{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:12px 20px}
+.top-bar-bg{position:absolute;inset:0}
+.top-bar-bg img{width:100%;height:100%;object-fit:cover;display:block}
+.top-bar-overlay{position:absolute;inset:0;background:rgba(46,57,101,.9);mix-blend-mode:hard-light}
+.top-bar-sun{position:relative;z-index:2;flex-shrink:0}
+.top-bar-sun img{display:block;object-fit:contain}
+.top-bar-label{position:relative;z-index:2;background:#fff;padding:4px 14px;font-weight:600;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 60px)}
 
-/* FOOTER */
-.footer{background:#320808;border-top:1px solid #bf2e2e;height:535px;position:relative;overflow:hidden}
-.footer-bg{position:absolute;left:-4px;bottom:-40px;font-family:'Playfair Display',serif;font-weight:900;font-size:230px;line-height:1;color:rgba(255,255,255,.06);user-select:none;pointer-events:none;white-space:nowrap}
-.footer-copy{position:absolute;left:72px;top:84px;font-size:16px;color:#fff;line-height:24px}
-.footer-col{position:absolute;display:flex;flex-direction:column;gap:16px}
-.footer-col .hd{font-weight:700;font-size:14px;color:rgba(255,255,255,.8);text-transform:uppercase;line-height:24px}
-.footer-col a{font-size:16px;color:#fff;text-decoration:none;line-height:24px}
+/* Mobile scroll wrapper */
+.mobile-scroll{display:none;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mobile-scroll::-webkit-scrollbar{display:none}
+.mobile-screen{min-height:100svh;display:flex;align-items:center;padding:40px 20px}
+.mobile-screen .copy{width:100%}
+.mobile-screen p{color:#000;display:block;width:100%}
+.mobile-screen p+p{margin-top:16px}
+
+/* ── TAGLINE ── */
+.tagline{padding:60px 20px;text-align:center}
+.tagline p{font-family:'Playfair Display',serif;font-weight:900;color:#fff}
+
+/* ── FOOTER ── */
+.footer{background:#320808;border-top:1px solid #bf2e2e;position:relative;overflow:hidden}
+.footer-bg{position:absolute;left:-4px;bottom:-40px;font-family:'Playfair Display',serif;font-weight:900;line-height:1;color:rgba(255,255,255,.06);user-select:none;pointer-events:none;white-space:nowrap}
+.footer-inner{position:relative;z-index:1;padding:48px 40px 60px}
+.footer-copy{font-size:14px;color:#fff;line-height:24px;margin-bottom:40px}
+.footer-grid{display:grid;gap:32px}
+.footer-col .hd{font-weight:700;font-size:13px;color:rgba(255,255,255,.8);text-transform:uppercase;line-height:24px;display:block;margin-bottom:12px}
+.footer-col a{font-size:15px;color:#fff;text-decoration:none;line-height:28px;display:block}
 .footer-col a:hover{opacity:.75}
-.f-products{left:658px;top:69px}
-.f-company{left:967px;top:69px}
-.f-social-label{position:absolute;left:1171px;top:69px;font-weight:700;font-size:14px;color:rgba(255,255,255,.8);text-transform:uppercase;line-height:30px}
-.f-social-icons{position:absolute;left:1168px;top:116px;display:flex;gap:18px}
-.f-social-icons svg{width:36px;height:36px;fill:#fff}
-.f-subscribe{position:absolute;left:658px;top:379px}
-.f-subscribe h4{font-family:'Playfair Display',serif;font-weight:900;font-size:18px;color:#fff;line-height:20px;margin-bottom:21px}
-.email-row{display:flex;align-items:center;gap:16px}
-.email-input{width:388px;border:1px solid #fff;border-radius:50px;padding:10px 14px;background:transparent;color:#fff;font-family:'Jost',sans-serif;font-size:16px;outline:none}
+.f-social-icons{display:flex;gap:14px;margin-top:4px}
+.f-social-icons svg{width:32px;height:32px;fill:#fff}
+.f-subscribe{margin-top:32px}
+.f-subscribe h4{font-family:'Playfair Display',serif;font-weight:900;font-size:18px;color:#fff;line-height:20px;margin-bottom:16px}
+.email-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.email-input{flex:1;min-width:200px;border:1px solid #fff;border-radius:50px;padding:10px 14px;background:transparent;color:#fff;font-family:'Jost',sans-serif;font-size:15px;outline:none}
 .email-input::placeholder{color:#98989f}
-.sub-btn{background:#bf2e2e;border:1px solid #bf2e2e;border-radius:50px;padding:8px 24px;color:#fff;font-family:'Jost',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.68px;text-transform:uppercase;cursor:pointer;height:44px;white-space:nowrap}
+.sub-btn{background:#bf2e2e;border:1px solid #bf2e2e;border-radius:50px;padding:8px 24px;color:#fff;font-family:'Jost',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;height:44px;white-space:nowrap}
+
+/* ═══════════════════════════════════════════
+   DESKTOP  ≥ 1024px
+═══════════════════════════════════════════ */
+@media (min-width:1024px){
+  .nav{height:140px}
+  .nav-logo{font-size:26px;top:18px}
+  .nav-links{gap:48px}
+  .nav-links a{font-size:16px}
+
+  .hero{padding-top:201px;text-align:left;padding-left:clamp(200px,38%,552px)}
+  .hero h1{font-size:80px;line-height:90px}
+
+  .main-window{max-width:1332px;height:745px;margin:15px auto 0}
+
+  /* left box */
+  .left-box{left:24px;width:632px;height:698px}
+  .sun-icon{width:154px;height:156px}
+
+  /* right scroll */
+  .right-scroll{left:686px;width:608px;display:block !important}
+  .rs-screen{min-height:745px;padding:56px 32px}
+  .rs-screen p{font-size:20px;line-height:26px}
+
+  /* progress */
+  .prog-track{right:38px}
+  .prog-thumb{right:37px}
+
+  /* hide mobile */
+  .top-bar{display:none !important}
+  .mobile-scroll{display:none !important}
+
+  .tagline p{font-size:56px;line-height:56px}
+
+  .footer-bg{font-size:230px}
+  .footer-grid{grid-template-columns:repeat(3,auto);justify-content:start;gap:48px 80px}
+  .f-subscribe{margin-top:0;grid-column:1/-1}
+  .email-row{flex-wrap:nowrap}
+  .email-input{max-width:388px}
+}
+
+/* ═══════════════════════════════════════════
+   TABLET  768 – 1023px
+═══════════════════════════════════════════ */
+@media (min-width:768px) and (max-width:1023px){
+  .nav{height:100px}
+  .nav-logo{font-size:22px;top:12px}
+  .nav-links{gap:28px}
+  .nav-links a{font-size:14px}
+
+  .hero{padding-top:160px;text-align:center}
+  .hero h1{font-size:56px;line-height:66px}
+
+  /* hide desktop main-window internals */
+  .left-box{display:none}
+  .right-scroll{display:none}
+  .prog-track,.prog-thumb{display:none}
+  .main-window{height:auto;background:transparent;margin:0}
+
+  /* show mobile layout */
+  .top-bar{display:flex;top:100px}
+  .top-bar-sun img{width:44px;height:44px}
+  .top-bar-label{font-size:16px}
+  .mobile-scroll{display:block;background:#ffeecd;margin:0 24px}
+  .mobile-screen{min-height:600px;padding:48px 36px}
+  .mobile-screen p{font-size:18px;line-height:28px}
+
+  .tagline p{font-size:40px;line-height:48px}
+  .footer-bg{font-size:160px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .email-input{max-width:100%}
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE  < 768px
+═══════════════════════════════════════════ */
+@media (max-width:767px){
+  .nav{height:80px;padding-bottom:0;justify-content:center}
+  .nav-logo{font-size:18px;top:14px;position:static;transform:none;text-align:center}
+  .nav-links{display:none}
+
+  .hero{padding-top:120px;text-align:center}
+  .hero h1{font-size:40px;line-height:48px}
+
+  /* hide desktop pieces */
+  .left-box{display:none}
+  .right-scroll{display:none}
+  .prog-track,.prog-thumb{display:none}
+  .main-window{height:auto;background:transparent;margin:0}
+
+  /* show mobile layout */
+  .top-bar{display:flex;top:80px}
+  .top-bar-sun img{width:36px;height:36px}
+  .top-bar-label{font-size:13px;padding:3px 10px}
+  .mobile-scroll{display:block;background:#ffeecd;margin:0 16px}
+  .mobile-screen{min-height:100svh;padding:36px 24px}
+  .mobile-screen p{font-size:16px;line-height:24px}
+
+  .tagline{padding:40px 20px}
+  .tagline p{font-size:30px;line-height:38px}
+  .footer-bg{font-size:100px}
+  .footer-inner{padding:36px 20px 48px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px 20px}
+  .footer-col .hd{font-size:12px}
+  .footer-col a{font-size:13px}
+  .sub-btn{font-size:12px;padding:8px 18px}
+}
 </style>
 </head>
 <body>
@@ -97,196 +217,106 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
   </div>
 </nav>
 
-<div style="padding-top:140px">
+<div class="page-wrap">
   <div class="hero"><h1>About Us</h1></div>
 
-  <div class="main-window">
+  <!-- DESKTOP MAIN WINDOW -->
+  <div class="main-window" id="mainWindow">
     <div class="left-box" id="leftBox"></div>
     <div class="right-scroll" id="rightScroll"></div>
-    <div class="prog-track"></div>
+    <div class="prog-track" id="progTrack"></div>
     <div class="prog-thumb" id="progThumb"></div>
   </div>
+
+  <!-- MOBILE / TABLET -->
+  <div class="top-bar" id="topBar">
+    <div class="top-bar-inner" id="topBarInner">
+      <div class="top-bar-bg"><img id="topBarBgImg" src="" alt=""/><div class="top-bar-overlay"></div></div>
+      <div class="top-bar-sun"><img id="topBarSun" src="" alt=""/></div>
+      <div class="top-bar-label" id="topBarLabel"></div>
+    </div>
+  </div>
+  <div class="mobile-scroll" id="mobileScroll"></div>
 
   <div class="tagline"><p>Good taste lives here.</p></div>
 
   <footer class="footer">
     <div class="footer-bg">Bella<br>Italia</div>
-    <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
-    <div class="footer-col f-products">
-      <span class="hd">Our Products</span>
-      <a href="#">Our Pastas</a>
-      <a href="#">Discover our other products</a>
-      <a href="#">Privacy Policy</a>
-    </div>
-    <div class="footer-col f-company">
-      <span class="hd">Company</span>
-      <a href="#">About Us</a>
-      <a href="#">Where to Find Us</a>
-      <a href="#">Explore Recipes</a>
-    </div>
-    <span class="f-social-label">Social</span>
-    <div class="f-social-icons">
-      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a>
-      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path fill="#320808" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#320808" stroke-width="2"/></svg></a>
-    </div>
-    <div class="f-subscribe">
-      <h4>Stay up to date</h4>
-      <div class="email-row">
-        <input class="email-input" type="email" placeholder="Enter your email"/>
-        <button class="sub-btn">Subscribe</button>
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <span class="hd">Our Products</span>
+          <a href="#">Our Pastas</a>
+          <a href="#">Discover our other products</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <span class="hd">Company</span>
+          <a href="#">About Us</a>
+          <a href="#">Where to Find Us</a>
+          <a href="#">Explore Recipes</a>
+        </div>
+        <div class="footer-col">
+          <span class="hd">Social</span>
+          <div class="f-social-icons">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path fill="#320808" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#320808" stroke-width="2"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col f-subscribe">
+          <h4>Stay up to date</h4>
+          <div class="email-row">
+            <input class="email-input" type="email" placeholder="Enter your email"/>
+            <button class="sub-btn">Subscribe</button>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
 </div>
 
 <script>
-// ── Section definitions ──────────────────────────────────────────────────────
-// Each LEFT BOX section has a leftIdx and contains one or more right-side screens.
-// The left panel stays active for ALL screens belonging to it.
-
 const LEFT_SECTIONS = [
-  {
-    label: 'AN ORGANIC BEGINNING',
-    bg: 'https://www.figma.com/api/mcp/asset/7af572e2-c906-46d2-9c2b-27b1d01f8e90',
-    sun: 'https://www.figma.com/api/mcp/asset/4ca1ca82-02ab-4619-8f14-6975b47f5102',
-    carousel: null
-  },
-  {
-    label: 'CELEBRATING ORGANIC MOMENTS',
-    bg: 'https://www.figma.com/api/mcp/asset/eecaa282-f84f-4049-9a70-9840804a362a',
-    sun: 'https://www.figma.com/api/mcp/asset/f9f21e7b-2b08-4da8-935a-eab5c1bb2c15',
-    carousel: null
-  },
-  {
-    label: "ORGANIC ISN'T JUST A HEADLINE",
-    bg: 'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62',
-    sun: 'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385',
-    carousel: null
-  },
-  {
-    label: 'THE ART OF THE SHAPE',
-    bg: null,
-    sun: 'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
-    carousel: [
-      'https://www.figma.com/api/mcp/asset/1d94b248-04fa-42cc-b7dc-3159e1980174',
-      'https://www.figma.com/api/mcp/asset/df880c0c-04cc-475d-a7f8-31d68c405f88',
-      'https://www.figma.com/api/mcp/asset/7c2803f8-017c-4ec5-a8e2-f0c7a06c09be',
-      'https://www.figma.com/api/mcp/asset/c1523baf-4840-4140-aa87-4b9b66fe4903',
-      'https://www.figma.com/api/mcp/asset/2609a77d-7753-4b28-999d-46385a94ee94',
-      'https://www.figma.com/api/mcp/asset/ad0a8428-7989-4720-ad7a-e985ead91ba8',
-      'https://www.figma.com/api/mcp/asset/da3eff8e-9230-4208-b4b6-bbdf0b1aee61'
-    ]
-  },
-  {
-    label: 'MADE IN NAPLES...BROUGHT TO AMERICA',
-    bg: 'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56',
-    sun: 'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1',
-    carousel: null
-  },
-  {
-    label: 'THE PEOPLE BEHIND THE BRAND',
-    bg: 'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d',
-    sun: 'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e',
-    carousel: null
-  },
-  {
-    label: 'THIS IS THE ORGANIC ITALIAN',
-    bg: 'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e',
-    sun: 'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3',
-    carousel: null
-  }
+  { label:'AN ORGANIC BEGINNING',             bg:'https://www.figma.com/api/mcp/asset/7af572e2-c906-46d2-9c2b-27b1d01f8e90', sun:'https://www.figma.com/api/mcp/asset/4ca1ca82-02ab-4619-8f14-6975b47f5102', carousel:null },
+  { label:'CELEBRATING ORGANIC MOMENTS',      bg:'https://www.figma.com/api/mcp/asset/eecaa282-f84f-4049-9a70-9840804a362a', sun:'https://www.figma.com/api/mcp/asset/f9f21e7b-2b08-4da8-935a-eab5c1bb2c15', carousel:null },
+  { label:"ORGANIC ISN'T JUST A HEADLINE",    bg:'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62', sun:'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385', carousel:null },
+  { label:'THE ART OF THE SHAPE',             bg:null, sun:'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
+    carousel:['https://www.figma.com/api/mcp/asset/1d94b248-04fa-42cc-b7dc-3159e1980174','https://www.figma.com/api/mcp/asset/df880c0c-04cc-475d-a7f8-31d68c405f88','https://www.figma.com/api/mcp/asset/7c2803f8-017c-4ec5-a8e2-f0c7a06c09be','https://www.figma.com/api/mcp/asset/c1523baf-4840-4140-aa87-4b9b66fe4903','https://www.figma.com/api/mcp/asset/2609a77d-7753-4b28-999d-46385a94ee94','https://www.figma.com/api/mcp/asset/ad0a8428-7989-4720-ad7a-e985ead91ba8','https://www.figma.com/api/mcp/asset/da3eff8e-9230-4208-b4b6-bbdf0b1aee61'] },
+  { label:'MADE IN NAPLES...BROUGHT TO AMERICA', bg:'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56', sun:'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1', carousel:null },
+  { label:'THE PEOPLE BEHIND THE BRAND',      bg:'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d', sun:'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e', carousel:null },
+  { label:'THIS IS THE ORGANIC ITALIAN',      bg:'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e', sun:'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3', carousel:null }
 ];
 
-// Right-side screens. leftIdx ties each screen to its Left Box panel.
-// Multiple screens with the same leftIdx keep the left panel locked.
 const RIGHT_SCREENS = [
-  // ── An Organic Beginning (leftIdx 0) — 5 screens ──
-  {
-    leftIdx: 0,
-    html: `<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>`
-  },
-  {
-    leftIdx: 0,
-    html: `<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>`
-  },
-  {
-    leftIdx: 0,
-    html: `<p>Why? Because we knew it was time for a change. While so many brands we're telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>`
-  },
-  {
-    leftIdx: 0,
-    html: `<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:48px;line-height:56px;color:#000;">That's the Organic Italian.</p>`
-  },
-  {
-    leftIdx: 0,
-    html: `<p>Good food brings people together.</p>
-           <p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p>
-           <p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p>
-           <p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>`
-  },
-  // ── Celebrating Organic Moments (leftIdx 1) — 2 screens ──
-  {
-    leftIdx: 1,
-    html: `<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:44px;line-height:52px;color:#000;">The Organic Italian was created for those moments.</p>`
-  },
-  {
-    leftIdx: 1,
-    html: `<p>It's our standard.</p>
-           <p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p>
-           <p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>`
-  },
-  // ── Organic Isn't Just a Headline (leftIdx 2) — 1 screen ──
-  {
-    leftIdx: 2,
-    html: `<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
-           <p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>
-           <p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>`
-  },
-  // ── The Art of the Shape (leftIdx 3) — 1 screen ──
-  {
-    leftIdx: 3,
-    html: `<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
-           <p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>
-           <p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>`
-  },
-  // ── Made in Naples (leftIdx 4) — 1 screen ──
-  {
-    leftIdx: 4,
-    html: `<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p>
-           <p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p>
-           <p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>`
-  },
-  // ── The People Behind the Brand (leftIdx 5) — 1 screen ──
-  {
-    leftIdx: 5,
-    html: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-           <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>`
-  },
-  // ── This is the Organic Italian (leftIdx 6) — 1 screen ──
-  {
-    leftIdx: 6,
-    html: `<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p>
-           <p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p>
-           <p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p>
-           <p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>`
-  }
+  { leftIdx:0, html:`<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>` },
+  { leftIdx:0, html:`<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>` },
+  { leftIdx:0, html:`<p>Why? Because we knew it was time for a change. While so many brands we're telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>` },
+  { leftIdx:0, html:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(32px,4vw,48px);line-height:1.2;color:#000;">That's the Organic Italian.</p>` },
+  { leftIdx:0, html:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
+  { leftIdx:1, html:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>` },
+  { leftIdx:1, html:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
+  { leftIdx:2, html:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p><p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>` },
+  { leftIdx:3, html:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
+  { leftIdx:4, html:`<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p><p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p><p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>` },
+  { leftIdx:5, html:`<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>` },
+  { leftIdx:6, html:`<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p><p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p><p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p><p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>` }
 ];
 
 const NL = LEFT_SECTIONS.length;
 const leftBox     = document.getElementById('leftBox');
 const rightScroll = document.getElementById('rightScroll');
 const progThumb   = document.getElementById('progThumb');
-const TRACK_TOP   = 35;
-const TRACK_H     = 682;
-const THUMB_H     = Math.floor(TRACK_H / NL);
+const mobileScroll= document.getElementById('mobileScroll');
+const topBarBgImg = document.getElementById('topBarBgImg');
+const topBarSun   = document.getElementById('topBarSun');
+const topBarLabel = document.getElementById('topBarLabel');
 
-let currentLeft   = 0;
-let carouselTimer = null;
-let carouselIdx   = 0;
+const TRACK_TOP = 35, TRACK_H = 682;
+let currentLeft = 0, carouselTimer = null, carouselIdx = 0;
 
-// ── Build Left Box panels ───────────────────────────────────────────────────
+// ── Build Desktop Left Box ──────────────────────────────────────────────────
 LEFT_SECTIONS.forEach((s, i) => {
   const panel = document.createElement('div');
   panel.className = 'lb-panel' + (i === 0 ? ' active' : '');
@@ -294,8 +324,7 @@ LEFT_SECTIONS.forEach((s, i) => {
 
   if (s.carousel) {
     const cw = document.createElement('div');
-    cw.className = 'carousel-wrap';
-    cw.id = 'cwrap-' + i;
+    cw.className = 'carousel-wrap'; cw.id = 'cwrap-' + i;
     s.carousel.forEach((src, ci) => {
       const cf = document.createElement('div');
       cf.className = 'c-frame' + (ci === 0 ? ' active' : '');
@@ -312,21 +341,14 @@ LEFT_SECTIONS.forEach((s, i) => {
 
   const content = document.createElement('div');
   content.className = 'lb-content';
-  content.innerHTML = `<div class="sun-icon"><img src="${s.sun}" alt=""/></div>`;
-
+  content.innerHTML = `<div class="sun-icon" style="width:154px;height:156px"><img src="${s.sun}" alt=""/></div>`;
   const titles = document.createElement('div');
   titles.className = 'titles';
   LEFT_SECTIONS.forEach((ms, mi) => {
     const item = document.createElement('div');
     item.className = 'menu-item' + (mi === i ? ' active' : '');
     item.innerHTML = `<span>${ms.label}</span>`;
-    // Clicking a label scrolls to the first screen of that left section
-    item.addEventListener('click', () => {
-      const firstScreen = RIGHT_SCREENS.findIndex(rs => rs.leftIdx === mi);
-      if (firstScreen >= 0) {
-        rightScroll.scrollTo({ top: document.getElementById('rs-' + firstScreen).offsetTop, behavior: 'smooth' });
-      }
-    });
+    item.addEventListener('click', () => jumpTo(mi, 'desktop'));
     titles.appendChild(item);
   });
   content.appendChild(titles);
@@ -334,64 +356,93 @@ LEFT_SECTIONS.forEach((s, i) => {
   leftBox.appendChild(panel);
 });
 
-// ── Build Right Scroll screens ──────────────────────────────────────────────
+// ── Build Desktop Right Scroll ──────────────────────────────────────────────
 RIGHT_SCREENS.forEach((s, i) => {
-  const screen = document.createElement('div');
-  screen.className = 'rs-screen';
-  screen.id = 'rs-' + i;
-  screen.innerHTML = `<div class="copy">${s.html}</div>`;
-  rightScroll.appendChild(screen);
+  const sc = document.createElement('div');
+  sc.className = 'rs-screen'; sc.id = 'rs-' + i;
+  sc.innerHTML = `<div class="copy">${s.html}</div>`;
+  rightScroll.appendChild(sc);
 });
 
+// ── Build Mobile Scroll ─────────────────────────────────────────────────────
+RIGHT_SCREENS.forEach((s, i) => {
+  const sc = document.createElement('div');
+  sc.className = 'mobile-screen'; sc.id = 'ms-' + i;
+  sc.innerHTML = `<div class="copy">${s.html}</div>`;
+  mobileScroll.appendChild(sc);
+});
+
+// Initialise top bar
+function initTopBar(idx) {
+  const s = LEFT_SECTIONS[idx];
+  topBarBgImg.src = s.bg || s.sun;
+  topBarSun.src   = s.sun;
+  topBarLabel.textContent = s.label;
+}
+initTopBar(0);
+
 // ── Progress bar ────────────────────────────────────────────────────────────
-function updateProgress(leftIdx) {
-  progThumb.style.top    = (TRACK_TOP + leftIdx * THUMB_H) + 'px';
-  progThumb.style.height = THUMB_H + 'px';
+function updateProgress(idx) {
+  const h = Math.floor(TRACK_H / NL);
+  progThumb.style.top    = (TRACK_TOP + idx * h) + 'px';
+  progThumb.style.height = h + 'px';
 }
 updateProgress(0);
 
-// ── Activate a left panel ───────────────────────────────────────────────────
-function activateLeft(leftIdx) {
-  if (leftIdx === currentLeft) return;
+// ── Activate left panel ─────────────────────────────────────────────────────
+function activateLeft(idx) {
+  if (idx === currentLeft) return;
   document.getElementById('lb-' + currentLeft).classList.remove('active');
   if (LEFT_SECTIONS[currentLeft].carousel) stopCarousel();
-  currentLeft = leftIdx;
+  currentLeft = idx;
   document.getElementById('lb-' + currentLeft).classList.add('active');
-  updateProgress(leftIdx);
+  updateProgress(idx);
   if (LEFT_SECTIONS[currentLeft].carousel) startCarousel();
+  initTopBar(idx);
 }
 
-// ── Scroll listener — determine which screen is dominant ───────────────────
-const screenEls = RIGHT_SCREENS.map((_, i) => document.getElementById('rs-' + i));
-
-function onScroll() {
-  const scrollTop = rightScroll.scrollTop;
-  const threshold = scrollTop + rightScroll.clientHeight * 0.4;
-  let best = 0;
-  for (let i = 0; i < screenEls.length; i++) {
-    if (screenEls[i].offsetTop <= threshold) best = i;
+// ── Jump to first screen of a left section ──────────────────────────────────
+function jumpTo(leftIdx, mode) {
+  const firstScreen = RIGHT_SCREENS.findIndex(rs => rs.leftIdx === leftIdx);
+  if (mode === 'desktop') {
+    const el = document.getElementById('rs-' + firstScreen);
+    if (el) rightScroll.scrollTo({ top: el.offsetTop, behavior:'smooth' });
+  } else {
+    const el = document.getElementById('ms-' + firstScreen);
+    if (el) mobileScroll.scrollTo({ top: el.offsetTop, behavior:'smooth' });
   }
-  activateLeft(RIGHT_SCREENS[best].leftIdx);
 }
 
-rightScroll.addEventListener('scroll', onScroll, { passive: true });
+// ── Desktop scroll listener ─────────────────────────────────────────────────
+const screenEls = RIGHT_SCREENS.map((_, i) => document.getElementById('rs-' + i));
+rightScroll.addEventListener('scroll', () => {
+  const t = rightScroll.scrollTop + rightScroll.clientHeight * 0.4;
+  let best = 0;
+  screenEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
+  activateLeft(RIGHT_SCREENS[best].leftIdx);
+}, { passive:true });
+
+// ── Mobile scroll listener ──────────────────────────────────────────────────
+const mobileEls = RIGHT_SCREENS.map((_, i) => document.getElementById('ms-' + i));
+mobileScroll.addEventListener('scroll', () => {
+  const t = mobileScroll.scrollTop + mobileScroll.clientHeight * 0.4;
+  let best = 0;
+  mobileEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
+  initTopBar(RIGHT_SCREENS[best].leftIdx);
+}, { passive:true });
 
 // ── Carousel ────────────────────────────────────────────────────────────────
 function startCarousel() {
-  const si   = LEFT_SECTIONS.findIndex(s => s.carousel);
+  const si = LEFT_SECTIONS.findIndex(s => s.carousel);
   const wrap = document.getElementById('cwrap-' + si);
   if (!wrap) return;
-  carouselIdx = 0;
-  setFrame(wrap, 0);
+  carouselIdx = 0; setFrame(wrap, 0);
   carouselTimer = setInterval(() => {
     carouselIdx = (carouselIdx + 1) % LEFT_SECTIONS[si].carousel.length;
     setFrame(wrap, carouselIdx);
   }, 2000);
 }
-function stopCarousel() {
-  clearInterval(carouselTimer);
-  carouselTimer = null;
-}
+function stopCarousel() { clearInterval(carouselTimer); carouselTimer = null; }
 function setFrame(wrap, idx) {
   wrap.querySelectorAll('.c-frame').forEach((f, i) => f.classList.toggle('active', i === idx));
 }
