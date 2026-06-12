@@ -31,8 +31,9 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .lb-bg img{width:100%;height:100%;object-fit:cover;display:block}
 .lb-overlay{position:absolute;inset:0;background:rgba(46,57,101,.9);mix-blend-mode:hard-light}
 .lb-content{position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;padding:24px 48px;height:100%;justify-content:center}
-.sun-icon{width:154px;height:176px;flex-shrink:0}
+.sun-icon{width:154px;height:156px;flex-shrink:0}
 .sun-icon img{width:100%;height:100%;object-fit:contain}
+.titles{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
 .menu-item{display:inline-flex;align-items:center;padding:4px 16px;flex-shrink:0;cursor:pointer}
 .menu-item span{font-weight:600;font-size:24px;line-height:40px;color:#fff;white-space:nowrap;opacity:.4;transition:opacity .2s}
 .menu-item.active{background:#fff}
@@ -167,15 +168,15 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 const SECTIONS = [
   {
     label:'AN ORGANIC BEGINNING',
-    bg:'https://www.figma.com/api/mcp/asset/a899a977-cdf2-4d9d-b217-64e55304498f',
-    sun:'https://www.figma.com/api/mcp/asset/ca5c9509-ab77-4031-b108-1c6002b2b9f7',
+    bg:'https://www.figma.com/api/mcp/asset/7af572e2-c906-46d2-9c2b-27b1d01f8e90',
+    sun:'https://www.figma.com/api/mcp/asset/4ca1ca82-02ab-4619-8f14-6975b47f5102',
     carousel:null,
     html:`<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>`
   },
   {
     label:'CELEBRATING ORGANIC MOMENTS',
-    bg:'https://www.figma.com/api/mcp/asset/316005c5-e773-4a58-9779-549ca861e215',
-    sun:'https://www.figma.com/api/mcp/asset/ca5c9509-ab77-4031-b108-1c6002b2b9f7',
+    bg:'https://www.figma.com/api/mcp/asset/eecaa282-f84f-4049-9a70-9840804a362a',
+    sun:'https://www.figma.com/api/mcp/asset/f9f21e7b-2b08-4da8-935a-eab5c1bb2c15',
     carousel:null,
     html:`<p>Good food brings people together. It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The impromptu dinner party. The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>`
   },
@@ -268,13 +269,16 @@ SECTIONS.forEach((s, i) => {
   sunDiv.innerHTML = `<img src="${s.sun}" alt=""/>`;
   content.appendChild(sunDiv);
 
+  const titles = document.createElement('div');
+  titles.className = 'titles';
   SECTIONS.forEach((ms, mi) => {
     const item = document.createElement('div');
     item.className = 'menu-item' + (mi === i ? ' active' : '');
     item.innerHTML = `<span>${ms.label}</span>`;
     item.addEventListener('click', () => scrollToSection(mi));
-    content.appendChild(item);
+    titles.appendChild(item);
   });
+  content.appendChild(titles);
 
   panel.appendChild(content);
   leftBox.appendChild(panel);
