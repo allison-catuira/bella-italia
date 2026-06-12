@@ -59,14 +59,12 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ── Desktop: right scroll ── */
 .right-scroll{
   position:absolute;top:0;height:100%;
-  overflow-y:scroll;overflow-x:hidden;scrollbar-width:none;
-  scroll-snap-type:y mandatory;
+  overflow-y:hidden;overflow-x:hidden;scrollbar-width:none;
 }
 .right-scroll::-webkit-scrollbar{display:none}
 .rs-screen{
   position:relative;height:745px;flex-shrink:0;
   display:flex;align-items:center;padding:56px 32px;
-  scroll-snap-align:center;scroll-snap-stop:always;
 }
 .rs-screen .copy{width:100%}
 .rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
@@ -93,19 +91,43 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
 /* ── Image Window (parallax) ── */
 .img-window-wrap{
-  position:absolute;right:48px;bottom:-60px;
-  opacity:0;z-index:5;pointer-events:none;
-  transition:opacity .7s ease,bottom .7s ease;
+  position:absolute;
+  right:48px;
+  bottom:calc(-227px - 20px);   /* starts fully below the container */
+  opacity:0;
+  z-index:5;
+  pointer-events:none;
+  transition:opacity .7s ease, bottom 1.1s cubic-bezier(.22,.61,.36,1);
 }
-.img-window-wrap.visible{opacity:1;bottom:40px}
-.img-window{position:relative;width:196px;height:227px}
-.img-window-photo{position:absolute;inset:0;overflow:hidden}
-.img-window-photo img{
-  position:absolute;width:107.21%;height:151.62%;
+.img-window-wrap.visible{
+  opacity:1;
+  bottom:calc(100% - 227px - 19px); /* rests flush with the top of the container */
+}
+.img-window{
+  position:relative;
+  width:196px;
+  height:227px;
+}
+.img-window-photo{
+  position:absolute;inset:0;overflow:hidden;
+}
+.img-window-photo>img:first-child{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+}
+.img-window-inner-photo{
+  position:absolute;inset:0;overflow:hidden;
+}
+.img-window-inner-photo img{
+  position:absolute;
+  width:107.21%;height:151.62%;
   object-fit:cover;left:-7.21%;top:-25.81%;display:block;
 }
-.img-window-border-top{position:absolute;top:0;left:0;width:196px;height:3px;background:linear-gradient(90deg,#8b6f47,#c9a96e)}
-.img-window-border-left{position:absolute;top:0;left:0;width:3px;height:227px;background:linear-gradient(180deg,#8b6f47,#c9a96e)}
+.img-window-lines{
+  position:absolute;inset:0;z-index:2;
+}
+.img-window-lines img{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+}
 
 /* ── Mobile window ── */
 .mobile-window{display:none;flex-direction:column;margin:15px auto 0;background:#ffeecd;overflow:hidden}
@@ -311,9 +333,15 @@ const LEFT = [
 const IMG_WINDOW = `
   <div class="img-window-wrap" data-parallax>
     <div class="img-window">
-      <div class="img-window-photo"><img src="https://www.figma.com/api/mcp/asset/08e0e77b-24ae-49db-9188-0e83b9d43a3c" alt="Kitchen scene"/></div>
-      <div class="img-window-border-top"></div>
-      <div class="img-window-border-left"></div>
+      <div class="img-window-photo">
+        <img src="https://www.figma.com/api/mcp/asset/50e36dec-bcac-4d1c-9580-c0e8af453c27" alt=""/>
+        <div class="img-window-inner-photo">
+          <img src="https://www.figma.com/api/mcp/asset/3ca31b90-4ac6-406e-a1e4-ee9632d82b92" alt="Kitchen scene"/>
+        </div>
+      </div>
+      <div class="img-window-lines">
+        <img src="https://www.figma.com/api/mcp/asset/4a9f52e4-e100-46c0-8f34-96455cfcdbe9" alt=""/>
+      </div>
     </div>
   </div>`;
 
@@ -440,29 +468,129 @@ function activeScreenIdx(container, prefix) {
   return best;
 }
 
-// ── Scroll listeners ────────────────────────────────────────────────────────
-rightScroll.addEventListener('scroll', () => {
-  const i = activeScreenIdx(rightScroll, 'rs-');
-  activateLeft(SCREENS[i].li);
-  scrollArrow.classList.toggle('hidden', rightScroll.scrollTop > 40);
-}, { passive:true });
+// ── Scrolljack engine ────────────────────────────────────────────────────────
+// Intercepts wheel/touch, animates to the target screen with easing.
+// DURATION controls how slow the snap feels (ms).
 
-mobileScroll.addEventListener('scroll', () => {
-  const i = activeScreenIdx(mobileScroll, 'ms-');
-  updateTopBar(SCREENS[i].li);
-  topBarArrow.style.opacity = mobileScroll.scrollTop > 40 ? '0' : '1';
-}, { passive:true });
+const DURATION = 900; // ms — increase to slow further
 
-// ── Arrow click: advance one screen ─────────────────────────────────────────
-scrollArrow.addEventListener('click', () => rightScroll.scrollBy({ top: rightScroll.clientHeight, behavior:'smooth' }));
-topBarArrow.addEventListener('click', () => mobileScroll.scrollBy({ top: mobileScroll.clientHeight, behavior:'smooth' }));
+function easeInOutQuart(t) {
+  return t < 0.5 ? 8*t*t*t*t : 1 - Math.pow(-2*t+2,4)/2;
+}
 
-// ── Parallax / fade-in on scroll into view ───────────────────────────────────
+function makeJacker(container, screenPrefix, screenCount, onActivate) {
+  let current  = 0;
+  let animFrame= null;
+  let startY   = 0, targetY = 0, startTime = 0;
+  let busy     = false;
+  let touchStartY = 0;
+
+  function screenTop(i) {
+    const el = document.getElementById(screenPrefix + i);
+    return el ? el.offsetTop : i * container.clientHeight;
+  }
+
+  function animateTo(idx, onDone) {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    startY    = container.scrollTop;
+    targetY   = screenTop(idx);
+    startTime = performance.now();
+    busy      = true;
+
+    function step(now) {
+      const t = Math.min((now - startTime) / DURATION, 1);
+      container.scrollTop = startY + (targetY - startY) * easeInOutQuart(t);
+      if (t < 1) {
+        animFrame = requestAnimationFrame(step);
+      } else {
+        container.scrollTop = targetY;
+        busy = false;
+        if (onDone) onDone();
+      }
+    }
+    animFrame = requestAnimationFrame(step);
+  }
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(screenCount - 1, idx));
+    if (idx === current && !busy) return;
+    current = idx;
+    onActivate(idx);
+    animateTo(idx, () => {});
+  }
+
+  // Wheel
+  container.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (busy) return;
+    goTo(current + (e.deltaY > 0 ? 1 : -1));
+  }, { passive: false });
+
+  // Touch
+  container.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  container.addEventListener('touchend', e => {
+    if (busy) return;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 30) goTo(current + (dy > 0 ? 1 : -1));
+  }, { passive: true });
+
+  return {
+    goTo,
+    get current() { return current; },
+    isBusy() { return busy; }
+  };
+}
+
+// ── Wire up desktop jacker ──────────────────────────────────────────────────
+const deskJacker = makeJacker(
+  rightScroll,
+  'rs-',
+  SCREENS.length,
+  idx => {
+    activateLeft(SCREENS[idx].li);
+    scrollArrow.classList.toggle('hidden', idx > 0);
+  }
+);
+
+// ── Wire up mobile jacker ───────────────────────────────────────────────────
+const mobJacker = makeJacker(
+  mobileScroll,
+  'ms-',
+  SCREENS.length,
+  idx => {
+    updateTopBar(SCREENS[idx].li);
+    topBarArrow.style.opacity = idx > 0 ? '0' : '1';
+  }
+);
+
+// ── Arrow clicks ────────────────────────────────────────────────────────────
+scrollArrow.addEventListener('click', () => deskJacker.goTo(deskJacker.current + 1));
+topBarArrow.addEventListener('click', () => mobJacker.goTo(mobJacker.current + 1));
+
+// ── Menu item jump ──────────────────────────────────────────────────────────
+function jumpDesktop(li) {
+  const i = SCREENS.findIndex(s => s.li === li);
+  if (i >= 0) deskJacker.goTo(i);
+}
+
+// ── Parallax / fade-in ───────────────────────────────────────────────────────
+// IntersectionObserver won't fire on programmatic scrollTop changes,
+// so we poll on a rAF loop instead.
 function watchParallax(container) {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { root: container, threshold: 0.2 });
-  container.querySelectorAll('[data-parallax]').forEach(el => obs.observe(el));
+  const els = [...container.querySelectorAll('[data-parallax]')];
+  if (!els.length) return;
+  function check() {
+    const top = container.scrollTop, bot = top + container.clientHeight;
+    els.forEach(el => {
+      if (el.classList.contains('visible')) return;
+      const eTop = el.offsetTop, eBot = eTop + el.offsetHeight;
+      if (eBot > top && eTop < bot) el.classList.add('visible');
+    });
+    requestAnimationFrame(check);
+  }
+  requestAnimationFrame(check);
 }
 watchParallax(rightScroll);
 watchParallax(mobileScroll);
