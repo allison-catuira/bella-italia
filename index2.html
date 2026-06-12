@@ -20,10 +20,10 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .hero{padding-top:262px;padding-left:552px}
 .hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;line-height:90px;color:#fff;white-space:nowrap}
 
-/* MAIN WINDOW — fixed height, left box sticky, right scrolls */
+/* MAIN WINDOW */
 .main-window{position:relative;margin:15px 52px 0;width:1332px;height:745px;background:#ffeecd;overflow:hidden}
 
-/* LEFT BOX — absolutely positioned, never scrolls */
+/* LEFT BOX */
 .left-box{position:absolute;left:24px;top:19px;width:632px;height:698px;overflow:hidden;z-index:2}
 .lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .lb-panel.active{opacity:1;pointer-events:auto}
@@ -46,39 +46,15 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .c-frame.active{opacity:1}
 .c-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* RIGHT SCROLL — scrollable column, right side of the cream box */
-.right-scroll{
-  position:absolute;
-  left:686px;top:0;
-  width:608px;   /* up to the progress bar area */
-  height:745px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  scrollbar-width:none;
-}
+/* RIGHT SCROLL */
+.right-scroll{position:absolute;left:686px;top:0;width:608px;height:745px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 .right-scroll::-webkit-scrollbar{display:none}
 
-/* Each section block — min one viewport tall, grows with content */
-.rs-section{
-  min-height:745px;
-  display:flex;
-  align-items:center;
-  padding:56px 32px 56px 32px;
-}
-.rs-section .copy{
-  width:100%;
-}
-.rs-section p{
-  font-size:20px;
-  line-height:26px;
-  color:#000;
-  display:block;
-  width:100%;
-}
-.rs-section p+p{margin-top:18px}
-
-/* sentinel div at the bottom of each section for IntersectionObserver */
-.rs-sentinel{height:1px;width:100%}
+/* Each screen — min one full viewport height, grows with content */
+.rs-screen{min-height:745px;display:flex;align-items:center;padding:56px 32px}
+.rs-screen .copy{width:100%}
+.rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
+.rs-screen p+p{margin-top:18px}
 
 /* PROGRESS BAR */
 .prog-track{position:absolute;right:38px;top:35px;width:8px;height:682px;background:#ffc95f;border-radius:4px}
@@ -124,7 +100,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 <div style="padding-top:140px">
   <div class="hero"><h1>About Us</h1></div>
 
-  <div class="main-window" id="mainWindow">
+  <div class="main-window">
     <div class="left-box" id="leftBox"></div>
     <div class="right-scroll" id="rightScroll"></div>
     <div class="prog-track"></div>
@@ -165,33 +141,34 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 </div>
 
 <script>
-const SECTIONS = [
+// ── Section definitions ──────────────────────────────────────────────────────
+// Each LEFT BOX section has a leftIdx and contains one or more right-side screens.
+// The left panel stays active for ALL screens belonging to it.
+
+const LEFT_SECTIONS = [
   {
-    label:'AN ORGANIC BEGINNING',
-    bg:'https://www.figma.com/api/mcp/asset/7af572e2-c906-46d2-9c2b-27b1d01f8e90',
-    sun:'https://www.figma.com/api/mcp/asset/4ca1ca82-02ab-4619-8f14-6975b47f5102',
-    carousel:null,
-    html:`<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>`
+    label: 'AN ORGANIC BEGINNING',
+    bg: 'https://www.figma.com/api/mcp/asset/7af572e2-c906-46d2-9c2b-27b1d01f8e90',
+    sun: 'https://www.figma.com/api/mcp/asset/4ca1ca82-02ab-4619-8f14-6975b47f5102',
+    carousel: null
   },
   {
-    label:'CELEBRATING ORGANIC MOMENTS',
-    bg:'https://www.figma.com/api/mcp/asset/eecaa282-f84f-4049-9a70-9840804a362a',
-    sun:'https://www.figma.com/api/mcp/asset/f9f21e7b-2b08-4da8-935a-eab5c1bb2c15',
-    carousel:null,
-    html:`<p>Good food brings people together. It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The impromptu dinner party. The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>`
+    label: 'CELEBRATING ORGANIC MOMENTS',
+    bg: 'https://www.figma.com/api/mcp/asset/eecaa282-f84f-4049-9a70-9840804a362a',
+    sun: 'https://www.figma.com/api/mcp/asset/f9f21e7b-2b08-4da8-935a-eab5c1bb2c15',
+    carousel: null
   },
   {
-    label:"ORGANIC ISN'T JUST A HEADLINE",
-    bg:'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62',
-    sun:'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385',
-    carousel:null,
-    html:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>`
+    label: "ORGANIC ISN'T JUST A HEADLINE",
+    bg: 'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62',
+    sun: 'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385',
+    carousel: null
   },
   {
-    label:'THE ART OF THE SHAPE',
-    bg:null,
-    sun:'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
-    carousel:[
+    label: 'THE ART OF THE SHAPE',
+    bg: null,
+    sun: 'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
+    carousel: [
       'https://www.figma.com/api/mcp/asset/1d94b248-04fa-42cc-b7dc-3159e1980174',
       'https://www.figma.com/api/mcp/asset/df880c0c-04cc-475d-a7f8-31d68c405f88',
       'https://www.figma.com/api/mcp/asset/7c2803f8-017c-4ec5-a8e2-f0c7a06c09be',
@@ -199,46 +176,118 @@ const SECTIONS = [
       'https://www.figma.com/api/mcp/asset/2609a77d-7753-4b28-999d-46385a94ee94',
       'https://www.figma.com/api/mcp/asset/ad0a8428-7989-4720-ad7a-e985ead91ba8',
       'https://www.figma.com/api/mcp/asset/da3eff8e-9230-4208-b4b6-bbdf0b1aee61'
-    ],
-    html:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p><p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>`
+    ]
   },
   {
-    label:'MADE IN NAPLES...BROUGHT TO AMERICA',
-    bg:'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56',
-    sun:'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1',
-    carousel:null,
-    html:`<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p><p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional.</p><p>To the best of Italian tradition. Made for a modern American life.</p><p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>`
+    label: 'MADE IN NAPLES...BROUGHT TO AMERICA',
+    bg: 'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56',
+    sun: 'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1',
+    carousel: null
   },
   {
-    label:'THE PEOPLE BEHIND THE BRAND',
-    bg:'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d',
-    sun:'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e',
-    carousel:null,
-    html:`<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>`
+    label: 'THE PEOPLE BEHIND THE BRAND',
+    bg: 'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d',
+    sun: 'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e',
+    carousel: null
   },
   {
-    label:'THIS IS THE ORGANIC ITALIAN',
-    bg:'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e',
-    sun:'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3',
-    carousel:null,
-    html:`<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p><p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p><p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p><p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>`
+    label: 'THIS IS THE ORGANIC ITALIAN',
+    bg: 'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e',
+    sun: 'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3',
+    carousel: null
   }
 ];
 
-const N = SECTIONS.length;
+// Right-side screens. leftIdx ties each screen to its Left Box panel.
+// Multiple screens with the same leftIdx keep the left panel locked.
+const RIGHT_SCREENS = [
+  // ── An Organic Beginning (leftIdx 0) — 5 screens ──
+  {
+    leftIdx: 0,
+    html: `<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>`
+  },
+  {
+    leftIdx: 0,
+    html: `<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>`
+  },
+  {
+    leftIdx: 0,
+    html: `<p>Why? Because we knew it was time for a change. While so many brands we're telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>`
+  },
+  {
+    leftIdx: 0,
+    html: `<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:48px;line-height:56px;color:#000;">That's the Organic Italian.</p>`
+  },
+  {
+    leftIdx: 0,
+    html: `<p>Good food brings people together.</p>
+           <p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p>
+           <p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p>
+           <p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>`
+  },
+  // ── Celebrating Organic Moments (leftIdx 1) — 2 screens ──
+  {
+    leftIdx: 1,
+    html: `<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:44px;line-height:52px;color:#000;">The Organic Italian was created for those moments.</p>`
+  },
+  {
+    leftIdx: 1,
+    html: `<p>It's our standard.</p>
+           <p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p>
+           <p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>`
+  },
+  // ── Organic Isn't Just a Headline (leftIdx 2) — 1 screen ──
+  {
+    leftIdx: 2,
+    html: `<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
+           <p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>
+           <p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>`
+  },
+  // ── The Art of the Shape (leftIdx 3) — 1 screen ──
+  {
+    leftIdx: 3,
+    html: `<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p>
+           <p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>
+           <p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>`
+  },
+  // ── Made in Naples (leftIdx 4) — 1 screen ──
+  {
+    leftIdx: 4,
+    html: `<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p>
+           <p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p>
+           <p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>`
+  },
+  // ── The People Behind the Brand (leftIdx 5) — 1 screen ──
+  {
+    leftIdx: 5,
+    html: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+           <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>`
+  },
+  // ── This is the Organic Italian (leftIdx 6) — 1 screen ──
+  {
+    leftIdx: 6,
+    html: `<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p>
+           <p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p>
+           <p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p>
+           <p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>`
+  }
+];
+
+const NL = LEFT_SECTIONS.length;
 const leftBox     = document.getElementById('leftBox');
 const rightScroll = document.getElementById('rightScroll');
 const progThumb   = document.getElementById('progThumb');
 const TRACK_TOP   = 35;
 const TRACK_H     = 682;
-const THUMB_H     = Math.floor(TRACK_H / N);
+const THUMB_H     = Math.floor(TRACK_H / NL);
 
-let current = 0;
+let currentLeft   = 0;
 let carouselTimer = null;
 let carouselIdx   = 0;
 
-// ── Build Left Box panels ────────────────────────────────────────────────────
-SECTIONS.forEach((s, i) => {
+// ── Build Left Box panels ───────────────────────────────────────────────────
+LEFT_SECTIONS.forEach((s, i) => {
   const panel = document.createElement('div');
   panel.className = 'lb-panel' + (i === 0 ? ' active' : '');
   panel.id = 'lb-' + i;
@@ -261,93 +310,81 @@ SECTIONS.forEach((s, i) => {
     panel.appendChild(bg);
   }
 
-  // Menu list
   const content = document.createElement('div');
   content.className = 'lb-content';
-  const sunDiv = document.createElement('div');
-  sunDiv.className = 'sun-icon';
-  sunDiv.innerHTML = `<img src="${s.sun}" alt=""/>`;
-  content.appendChild(sunDiv);
+  content.innerHTML = `<div class="sun-icon"><img src="${s.sun}" alt=""/></div>`;
 
   const titles = document.createElement('div');
   titles.className = 'titles';
-  SECTIONS.forEach((ms, mi) => {
+  LEFT_SECTIONS.forEach((ms, mi) => {
     const item = document.createElement('div');
     item.className = 'menu-item' + (mi === i ? ' active' : '');
     item.innerHTML = `<span>${ms.label}</span>`;
-    item.addEventListener('click', () => scrollToSection(mi));
+    // Clicking a label scrolls to the first screen of that left section
+    item.addEventListener('click', () => {
+      const firstScreen = RIGHT_SCREENS.findIndex(rs => rs.leftIdx === mi);
+      if (firstScreen >= 0) {
+        rightScroll.scrollTo({ top: document.getElementById('rs-' + firstScreen).offsetTop, behavior: 'smooth' });
+      }
+    });
     titles.appendChild(item);
   });
   content.appendChild(titles);
-
   panel.appendChild(content);
   leftBox.appendChild(panel);
 });
 
-// ── Build Right Scroll sections ──────────────────────────────────────────────
-SECTIONS.forEach((s, i) => {
-  const sec = document.createElement('div');
-  sec.className = 'rs-section';
-  sec.id = 'rs-' + i;
-  sec.innerHTML = `<div class="copy">${s.html}</div>`;
-  rightScroll.appendChild(sec);
+// ── Build Right Scroll screens ──────────────────────────────────────────────
+RIGHT_SCREENS.forEach((s, i) => {
+  const screen = document.createElement('div');
+  screen.className = 'rs-screen';
+  screen.id = 'rs-' + i;
+  screen.innerHTML = `<div class="copy">${s.html}</div>`;
+  rightScroll.appendChild(screen);
 });
 
-// ── Progress bar ─────────────────────────────────────────────────────────────
-function updateProgress(idx) {
-  progThumb.style.top    = (TRACK_TOP + idx * THUMB_H) + 'px';
+// ── Progress bar ────────────────────────────────────────────────────────────
+function updateProgress(leftIdx) {
+  progThumb.style.top    = (TRACK_TOP + leftIdx * THUMB_H) + 'px';
   progThumb.style.height = THUMB_H + 'px';
 }
 updateProgress(0);
 
-// ── Activate a section ───────────────────────────────────────────────────────
-function activate(idx) {
-  if (idx === current) return;
-  document.getElementById('lb-' + current).classList.remove('active');
-  if (SECTIONS[current].carousel) stopCarousel();
-  current = idx;
-  document.getElementById('lb-' + current).classList.add('active');
-  updateProgress(idx);
-  if (SECTIONS[current].carousel) startCarousel();
+// ── Activate a left panel ───────────────────────────────────────────────────
+function activateLeft(leftIdx) {
+  if (leftIdx === currentLeft) return;
+  document.getElementById('lb-' + currentLeft).classList.remove('active');
+  if (LEFT_SECTIONS[currentLeft].carousel) stopCarousel();
+  currentLeft = leftIdx;
+  document.getElementById('lb-' + currentLeft).classList.add('active');
+  updateProgress(leftIdx);
+  if (LEFT_SECTIONS[currentLeft].carousel) startCarousel();
 }
 
-// ── Scroll to section via menu click ─────────────────────────────────────────
-function scrollToSection(idx) {
-  const target = document.getElementById('rs-' + idx);
-  rightScroll.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
-}
+// ── Scroll listener — determine which screen is dominant ───────────────────
+const screenEls = RIGHT_SCREENS.map((_, i) => document.getElementById('rs-' + i));
 
-// ── IntersectionObserver: which section dominates the viewport ───────────────
-// Use the TOP EDGE of each section entering/leaving to decide the active one.
-// This way the left box stays locked to the current section for its full scroll.
-const sectionEls = SECTIONS.map((_, i) => document.getElementById('rs-' + i));
-
-// Recalculate which section is "active" purely from scroll position
 function onScroll() {
   const scrollTop = rightScroll.scrollTop;
-  const viewH     = rightScroll.clientHeight; // 745
-
-  // Find the section whose top edge is closest to (but not past) the top of the viewport
+  const threshold = scrollTop + rightScroll.clientHeight * 0.4;
   let best = 0;
-  for (let i = 0; i < N; i++) {
-    if (sectionEls[i].offsetTop <= scrollTop + viewH * 0.4) {
-      best = i;
-    }
+  for (let i = 0; i < screenEls.length; i++) {
+    if (screenEls[i].offsetTop <= threshold) best = i;
   }
-  activate(best);
+  activateLeft(RIGHT_SCREENS[best].leftIdx);
 }
 
 rightScroll.addEventListener('scroll', onScroll, { passive: true });
 
-// ── Carousel ─────────────────────────────────────────────────────────────────
+// ── Carousel ────────────────────────────────────────────────────────────────
 function startCarousel() {
-  const si = SECTIONS.findIndex(s => s.carousel);
+  const si   = LEFT_SECTIONS.findIndex(s => s.carousel);
   const wrap = document.getElementById('cwrap-' + si);
   if (!wrap) return;
   carouselIdx = 0;
-  setFrame(wrap, carouselIdx);
+  setFrame(wrap, 0);
   carouselTimer = setInterval(() => {
-    carouselIdx = (carouselIdx + 1) % SECTIONS[si].carousel.length;
+    carouselIdx = (carouselIdx + 1) % LEFT_SECTIONS[si].carousel.length;
     setFrame(wrap, carouselIdx);
   }, 2000);
 }
