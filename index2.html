@@ -99,26 +99,28 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
   pointer-events:none;
 }
 
-/* Window 1 — travels bottom→top */
+/* Window 1 — right-aligned, travels bottom→top via translateY */
 .img-window-right{
   right:48px;
-  bottom:calc(-227px - 20px);
-  transition:opacity 1.2s ease, bottom 2.2s cubic-bezier(.22,.61,.36,1);
+  bottom:0;
+  transform:translateY(calc(100% + 60px));
+  transition:opacity 1.2s ease, transform 2.2s cubic-bezier(.22,.61,.36,1);
 }
 .img-window-right.visible{
   opacity:1;
-  bottom:calc(100% - 227px - 19px);
+  transform:translateY(calc(-745px + 227px + 19px));
 }
 
-/* Window 2 — travels bottom→top, left-aligned */
+/* Window 2 — left-aligned, same travel */
 .img-window-left{
   left:0;
-  bottom:calc(-227px - 20px);
-  transition:opacity 1.2s ease, bottom 2s cubic-bezier(.22,.61,.36,1);
+  bottom:0;
+  transform:translateY(calc(100% + 60px));
+  transition:opacity 1.2s ease, transform 2s cubic-bezier(.22,.61,.36,1);
 }
 .img-window-left.visible{
   opacity:1;
-  bottom:calc(100% - 227px - 19px);
+  transform:translateY(calc(-745px + 227px + 19px));
 }
 .img-window{
   position:relative;
@@ -575,10 +577,7 @@ const deskJacker = makeJacker(
   rightScroll,
   'rs-',
   SCREENS.length,
-  idx => {
-    activateLeft(SCREENS[idx].li);
-    scrollArrow.classList.toggle('hidden', idx > 0);
-  }
+  idx => activateLeft(SCREENS[idx].li)
 );
 
 // ── Wire up mobile jacker ───────────────────────────────────────────────────
@@ -586,10 +585,7 @@ const mobJacker = makeJacker(
   mobileScroll,
   'ms-',
   SCREENS.length,
-  idx => {
-    updateTopBar(SCREENS[idx].li);
-    topBarArrow.style.opacity = idx > 0 ? '0' : '1';
-  }
+  idx => updateTopBar(SCREENS[idx].li)
 );
 
 // ── Arrow clicks ────────────────────────────────────────────────────────────
