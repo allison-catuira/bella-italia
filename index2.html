@@ -605,24 +605,40 @@ function jumpDesktop(li) {
 }
 
 // ── Parallax / fade-in ───────────────────────────────────────────────────────
-// IntersectionObserver won't fire on programmatic scrollTop changes,
-// so we poll on a rAF loop instead.
-function watchParallax(container) {
-  const els = [...container.querySelectorAll('[data-parallax]')];
-  if (!els.length) return;
-  function check() {
-    const top = container.scrollTop, bot = top + container.clientHeight;
-    els.forEach(el => {
-      if (el.classList.contains('visible')) return;
-      const eTop = el.offsetTop, eBot = eTop + el.offsetHeight;
-      if (eBot > top && eTop < bot) el.classList.add('visible');
-    });
-    requestAnimationFrame(check);
-  }
-  requestAnimationFrame(check);
+// Checks visibility of [data-parallax] elements against their scroll container.
+// Called every frame during jacker animation so it fires even without native scroll events.
+const parallaxEls = {
+  desktop: [],
+  mobile:  []
+};
+
+function collectParallaxEls() {
+  parallaxEls.desktop = [...rightScroll.querySelectorAll('[data-parallax]')];
+  parallaxEls.mobile  = [...mobileScroll.querySelectorAll('[data-parallax]')];
 }
-watchParallax(rightScroll);
-watchParallax(mobileScroll);
+
+function checkParallax(container, els) {
+  const top = container.scrollTop;
+  const bot = top + container.clientHeight;
+  els.forEach(el => {
+    if (el.classList.contains('visible')) return;
+    // offsetTop is relative to the rs-screen parent, which is inside rightScroll
+    const screen = el.closest('.rs-screen, .mobile-screen');
+    if (!screen) return;
+    const screenTop = screen.offsetTop;
+    const elTop  = screenTop + el.offsetTop;
+    const elBot  = elTop + el.offsetHeight;
+    if (elBot > top && elTop < bot) el.classList.add('visible');
+  });
+}
+
+function tickParallax() {
+  checkParallax(rightScroll,  parallaxEls.desktop);
+  checkParallax(mobileScroll, parallaxEls.mobile);
+  requestAnimationFrame(tickParallax);
+}
+collectParallaxEls();
+requestAnimationFrame(tickParallax);
 
 // ── Carousel ────────────────────────────────────────────────────────────────
 function startCarousel() {
