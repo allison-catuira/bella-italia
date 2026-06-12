@@ -92,8 +92,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ── Image Window (parallax) ── */
 .img-window-wrap{
   position:absolute;
-  right:48px;
-  bottom:calc(-227px - 20px);   /* starts fully below the container */
+  bottom:calc(-227px - 20px);
   opacity:0;
   z-index:5;
   pointer-events:none;
@@ -101,8 +100,10 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 }
 .img-window-wrap.visible{
   opacity:1;
-  bottom:calc(100% - 227px - 19px); /* rests flush with the top of the container */
+  bottom:calc(100% - 227px - 19px);
 }
+.img-window-right{ right:48px; }
+.img-window-left{ left:0; }
 .img-window{
   position:relative;
   width:196px;
@@ -330,8 +331,8 @@ const LEFT = [
 ];
 
 // imgWindow HTML reused in screen 1
-const IMG_WINDOW = `
-  <div class="img-window-wrap" data-parallax>
+const IMG_WINDOW_1 = `
+  <div class="img-window-wrap img-window-right" data-parallax>
     <div class="img-window">
       <div class="img-window-photo">
         <img src="https://www.figma.com/api/mcp/asset/50e36dec-bcac-4d1c-9580-c0e8af453c27" alt=""/>
@@ -339,19 +340,28 @@ const IMG_WINDOW = `
           <img src="https://www.figma.com/api/mcp/asset/3ca31b90-4ac6-406e-a1e4-ee9632d82b92" alt="Kitchen scene"/>
         </div>
       </div>
-      <div class="img-window-lines">
-        <img src="https://www.figma.com/api/mcp/asset/4a9f52e4-e100-46c0-8f34-96455cfcdbe9" alt=""/>
+      <div class="img-window-lines"><img src="https://www.figma.com/api/mcp/asset/4a9f52e4-e100-46c0-8f34-96455cfcdbe9" alt=""/></div>
+    </div>
+  </div>`;
+
+// imgWindow 2 for Celebrating Organic Moments screen 2
+const IMG_WINDOW_2 = `
+  <div class="img-window-wrap img-window-left" data-parallax>
+    <div class="img-window">
+      <div class="img-window-photo">
+        <img src="https://www.figma.com/api/mcp/asset/c741df18-6fe8-41ec-80f8-6b067c989dad" alt="Dinner scene"/>
       </div>
+      <div class="img-window-lines"><img src="https://www.figma.com/api/mcp/asset/d1b0fbb0-d7e2-4287-9bb2-6b3663f0fe1e" alt=""/></div>
     </div>
   </div>`;
 
 const SCREENS = [
   { li:0, t:`<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>` },
-  { li:0, t:`<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>`, img:true },
+  { li:0, t:`<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>`, img:1 },
   { li:0, t:`<p>Why? Because we knew it was time for a change. While so many brands we're telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>` },
   { li:0, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(32px,4vw,48px);line-height:1.2;color:#000;">That's the Organic Italian.</p>` },
   { li:1, t:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
-  { li:1, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>` },
+  { li:1, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>`, img:2 },
   { li:2, t:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
   { li:2, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
   { li:3, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
@@ -418,7 +428,8 @@ SCREENS.forEach((s, i) => {
     const sc = document.createElement('div');
     sc.className = (pfx === 'rs' ? 'rs-screen' : 'mobile-screen');
     sc.id = pfx + '-' + i;
-    sc.innerHTML = `<div class="copy">${s.t}</div>` + (s.img ? IMG_WINDOW : '');
+    const imgHtml = s.img === 1 ? IMG_WINDOW_1 : s.img === 2 ? IMG_WINDOW_2 : '';
+    sc.innerHTML = `<div class="copy">${s.t}</div>` + imgHtml;
     (pfx === 'rs' ? rightScroll : mobileScroll).appendChild(sc);
   });
 });
