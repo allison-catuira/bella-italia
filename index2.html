@@ -65,6 +65,8 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .rs-screen{
   position:relative;height:745px;flex-shrink:0;
   display:flex;align-items:center;padding:56px 32px;
+  scroll-snap-align:center;scroll-snap-stop:always;
+  overflow:visible;
 }
 .rs-screen .copy{width:100%}
 .rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
@@ -108,15 +110,15 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
   bottom:calc(100% - 227px - 19px);
 }
 
-/* Window 2 — fades in from below, rests at bottom, scrolls over text */
+/* Window 2 — travels bottom→top, left-aligned */
 .img-window-left{
   left:0;
-  bottom:-60px;
+  bottom:calc(-227px - 20px);
   transition:opacity 1.2s ease, bottom 2s cubic-bezier(.22,.61,.36,1);
 }
 .img-window-left.visible{
   opacity:1;
-  bottom:40px;
+  bottom:calc(100% - 227px - 19px);
 }
 .img-window{
   position:relative;
