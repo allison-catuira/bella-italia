@@ -23,7 +23,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ── DESKTOP MAIN WINDOW ── */
 .main-window{position:relative;margin:15px auto 0;background:#ffeecd;overflow:hidden}
 
-/* Left box — desktop only, absolute */
+/* Left box */
 .left-box{position:absolute;top:19px;overflow:hidden;z-index:2}
 .lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .lb-panel.active{opacity:1;pointer-events:auto}
@@ -45,7 +45,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .c-frame.active{opacity:1}
 .c-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* Right scroll — desktop */
+/* Right scroll */
 .right-scroll{position:absolute;top:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;height:100%}
 .right-scroll::-webkit-scrollbar{display:none}
 .rs-screen{min-height:745px;display:flex;align-items:center;padding:56px 32px}
@@ -53,12 +53,16 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
 .rs-screen p+p{margin-top:18px}
 
-/* Progress bar — desktop only */
+/* Progress bar */
 .prog-track{position:absolute;top:35px;width:8px;height:682px;background:#ffc95f;border-radius:4px}
 .prog-thumb{position:absolute;width:10px;border-radius:5px;background:#bf2e2e;transition:top .35s cubic-bezier(.4,0,.2,1),height .35s cubic-bezier(.4,0,.2,1)}
 
-/* ── MOBILE / TABLET TOP BAR ── */
-.top-bar{display:none;position:sticky;top:0;z-index:150;width:100%;overflow:hidden;flex-shrink:0}
+/* ── MOBILE / TABLET WINDOW ── */
+/* Outer wrapper scrolls with the page; inner content scrolls inside */
+.mobile-window{display:none;flex-direction:column;margin:15px auto 0;background:#ffeecd;overflow:hidden}
+
+/* Top bar sticks to top of .mobile-window */
+.top-bar{position:sticky;top:0;z-index:10;width:100%;overflow:hidden;flex-shrink:0}
 .top-bar-inner{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:12px 20px}
 .top-bar-bg{position:absolute;inset:0}
 .top-bar-bg img{width:100%;height:100%;object-fit:cover;display:block}
@@ -67,10 +71,10 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .top-bar-sun img{display:block;object-fit:contain}
 .top-bar-label{position:relative;z-index:2;background:#fff;padding:4px 14px;font-weight:600;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 60px)}
 
-/* Mobile scroll wrapper */
-.mobile-scroll{display:none;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+/* Mobile content scroll — fills remaining height of the window */
+.mobile-scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .mobile-scroll::-webkit-scrollbar{display:none}
-.mobile-screen{min-height:100svh;display:flex;align-items:center;padding:40px 20px}
+.mobile-screen{display:flex;align-items:center;padding:40px 20px}
 .mobile-screen .copy{width:100%}
 .mobile-screen p{color:#000;display:block;width:100%}
 .mobile-screen p+p{margin-top:16px}
@@ -90,16 +94,15 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .footer-col a:hover{opacity:.75}
 .f-social-icons{display:flex;gap:14px;margin-top:4px}
 .f-social-icons svg{width:32px;height:32px;fill:#fff}
-.f-subscribe{margin-top:32px}
 .f-subscribe h4{font-family:'Playfair Display',serif;font-weight:900;font-size:18px;color:#fff;line-height:20px;margin-bottom:16px}
 .email-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .email-input{flex:1;min-width:200px;border:1px solid #fff;border-radius:50px;padding:10px 14px;background:transparent;color:#fff;font-family:'Jost',sans-serif;font-size:15px;outline:none}
 .email-input::placeholder{color:#98989f}
 .sub-btn{background:#bf2e2e;border:1px solid #bf2e2e;border-radius:50px;padding:8px 24px;color:#fff;font-family:'Jost',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;height:44px;white-space:nowrap}
 
-/* ═══════════════════════════════════════════
-   DESKTOP  ≥ 1024px
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   DESKTOP ≥ 1024px
+═══════════════════════════════════════ */
 @media (min-width:1024px){
   .nav{height:140px}
   .nav-logo{font-size:26px;top:18px}
@@ -109,27 +112,16 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
   .hero{padding-top:201px;text-align:left;padding-left:clamp(200px,38%,552px)}
   .hero h1{font-size:80px;line-height:90px}
 
-  .main-window{max-width:1332px;height:745px;margin:15px auto 0}
+  .main-window{max-width:1332px;height:745px;margin:15px auto 0;display:block}
+  .mobile-window{display:none !important}
 
-  /* left box */
   .left-box{left:24px;width:632px;height:698px}
   .sun-icon{width:154px;height:156px}
-
-  /* right scroll */
-  .right-scroll{left:686px;width:608px;display:block !important}
-  .rs-screen{min-height:745px;padding:56px 32px}
-  .rs-screen p{font-size:20px;line-height:26px}
-
-  /* progress */
+  .right-scroll{left:686px;width:608px}
   .prog-track{right:38px}
   .prog-thumb{right:37px}
 
-  /* hide mobile */
-  .top-bar{display:none !important}
-  .mobile-scroll{display:none !important}
-
   .tagline p{font-size:56px;line-height:56px}
-
   .footer-bg{font-size:230px}
   .footer-grid{grid-template-columns:repeat(3,auto);justify-content:start;gap:48px 80px}
   .f-subscribe{margin-top:0;grid-column:1/-1}
@@ -137,9 +129,9 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
   .email-input{max-width:388px}
 }
 
-/* ═══════════════════════════════════════════
-   TABLET  768 – 1023px
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   TABLET 768–1023px
+═══════════════════════════════════════ */
 @media (min-width:768px) and (max-width:1023px){
   .nav{height:100px}
   .nav-logo{font-size:22px;top:12px}
@@ -149,47 +141,36 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
   .hero{padding-top:160px;text-align:center}
   .hero h1{font-size:56px;line-height:66px}
 
-  /* hide desktop main-window internals */
-  .left-box{display:none}
-  .right-scroll{display:none}
-  .prog-track,.prog-thumb{display:none}
-  .main-window{height:auto;background:transparent;margin:0}
+  .main-window{display:none !important}
+  .mobile-window{display:flex;max-width:calc(100% - 48px);height:680px}
 
-  /* show mobile layout */
-  .top-bar{display:flex;top:100px}
-  .top-bar-label{font-size:16px}
-  .mobile-scroll{display:block;background:#ffeecd;margin:0 24px}
-  .mobile-screen{min-height:600px;padding:48px 36px}
+  .top-bar-sun img{width:44px;height:44px}
+  .top-bar-label{font-size:15px}
+  .mobile-screen{min-height:580px;padding:48px 36px}
   .mobile-screen p{font-size:18px;line-height:28px}
 
   .tagline p{font-size:40px;line-height:48px}
   .footer-bg{font-size:160px}
   .footer-grid{grid-template-columns:1fr 1fr}
-  .email-input{max-width:100%}
 }
 
-/* ═══════════════════════════════════════════
-   MOBILE  < 768px
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   MOBILE < 768px
+═══════════════════════════════════════ */
 @media (max-width:767px){
   .nav{height:80px;padding-bottom:0;justify-content:center}
-  .nav-logo{font-size:18px;top:14px;position:static;transform:none;text-align:center}
+  .nav-logo{font-size:18px;top:auto;position:static;transform:none;text-align:center}
   .nav-links{display:none}
 
   .hero{padding-top:120px;text-align:center}
   .hero h1{font-size:40px;line-height:48px}
 
-  /* hide desktop pieces */
-  .left-box{display:none}
-  .right-scroll{display:none}
-  .prog-track,.prog-thumb{display:none}
-  .main-window{height:auto;background:transparent;margin:0}
+  .main-window{display:none !important}
+  .mobile-window{display:flex;max-width:calc(100% - 32px);height:75svh}
 
-  /* show mobile layout */
-  .top-bar{display:flex;top:80px}
+  .top-bar-sun img{width:36px;height:36px}
   .top-bar-label{font-size:13px;padding:3px 10px}
-  .mobile-scroll{display:block;background:#ffeecd;margin:0 16px}
-  .mobile-screen{min-height:100svh;padding:36px 24px}
+  .mobile-screen{min-height:60svh;padding:36px 24px}
   .mobile-screen p{font-size:16px;line-height:24px}
 
   .tagline{padding:40px 20px}
@@ -218,7 +199,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 <div class="page-wrap">
   <div class="hero"><h1>About Us</h1></div>
 
-  <!-- DESKTOP MAIN WINDOW -->
+  <!-- DESKTOP -->
   <div class="main-window" id="mainWindow">
     <div class="left-box" id="leftBox"></div>
     <div class="right-scroll" id="rightScroll"></div>
@@ -226,15 +207,17 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
     <div class="prog-thumb" id="progThumb"></div>
   </div>
 
-  <!-- MOBILE / TABLET -->
-  <div class="top-bar" id="topBar">
-    <div class="top-bar-inner" id="topBarInner">
-      <div class="top-bar-bg"><img id="topBarBgImg" src="" alt=""/><div class="top-bar-overlay"></div></div>
-      <div class="top-bar-sun"><img id="topBarSun" src="" alt=""/></div>
-      <div class="top-bar-label" id="topBarLabel"></div>
+  <!-- TABLET + MOBILE: fixed-height window, top bar sticks inside it -->
+  <div class="mobile-window" id="mobileWindow">
+    <div class="top-bar" id="topBar">
+      <div class="top-bar-inner">
+        <div class="top-bar-bg"><img id="topBarBgImg" src="" alt=""/><div class="top-bar-overlay"></div></div>
+        <div class="top-bar-sun"><img id="topBarSun" src="" alt=""/></div>
+        <div class="top-bar-label" id="topBarLabel"></div>
+      </div>
     </div>
+    <div class="mobile-scroll" id="mobileScroll"></div>
   </div>
-  <div class="mobile-scroll" id="mobileScroll"></div>
 
   <div class="tagline"><p>Good taste lives here.</p></div>
 
@@ -303,13 +286,13 @@ const RIGHT_SCREENS = [
 ];
 
 const NL = LEFT_SECTIONS.length;
-const leftBox     = document.getElementById('leftBox');
-const rightScroll = document.getElementById('rightScroll');
-const progThumb   = document.getElementById('progThumb');
-const mobileScroll= document.getElementById('mobileScroll');
-const topBarBgImg = document.getElementById('topBarBgImg');
-const topBarSun   = document.getElementById('topBarSun');
-const topBarLabel = document.getElementById('topBarLabel');
+const leftBox      = document.getElementById('leftBox');
+const rightScroll  = document.getElementById('rightScroll');
+const progThumb    = document.getElementById('progThumb');
+const mobileScroll = document.getElementById('mobileScroll');
+const topBarBgImg  = document.getElementById('topBarBgImg');
+const topBarSun    = document.getElementById('topBarSun');
+const topBarLabel  = document.getElementById('topBarLabel');
 
 const TRACK_TOP = 35, TRACK_H = 682;
 let currentLeft = 0, carouselTimer = null, carouselIdx = 0;
@@ -331,10 +314,7 @@ LEFT_SECTIONS.forEach((s, i) => {
     });
     panel.appendChild(cw);
   } else if (s.bg) {
-    const bg = document.createElement('div');
-    bg.className = 'lb-bg';
-    bg.innerHTML = `<img src="${s.bg}" alt=""/><div class="lb-overlay"></div>`;
-    panel.appendChild(bg);
+    panel.innerHTML += `<div class="lb-bg"><img src="${s.bg}" alt=""/><div class="lb-overlay"></div></div>`;
   }
 
   const content = document.createElement('div');
@@ -346,7 +326,7 @@ LEFT_SECTIONS.forEach((s, i) => {
     const item = document.createElement('div');
     item.className = 'menu-item' + (mi === i ? ' active' : '');
     item.innerHTML = `<span>${ms.label}</span>`;
-    item.addEventListener('click', () => jumpTo(mi, 'desktop'));
+    item.addEventListener('click', () => jumpToDesktop(mi));
     titles.appendChild(item);
   });
   content.appendChild(titles);
@@ -371,13 +351,13 @@ RIGHT_SCREENS.forEach((s, i) => {
 });
 
 // Initialise top bar
-function initTopBar(idx) {
+function updateTopBar(idx) {
   const s = LEFT_SECTIONS[idx];
-  topBarBgImg.src = s.bg || s.sun;
-  topBarSun.src   = s.sun;
+  topBarBgImg.src   = s.bg || s.sun;
+  topBarSun.src     = s.sun;
   topBarLabel.textContent = s.label;
 }
-initTopBar(0);
+updateTopBar(0);
 
 // ── Progress bar ────────────────────────────────────────────────────────────
 function updateProgress(idx) {
@@ -387,7 +367,7 @@ function updateProgress(idx) {
 }
 updateProgress(0);
 
-// ── Activate left panel ─────────────────────────────────────────────────────
+// ── Activate left panel (desktop) ──────────────────────────────────────────
 function activateLeft(idx) {
   if (idx === currentLeft) return;
   document.getElementById('lb-' + currentLeft).classList.remove('active');
@@ -396,42 +376,36 @@ function activateLeft(idx) {
   document.getElementById('lb-' + currentLeft).classList.add('active');
   updateProgress(idx);
   if (LEFT_SECTIONS[currentLeft].carousel) startCarousel();
-  initTopBar(idx);
 }
 
-// ── Jump to first screen of a left section ──────────────────────────────────
-function jumpTo(leftIdx, mode) {
-  const firstScreen = RIGHT_SCREENS.findIndex(rs => rs.leftIdx === leftIdx);
-  if (mode === 'desktop') {
-    const el = document.getElementById('rs-' + firstScreen);
-    if (el) rightScroll.scrollTo({ top: el.offsetTop, behavior:'smooth' });
-  } else {
-    const el = document.getElementById('ms-' + firstScreen);
-    if (el) mobileScroll.scrollTo({ top: el.offsetTop, behavior:'smooth' });
-  }
+// ── Jump helpers ────────────────────────────────────────────────────────────
+function jumpToDesktop(leftIdx) {
+  const i = RIGHT_SCREENS.findIndex(rs => rs.leftIdx === leftIdx);
+  const el = document.getElementById('rs-' + i);
+  if (el) rightScroll.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
 }
 
-// ── Desktop scroll listener ─────────────────────────────────────────────────
-const screenEls = RIGHT_SCREENS.map((_, i) => document.getElementById('rs-' + i));
+// ── Desktop scroll ──────────────────────────────────────────────────────────
+const deskEls = RIGHT_SCREENS.map((_, i) => document.getElementById('rs-' + i));
 rightScroll.addEventListener('scroll', () => {
   const t = rightScroll.scrollTop + rightScroll.clientHeight * 0.4;
   let best = 0;
-  screenEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
+  deskEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
   activateLeft(RIGHT_SCREENS[best].leftIdx);
-}, { passive:true });
+}, { passive: true });
 
-// ── Mobile scroll listener ──────────────────────────────────────────────────
-const mobileEls = RIGHT_SCREENS.map((_, i) => document.getElementById('ms-' + i));
+// ── Mobile scroll ───────────────────────────────────────────────────────────
+const mobEls = RIGHT_SCREENS.map((_, i) => document.getElementById('ms-' + i));
 mobileScroll.addEventListener('scroll', () => {
   const t = mobileScroll.scrollTop + mobileScroll.clientHeight * 0.4;
   let best = 0;
-  mobileEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
-  initTopBar(RIGHT_SCREENS[best].leftIdx);
-}, { passive:true });
+  mobEls.forEach((el, i) => { if (el.offsetTop <= t) best = i; });
+  updateTopBar(RIGHT_SCREENS[best].leftIdx);
+}, { passive: true });
 
 // ── Carousel ────────────────────────────────────────────────────────────────
 function startCarousel() {
-  const si = LEFT_SECTIONS.findIndex(s => s.carousel);
+  const si   = LEFT_SECTIONS.findIndex(s => s.carousel);
   const wrap = document.getElementById('cwrap-' + si);
   if (!wrap) return;
   carouselIdx = 0; setFrame(wrap, 0);
