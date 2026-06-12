@@ -577,7 +577,10 @@ const deskJacker = makeJacker(
   rightScroll,
   'rs-',
   SCREENS.length,
-  idx => activateLeft(SCREENS[idx].li)
+  idx => {
+    activateLeft(SCREENS[idx].li);
+    scrollArrow.classList.toggle('hidden', idx > 0);
+  }
 );
 
 // ── Wire up mobile jacker ───────────────────────────────────────────────────
@@ -585,7 +588,10 @@ const mobJacker = makeJacker(
   mobileScroll,
   'ms-',
   SCREENS.length,
-  idx => updateTopBar(SCREENS[idx].li)
+  idx => {
+    updateTopBar(SCREENS[idx].li);
+    topBarArrow.style.opacity = idx > 0 ? '0' : '1';
+  }
 );
 
 // ── Arrow clicks ────────────────────────────────────────────────────────────
