@@ -11,7 +11,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 
 /* NAV */
 .nav{position:fixed;top:0;left:0;width:1440px;height:140px;background:#000;border-bottom:1px solid #bf2e2e;box-shadow:0 4px 2px rgba(0,0,0,.25);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:18px}
-.nav-logo-text{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;position:absolute;left:50%;top:22px;transform:translateX(-50%)}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;position:absolute;left:50%;top:22px;transform:translateX(-50%)}
 .nav-links{display:flex;gap:48px}
 .nav-links a{font-size:16px;color:#fff;text-decoration:none;line-height:24px}
 .nav-links a:hover{opacity:.75}
@@ -20,12 +20,12 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .hero{padding-top:262px;padding-left:552px}
 .hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;line-height:90px;color:#fff;white-space:nowrap}
 
-/* MAIN WINDOW */
+/* MAIN WINDOW — fixed height, left box sticky, right scrolls */
 .main-window{position:relative;margin:15px 52px 0;width:1332px;height:745px;background:#ffeecd;overflow:hidden}
 
-/* LEFT BOX — fixed within the window */
-.left-box{position:absolute;left:24px;top:19px;width:632px;height:698px;overflow:hidden}
-.lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+/* LEFT BOX — absolutely positioned, never scrolls */
+.left-box{position:absolute;left:24px;top:19px;width:632px;height:698px;overflow:hidden;z-index:2}
+.lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .lb-panel.active{opacity:1;pointer-events:auto}
 .lb-bg{position:absolute;inset:0}
 .lb-bg img{width:100%;height:100%;object-fit:cover;display:block}
@@ -33,7 +33,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .lb-content{position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;padding:24px 48px;height:100%;justify-content:center}
 .sun-icon{width:154px;height:176px;flex-shrink:0}
 .sun-icon img{width:100%;height:100%;object-fit:contain}
-.menu-item{display:inline-flex;align-items:center;justify-content:center;padding:4px 16px;flex-shrink:0;cursor:pointer}
+.menu-item{display:inline-flex;align-items:center;padding:4px 16px;flex-shrink:0;cursor:pointer}
 .menu-item span{font-weight:600;font-size:24px;line-height:40px;color:#fff;white-space:nowrap;opacity:.4;transition:opacity .2s}
 .menu-item.active{background:#fff}
 .menu-item.active span{color:#000;opacity:1}
@@ -44,14 +44,40 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 .c-frame{position:absolute;inset:0;opacity:0;transition:opacity .5s ease}
 .c-frame.active{opacity:1}
 .c-frame img{width:100%;height:100%;object-fit:cover;display:block}
-.c-frame .lb-overlay{position:absolute;inset:0;background:rgba(46,57,101,.9);mix-blend-mode:hard-light}
 
-/* RIGHT SCROLL COLUMN */
-.right-scroll{position:absolute;left:686px;top:0;width:568px;height:745px;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none}
+/* RIGHT SCROLL — scrollable column, right side of the cream box */
+.right-scroll{
+  position:absolute;
+  left:686px;top:0;
+  width:608px;   /* up to the progress bar area */
+  height:745px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:none;
+}
 .right-scroll::-webkit-scrollbar{display:none}
-.right-section{height:745px;scroll-snap-align:start;display:flex;align-items:center;padding:40px 32px 40px 32px;flex-shrink:0}
-.right-section p{font-size:22px;line-height:34px;color:#000}
-.right-section p+p{margin-top:18px}
+
+/* Each section block — min one viewport tall, grows with content */
+.rs-section{
+  min-height:745px;
+  display:flex;
+  align-items:center;
+  padding:56px 32px 56px 32px;
+}
+.rs-section .copy{
+  width:100%;
+}
+.rs-section p{
+  font-size:22px;
+  line-height:34px;
+  color:#000;
+  display:block;
+  width:100%;
+}
+.rs-section p+p{margin-top:18px}
+
+/* sentinel div at the bottom of each section for IntersectionObserver */
+.rs-sentinel{height:1px;width:100%}
 
 /* PROGRESS BAR */
 .prog-track{position:absolute;right:38px;top:35px;width:8px;height:682px;background:#ffc95f;border-radius:4px}
@@ -63,7 +89,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 
 /* FOOTER */
 .footer{background:#320808;border-top:1px solid #bf2e2e;height:535px;position:relative;overflow:hidden}
-.footer-bg-text{position:absolute;left:-4px;bottom:-40px;font-family:'Playfair Display',serif;font-weight:900;font-size:230px;line-height:1;color:rgba(255,255,255,.06);user-select:none;pointer-events:none;white-space:nowrap}
+.footer-bg{position:absolute;left:-4px;bottom:-40px;font-family:'Playfair Display',serif;font-weight:900;font-size:230px;line-height:1;color:rgba(255,255,255,.06);user-select:none;pointer-events:none;white-space:nowrap}
 .footer-copy{position:absolute;left:72px;top:84px;font-size:16px;color:#fff;line-height:24px}
 .footer-col{position:absolute;display:flex;flex-direction:column;gap:16px}
 .footer-col .hd{font-weight:700;font-size:14px;color:rgba(255,255,255,.8);text-transform:uppercase;line-height:24px}
@@ -85,7 +111,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 <body>
 
 <nav class="nav">
-  <div class="nav-logo-text">Bella<br>Italia</div>
+  <div class="nav-logo">Bella<br>Italia</div>
   <div class="nav-links">
     <a href="#">Shop Our Pastas</a>
     <a href="#">About Us</a>
@@ -95,7 +121,6 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
 </nav>
 
 <div style="padding-top:140px">
-
   <div class="hero"><h1>About Us</h1></div>
 
   <div class="main-window" id="mainWindow">
@@ -108,7 +133,7 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
   <div class="tagline"><p>Good taste lives here.</p></div>
 
   <footer class="footer">
-    <div class="footer-bg-text">Bella<br>Italia</div>
+    <div class="footer-bg">Bella<br>Italia</div>
     <p class="footer-copy">© 2026 Bella Italia. All rights reserved.</p>
     <div class="footer-col f-products">
       <span class="hd">Our Products</span>
@@ -136,7 +161,6 @@ html,body{width:1440px;background:#320808;font-family:'Jost',sans-serif;overflow
       </div>
     </div>
   </footer>
-
 </div>
 
 <script>
@@ -201,14 +225,16 @@ const SECTIONS = [
 ];
 
 const N = SECTIONS.length;
-const leftBox = document.getElementById('leftBox');
+const leftBox     = document.getElementById('leftBox');
 const rightScroll = document.getElementById('rightScroll');
-const progThumb = document.getElementById('progThumb');
-const TRACK_H = 682;
-const THUMB_H = Math.floor(TRACK_H / N);
+const progThumb   = document.getElementById('progThumb');
+const TRACK_TOP   = 35;
+const TRACK_H     = 682;
+const THUMB_H     = Math.floor(TRACK_H / N);
+
 let current = 0;
 let carouselTimer = null;
-let carouselIdx = 0;
+let carouselIdx   = 0;
 
 // ── Build Left Box panels ────────────────────────────────────────────────────
 SECTIONS.forEach((s, i) => {
@@ -234,17 +260,22 @@ SECTIONS.forEach((s, i) => {
     panel.appendChild(bg);
   }
 
+  // Menu list
   const content = document.createElement('div');
   content.className = 'lb-content';
-  content.innerHTML = `<div class="sun-icon"><img src="${s.sun}" alt=""/></div>`;
+  const sunDiv = document.createElement('div');
+  sunDiv.className = 'sun-icon';
+  sunDiv.innerHTML = `<img src="${s.sun}" alt=""/>`;
+  content.appendChild(sunDiv);
+
   SECTIONS.forEach((ms, mi) => {
     const item = document.createElement('div');
     item.className = 'menu-item' + (mi === i ? ' active' : '');
     item.innerHTML = `<span>${ms.label}</span>`;
-    // clicking a menu label scrolls right panel to that section
     item.addEventListener('click', () => scrollToSection(mi));
     content.appendChild(item);
   });
+
   panel.appendChild(content);
   leftBox.appendChild(panel);
 });
@@ -252,20 +283,15 @@ SECTIONS.forEach((s, i) => {
 // ── Build Right Scroll sections ──────────────────────────────────────────────
 SECTIONS.forEach((s, i) => {
   const sec = document.createElement('div');
-  sec.className = 'right-section';
+  sec.className = 'rs-section';
   sec.id = 'rs-' + i;
-  sec.innerHTML = s.html;
+  sec.innerHTML = `<div class="copy">${s.html}</div>`;
   rightScroll.appendChild(sec);
 });
 
-// ── Scroll to section (called by menu item clicks) ───────────────────────────
-function scrollToSection(idx) {
-  rightScroll.scrollTo({ top: idx * 745, behavior: 'smooth' });
-}
-
 // ── Progress bar ─────────────────────────────────────────────────────────────
 function updateProgress(idx) {
-  progThumb.style.top = (35 + idx * THUMB_H) + 'px';
+  progThumb.style.top    = (TRACK_TOP + idx * THUMB_H) + 'px';
   progThumb.style.height = THUMB_H + 'px';
 }
 updateProgress(0);
@@ -277,31 +303,47 @@ function activate(idx) {
   if (SECTIONS[current].carousel) stopCarousel();
   current = idx;
   document.getElementById('lb-' + current).classList.add('active');
-  updateProgress(current);
+  updateProgress(idx);
   if (SECTIONS[current].carousel) startCarousel();
 }
 
-// ── IntersectionObserver: watch each right-section ───────────────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting && e.intersectionRatio >= 0.5) {
-      const idx = parseInt(e.target.id.replace('rs-', ''));
-      activate(idx);
-    }
-  });
-}, { root: rightScroll, threshold: 0.5 });
+// ── Scroll to section via menu click ─────────────────────────────────────────
+function scrollToSection(idx) {
+  const target = document.getElementById('rs-' + idx);
+  rightScroll.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+}
 
-SECTIONS.forEach((_, i) => observer.observe(document.getElementById('rs-' + i)));
+// ── IntersectionObserver: which section dominates the viewport ───────────────
+// Use the TOP EDGE of each section entering/leaving to decide the active one.
+// This way the left box stays locked to the current section for its full scroll.
+const sectionEls = SECTIONS.map((_, i) => document.getElementById('rs-' + i));
+
+// Recalculate which section is "active" purely from scroll position
+function onScroll() {
+  const scrollTop = rightScroll.scrollTop;
+  const viewH     = rightScroll.clientHeight; // 745
+
+  // Find the section whose top edge is closest to (but not past) the top of the viewport
+  let best = 0;
+  for (let i = 0; i < N; i++) {
+    if (sectionEls[i].offsetTop <= scrollTop + viewH * 0.4) {
+      best = i;
+    }
+  }
+  activate(best);
+}
+
+rightScroll.addEventListener('scroll', onScroll, { passive: true });
 
 // ── Carousel ─────────────────────────────────────────────────────────────────
 function startCarousel() {
-  const shapeIdx = SECTIONS.findIndex(s => s.carousel);
-  const wrap = document.getElementById('cwrap-' + shapeIdx);
+  const si = SECTIONS.findIndex(s => s.carousel);
+  const wrap = document.getElementById('cwrap-' + si);
   if (!wrap) return;
   carouselIdx = 0;
   setFrame(wrap, carouselIdx);
   carouselTimer = setInterval(() => {
-    carouselIdx = (carouselIdx + 1) % SECTIONS[shapeIdx].carousel.length;
+    carouselIdx = (carouselIdx + 1) % SECTIONS[si].carousel.length;
     setFrame(wrap, carouselIdx);
   }, 2000);
 }
