@@ -58,7 +58,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .prog-thumb{position:absolute;width:10px;border-radius:5px;background:#bf2e2e;transition:top .35s cubic-bezier(.4,0,.2,1),height .35s cubic-bezier(.4,0,.2,1)}
 
 /* ── MOBILE / TABLET TOP BAR ── */
-.top-bar{display:none;position:sticky;top:140px;z-index:100;width:100%;overflow:hidden;flex-shrink:0}
+.top-bar{display:none;position:sticky;top:0;z-index:150;width:100%;overflow:hidden;flex-shrink:0}
 .top-bar-inner{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:12px 20px}
 .top-bar-bg{position:absolute;inset:0}
 .top-bar-bg img{width:100%;height:100%;object-fit:cover;display:block}
@@ -157,7 +157,6 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
   /* show mobile layout */
   .top-bar{display:flex;top:100px}
-  .top-bar-sun img{width:44px;height:44px}
   .top-bar-label{font-size:16px}
   .mobile-scroll{display:block;background:#ffeecd;margin:0 24px}
   .mobile-screen{min-height:600px;padding:48px 36px}
@@ -188,7 +187,6 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
   /* show mobile layout */
   .top-bar{display:flex;top:80px}
-  .top-bar-sun img{width:36px;height:36px}
   .top-bar-label{font-size:13px;padding:3px 10px}
   .mobile-scroll{display:block;background:#ffeecd;margin:0 16px}
   .mobile-screen{min-height:100svh;padding:36px 24px}
@@ -294,9 +292,9 @@ const RIGHT_SCREENS = [
   { leftIdx:0, html:`<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>` },
   { leftIdx:0, html:`<p>Why? Because we knew it was time for a change. While so many brands we're telling the same old dusty story, we created pasta rooted in Italian tradition, made with organic ingredients and made for real life.</p>` },
   { leftIdx:0, html:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(32px,4vw,48px);line-height:1.2;color:#000;">That's the Organic Italian.</p>` },
-  { leftIdx:0, html:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
+  { leftIdx:1, html:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
   { leftIdx:1, html:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>` },
-  { leftIdx:1, html:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
+  { leftIdx:2, html:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
   { leftIdx:2, html:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p><p>Every one of them can turn a simple dish into something more expressive – a conversation between texture and sauce, between tradition and creativity.</p>` },
   { leftIdx:3, html:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
   { leftIdx:4, html:`<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p><p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p><p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>` },
