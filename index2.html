@@ -85,6 +85,10 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .img-window-left{left:0;bottom:0;transform:translateY(calc(100% + 60px));transition:opacity 1.2s ease,transform 2s cubic-bezier(.22,.61,.36,1)}
 .img-window-left.visible{opacity:1;transform:translateY(calc(-745px + 227px + 19px))}
 
+/* Window 3 — center-aligned, travels bottom→top */
+.img-window-center{left:50%;transform:translateX(-50%) translateY(calc(100% + 60px));bottom:0;transition:opacity 1.2s ease,transform 2.1s cubic-bezier(.22,.61,.36,1)}
+.img-window-center.visible{opacity:1;transform:translateX(-50%) translateY(calc(-745px + 297px + 19px))}
+
 /* ── Mobile window ── */
 .mobile-window{display:none;flex-direction:column;margin:15px auto 0;background:#ffeecd;overflow:hidden}
 .top-bar{position:sticky;top:0;z-index:10;width:100%;overflow:hidden;flex-shrink:0}
@@ -281,6 +285,9 @@ const ASSETS = {
   win1Lines:   'https://www.figma.com/api/mcp/asset/ad2f0ce1-e9ec-4a9e-b4a8-8bf938043f95',
   win2Photo:   'https://www.figma.com/api/mcp/asset/ffc1074e-00aa-4458-9b6b-461a554e37de',
   win2Lines:   'https://www.figma.com/api/mcp/asset/d4526e79-a6f2-4ee8-aa17-859888c88824',
+  win3Photo:   'https://www.figma.com/api/mcp/asset/734b6a7f-7570-4cd6-aa80-f1c6a15e4117',
+  win3LineL:   'https://www.figma.com/api/mcp/asset/2e479105-dfdb-4fe0-a4ad-cab15b4a4476',
+  win3LineT:   'https://www.figma.com/api/mcp/asset/ef273ec8-5d29-4328-a332-1ee3f6ca791d',
 };
 
 // ── Left box sections ────────────────────────────────────────────────────────
@@ -326,7 +333,7 @@ const SCREENS = [
   { li:0, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(32px,4vw,48px);line-height:1.2;color:#000;">That's the Organic Italian.</p>` },
   { li:1, t:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
   { li:1, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>`, img:2 },
-  { li:2, t:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
+  { li:2, t:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>`, img:3 },
   { li:2, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose.</p>` },
   { li:3, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
   { li:4, t:`<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p><p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p><p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>` },
@@ -361,6 +368,22 @@ const IMG_WINDOW = {
     'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block',
     ASSETS.win2Photo, ASSETS.win2Lines
   ),
+  3: `
+  <div class="img-window-wrap img-window-center" data-parallax>
+    <div class="img-window" style="width:305px;height:297px">
+      <div class="img-window-photo" style="overflow:hidden">
+        <img src="${ASSETS.win3Photo}" alt="Wheat harvest" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"/>
+      </div>
+      <div style="position:absolute;inset:0;z-index:2;pointer-events:none">
+        <div style="position:absolute;top:0;left:0;width:0;height:297px;display:flex;align-items:center;justify-content:center">
+          <img src="${ASSETS.win3LineL}" alt="" style="transform:rotate(90deg);transform-origin:center;width:297px;height:3px;display:block;max-width:none"/>
+        </div>
+        <div style="position:absolute;top:0;left:0;width:305px;height:0">
+          <img src="${ASSETS.win3LineT}" alt="" style="position:absolute;top:-3px;left:0;width:305px;height:3px;display:block;max-width:none"/>
+        </div>
+      </div>
+    </div>
+  </div>`,
 };
 
 // ── DOM refs ────────────────────────────────────────────────────────────────
