@@ -87,7 +87,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
 /* Window 3 — center-aligned, travels bottom→top */
 .img-window-center{left:50%;transform:translateX(-50%) translateY(calc(100% + 60px));bottom:0;transition:opacity 1.2s ease,transform 2.1s cubic-bezier(.22,.61,.36,1)}
-.img-window-center.visible{opacity:1;transform:translateX(-50%) translateY(calc(-745px + 297px + 19px))}
+.img-window-center.visible{opacity:1;transform:translateX(-50%) translateY(calc(-745px + 191px + 19px))}
 
 /* ── Mobile window ── */
 .mobile-window{display:none;flex-direction:column;margin:15px auto 0;background:#ffeecd;overflow:hidden}
@@ -285,9 +285,8 @@ const ASSETS = {
   win1Lines:   'https://www.figma.com/api/mcp/asset/ad2f0ce1-e9ec-4a9e-b4a8-8bf938043f95',
   win2Photo:   'https://www.figma.com/api/mcp/asset/ffc1074e-00aa-4458-9b6b-461a554e37de',
   win2Lines:   'https://www.figma.com/api/mcp/asset/d4526e79-a6f2-4ee8-aa17-859888c88824',
-  win3Photo:   'https://www.figma.com/api/mcp/asset/734b6a7f-7570-4cd6-aa80-f1c6a15e4117',
-  win3LineL:   'https://www.figma.com/api/mcp/asset/2e479105-dfdb-4fe0-a4ad-cab15b4a4476',
-  win3LineT:   'https://www.figma.com/api/mcp/asset/ef273ec8-5d29-4328-a332-1ee3f6ca791d',
+  win3Photo:   'https://www.figma.com/api/mcp/asset/067f139d-2104-4cc7-ad93-fa7ca9b7af45',
+  win3Lines:   'https://www.figma.com/api/mcp/asset/159fd971-6548-47d9-b3bd-eaed06e80fe1',
 };
 
 // ── Left box sections ────────────────────────────────────────────────────────
@@ -368,22 +367,11 @@ const IMG_WINDOW = {
     'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block',
     ASSETS.win2Photo, ASSETS.win2Lines
   ),
-  3: `
-  <div class="img-window-wrap img-window-center" data-parallax>
-    <div class="img-window" style="width:305px;height:297px">
-      <div class="img-window-photo" style="overflow:hidden">
-        <img src="${ASSETS.win3Photo}" alt="Wheat harvest" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"/>
-      </div>
-      <div style="position:absolute;inset:0;z-index:2;pointer-events:none">
-        <div style="position:absolute;top:0;left:0;width:0;height:297px;display:flex;align-items:center;justify-content:center">
-          <img src="${ASSETS.win3LineL}" alt="" style="transform:rotate(90deg);transform-origin:center;width:297px;height:3px;display:block;max-width:none"/>
-        </div>
-        <div style="position:absolute;top:0;left:0;width:305px;height:0">
-          <img src="${ASSETS.win3LineT}" alt="" style="position:absolute;top:-3px;left:0;width:305px;height:3px;display:block;max-width:none"/>
-        </div>
-      </div>
-    </div>
-  </div>`,
+  3: imgWindowHTML(
+    'img-window-center', 353, 191,
+    'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block',
+    ASSETS.win3Photo, ASSETS.win3Lines
+  ),
 };
 
 // ── DOM refs ────────────────────────────────────────────────────────────────
