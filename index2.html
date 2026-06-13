@@ -11,18 +11,8 @@
 html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 
 /* ── Nav ── */
-.nav{
-  position:fixed;top:0;left:0;width:100%;z-index:200;
-  background:#000;border-bottom:1px solid #bf2e2e;
-  box-shadow:0 4px 2px rgba(0,0,0,.25);
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-bottom:14px;height:140px;
-}
-.nav-logo{
-  font-family:'Playfair Display',serif;font-weight:900;font-size:26px;
-  color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;
-  position:absolute;left:50%;top:18px;transform:translateX(-50%);
-}
+.nav{position:fixed;top:0;left:0;width:100%;z-index:200;background:#000;border-bottom:1px solid #bf2e2e;box-shadow:0 4px 2px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14px;height:140px}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#fff;text-align:center;line-height:1.15;letter-spacing:1px;position:absolute;left:50%;top:18px;transform:translateX(-50%)}
 .nav-links{display:flex;gap:48px}
 .nav-links a{font-size:16px;color:#fff;text-decoration:none;line-height:24px}
 .nav-links a:hover{opacity:.75}
@@ -31,10 +21,10 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .hero{padding-top:201px;width:100%;text-align:center}
 .hero h1{font-family:'Playfair Display',serif;font-weight:900;color:#fff;display:inline-block}
 
-/* ── Shared: main window shell ── */
+/* ── Main window ── */
 .main-window{position:relative;margin:15px auto 0;background:#ffeecd;overflow:hidden}
 
-/* ── Desktop: left box ── */
+/* ── Left box ── */
 .left-box{position:absolute;top:19px;overflow:hidden;z-index:2}
 .lb-panel{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .lb-panel.active{opacity:1;pointer-events:auto}
@@ -56,18 +46,10 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .c-frame.active{opacity:1}
 .c-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* ── Desktop: right scroll ── */
-.right-scroll{
-  position:absolute;top:0;height:100%;
-  overflow-y:hidden;overflow-x:hidden;scrollbar-width:none;
-}
+/* ── Right scroll ── */
+.right-scroll{position:absolute;top:0;height:100%;overflow:hidden;scrollbar-width:none}
 .right-scroll::-webkit-scrollbar{display:none}
-.rs-screen{
-  position:relative;height:745px;flex-shrink:0;
-  display:flex;align-items:center;padding:56px 32px;
-  scroll-snap-align:center;scroll-snap-stop:always;
-  overflow:visible;
-}
+.rs-screen{position:relative;height:745px;flex-shrink:0;display:flex;align-items:center;padding:56px 32px;overflow:visible}
 .rs-screen .copy{width:100%}
 .rs-screen p{font-size:20px;line-height:26px;color:#000;display:block;width:100%}
 .rs-screen p+p{margin-top:18px}
@@ -77,68 +59,31 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 .prog-thumb{position:absolute;width:10px;border-radius:5px;background:#bf2e2e;transition:top .35s cubic-bezier(.4,0,.2,1),height .35s cubic-bezier(.4,0,.2,1)}
 
 /* ── Scroll arrow ── */
-.scroll-arrow{
-  position:absolute;top:20px;z-index:10;cursor:pointer;
-  display:flex;justify-content:center;pointer-events:auto;
-}
-.scroll-arrow svg{animation:arrowBounce 1.6s ease-in-out infinite}
+.scroll-arrow{position:absolute;top:20px;z-index:10;cursor:pointer;display:flex;justify-content:center;pointer-events:auto}
+.scroll-arrow svg,.top-bar-arrow svg{animation:arrowBounce 1.6s ease-in-out infinite}
 .scroll-arrow.hidden{opacity:0;pointer-events:none;transition:opacity .4s}
 .top-bar-arrow{position:relative;z-index:2;flex-shrink:0;margin-left:auto;cursor:pointer}
-.top-bar-arrow svg{display:block;animation:arrowBounce 1.6s ease-in-out infinite}
 @keyframes arrowBounce{
   0%,100%{transform:translateY(0)}
   45%{transform:translateY(8px)}
   65%{transform:translateY(4px)}
 }
 
-/* ── Image Window (parallax) ── */
-.img-window-wrap{
-  position:absolute;
-  opacity:0;
-  z-index:5;
-  pointer-events:none;
-}
+/* ── Image windows ── */
+.img-window-wrap{position:absolute;opacity:0;z-index:5;pointer-events:none}
+.img-window{position:relative}
+.img-window-photo{position:absolute;inset:0;overflow:hidden}
+.img-window-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.img-window-lines{position:absolute;inset:0;z-index:2}
+.img-window-lines img{position:absolute;inset:0;width:100%;height:100%;display:block}
 
-/* Window 1 — right-aligned, travels bottom→top via translateY */
-.img-window-right{
-  right:48px;
-  bottom:0;
-  transform:translateY(calc(100% + 60px));
-  transition:opacity 1.2s ease, transform 2.2s cubic-bezier(.22,.61,.36,1);
-}
-.img-window-right.visible{
-  opacity:1;
-  transform:translateY(calc(-745px + 227px + 19px));
-}
+/* Window 1 — right-aligned, travels bottom→top */
+.img-window-right{right:48px;bottom:0;transform:translateY(calc(100% + 60px));transition:opacity 1.2s ease,transform 2.2s cubic-bezier(.22,.61,.36,1)}
+.img-window-right.visible{opacity:1;transform:translateY(calc(-745px + 227px + 19px))}
 
-/* Window 2 — left-aligned, same travel */
-.img-window-left{
-  left:0;
-  bottom:0;
-  transform:translateY(calc(100% + 60px));
-  transition:opacity 1.2s ease, transform 2s cubic-bezier(.22,.61,.36,1);
-}
-.img-window-left.visible{
-  opacity:1;
-  transform:translateY(calc(-745px + 227px + 19px));
-}
-.img-window{
-  position:relative;
-  width:196px;
-  height:227px;
-}
-.img-window-photo{
-  position:absolute;inset:0;overflow:hidden;
-}
-.img-window-photo>img:first-child{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-}
-.img-window-lines{
-  position:absolute;inset:0;z-index:2;
-}
-.img-window-lines img{
-  position:absolute;inset:0;width:100%;height:100%;display:block;
-}
+/* Window 2 — left-aligned, travels bottom→top */
+.img-window-left{left:0;bottom:0;transform:translateY(calc(100% + 60px));transition:opacity 1.2s ease,transform 2s cubic-bezier(.22,.61,.36,1)}
+.img-window-left.visible{opacity:1;transform:translateY(calc(-745px + 227px + 19px))}
 
 /* ── Mobile window ── */
 .mobile-window{display:none;flex-direction:column;margin:15px auto 0;background:#ffeecd;overflow:hidden}
@@ -181,7 +126,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ════════════════════════
    DESKTOP ≥ 1024px
 ════════════════════════ */
-@media (min-width:1024px){
+@media(min-width:1024px){
   .hero{padding-top:201px}
   .hero h1{font-size:80px;line-height:90px}
   .main-window{max-width:1332px;height:745px;display:block}
@@ -203,7 +148,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ════════════════════════
    TABLET 768–1023px
 ════════════════════════ */
-@media (min-width:768px) and (max-width:1023px){
+@media(min-width:768px) and (max-width:1023px){
   .nav{height:100px}
   .nav-logo{font-size:22px;top:12px}
   .nav-links{gap:28px}
@@ -224,7 +169,7 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 /* ════════════════════════
    MOBILE < 768px
 ════════════════════════ */
-@media (max-width:767px){
+@media(max-width:767px){
   .nav{height:80px;padding-bottom:0;justify-content:center}
   .nav-logo{font-size:18px;top:auto;position:static;transform:none}
   .nav-links{display:none}
@@ -327,44 +272,53 @@ html,body{background:#320808;font-family:'Jost',sans-serif;overflow-x:hidden}
 </div>
 
 <script>
-// ── Data ────────────────────────────────────────────────────────────────────
+// ── Assets ──────────────────────────────────────────────────────────────────
+// NOTE: Figma MCP asset URLs expire after 7 days.
+// Replace with self-hosted paths to make permanent.
 
+const ASSETS = {
+  win1Photo:   'https://www.figma.com/api/mcp/asset/2c9f150e-83bc-464d-ab80-24f065256743',
+  win1Lines:   'https://www.figma.com/api/mcp/asset/ad2f0ce1-e9ec-4a9e-b4a8-8bf938043f95',
+  win2Photo:   'https://www.figma.com/api/mcp/asset/ffc1074e-00aa-4458-9b6b-461a554e37de',
+  win2Lines:   'https://www.figma.com/api/mcp/asset/d4526e79-a6f2-4ee8-aa17-859888c88824',
+};
+
+// ── Left box sections ────────────────────────────────────────────────────────
 const LEFT = [
-  { label:'AN ORGANIC BEGINNING',             bg:'https://www.figma.com/api/mcp/asset/56d42d99-8c8a-47ca-a4f8-9f896695f4ad', sun:'https://www.figma.com/api/mcp/asset/25d6af66-771e-43af-a090-255d2f711f71', carousel:null },
-  { label:'CELEBRATING ORGANIC MOMENTS',      bg:'https://www.figma.com/api/mcp/asset/41d000d8-d15f-4e6a-aa00-06dff065c9f3', sun:'https://www.figma.com/api/mcp/asset/c9109458-574b-40cb-ad56-b3a1060aaf7e', carousel:null },
-  { label:"ORGANIC ISN'T JUST A HEADLINE",    bg:'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62', sun:'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385', carousel:null },
-  { label:'THE ART OF THE SHAPE',             bg:null, sun:'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
-    carousel:['https://www.figma.com/api/mcp/asset/1d94b248-04fa-42cc-b7dc-3159e1980174','https://www.figma.com/api/mcp/asset/df880c0c-04cc-475d-a7f8-31d68c405f88','https://www.figma.com/api/mcp/asset/7c2803f8-017c-4ec5-a8e2-f0c7a06c09be','https://www.figma.com/api/mcp/asset/c1523baf-4840-4140-aa87-4b9b66fe4903','https://www.figma.com/api/mcp/asset/2609a77d-7753-4b28-999d-46385a94ee94','https://www.figma.com/api/mcp/asset/ad0a8428-7989-4720-ad7a-e985ead91ba8','https://www.figma.com/api/mcp/asset/da3eff8e-9230-4208-b4b6-bbdf0b1aee61'] },
-  { label:'MADE IN NAPLES...BROUGHT TO AMERICA', bg:'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56', sun:'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1', carousel:null },
-  { label:'THE PEOPLE BEHIND THE BRAND',      bg:'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d', sun:'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e', carousel:null },
-  { label:'THIS IS THE ORGANIC ITALIAN',      bg:'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e', sun:'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3', carousel:null }
+  { label:'AN ORGANIC BEGINNING',
+    bg:'https://www.figma.com/api/mcp/asset/56d42d99-8c8a-47ca-a4f8-9f896695f4ad',
+    sun:'https://www.figma.com/api/mcp/asset/25d6af66-771e-43af-a090-255d2f711f71' },
+  { label:'CELEBRATING ORGANIC MOMENTS',
+    bg:'https://www.figma.com/api/mcp/asset/41d000d8-d15f-4e6a-aa00-06dff065c9f3',
+    sun:'https://www.figma.com/api/mcp/asset/c9109458-574b-40cb-ad56-b3a1060aaf7e' },
+  { label:"ORGANIC ISN'T JUST A HEADLINE",
+    bg:'https://www.figma.com/api/mcp/asset/bc8c00c1-4f6e-492b-b246-34eb978bdf62',
+    sun:'https://www.figma.com/api/mcp/asset/a4ce54a9-8f32-4d2a-85cc-a5a530ca9385' },
+  { label:'THE ART OF THE SHAPE',
+    bg:null,
+    sun:'https://www.figma.com/api/mcp/asset/7697a6dc-1515-4c85-bb9f-1d84479ff78d',
+    carousel:[
+      'https://www.figma.com/api/mcp/asset/1d94b248-04fa-42cc-b7dc-3159e1980174',
+      'https://www.figma.com/api/mcp/asset/df880c0c-04cc-475d-a7f8-31d68c405f88',
+      'https://www.figma.com/api/mcp/asset/7c2803f8-017c-4ec5-a8e2-f0c7a06c09be',
+      'https://www.figma.com/api/mcp/asset/c1523baf-4840-4140-aa87-4b9b66fe4903',
+      'https://www.figma.com/api/mcp/asset/2609a77d-7753-4b28-999d-46385a94ee94',
+      'https://www.figma.com/api/mcp/asset/ad0a8428-7989-4720-ad7a-e985ead91ba8',
+      'https://www.figma.com/api/mcp/asset/da3eff8e-9230-4208-b4b6-bbdf0b1aee61',
+    ]},
+  { label:'MADE IN NAPLES...BROUGHT TO AMERICA',
+    bg:'https://www.figma.com/api/mcp/asset/238e2d06-dd6a-44a4-9139-9589eb635c56',
+    sun:'https://www.figma.com/api/mcp/asset/97e149ea-f2d5-4e10-848d-7a8816ea7ed1' },
+  { label:'THE PEOPLE BEHIND THE BRAND',
+    bg:'https://www.figma.com/api/mcp/asset/e18c36fd-de6e-494c-ac47-613d8a0c471d',
+    sun:'https://www.figma.com/api/mcp/asset/85682b6b-1481-4aa1-9765-69feaa73096e' },
+  { label:'THIS IS THE ORGANIC ITALIAN',
+    bg:'https://www.figma.com/api/mcp/asset/72101fc0-ca37-4bac-b285-be6cc7f7ab7e',
+    sun:'https://www.figma.com/api/mcp/asset/6b008bb1-845e-4aec-9273-bcfaee3eb2e3' },
 ];
 
-// imgWindow HTML reused in screen 1
-const IMG_WINDOW_1 = `
-  <div class="img-window-wrap img-window-right" data-parallax>
-    <div class="img-window">
-      <div class="img-window-photo">
-        <img src="https://www.figma.com/api/mcp/asset/50e36dec-bcac-4d1c-9580-c0e8af453c27" alt=""/>
-        <div class="img-window-inner-photo">
-          <img src="https://www.figma.com/api/mcp/asset/3ca31b90-4ac6-406e-a1e4-ee9632d82b92" alt="Kitchen scene"/>
-        </div>
-      </div>
-      <div class="img-window-lines"><img src="https://www.figma.com/api/mcp/asset/4a9f52e4-e100-46c0-8f34-96455cfcdbe9" alt=""/></div>
-    </div>
-  </div>`;
-
-// imgWindow 2 for Celebrating Organic Moments screen 2
-const IMG_WINDOW_2 = `
-  <div class="img-window-wrap img-window-left" data-parallax>
-    <div class="img-window" style="width:338px;height:227px">
-      <div class="img-window-photo">
-        <img src="https://www.figma.com/api/mcp/asset/e85c096b-cd11-4d52-b612-95af4f69a2ec" alt="Dinner scene"/>
-      </div>
-      <div class="img-window-lines"><img src="https://www.figma.com/api/mcp/asset/5cd97ec7-bddf-4909-8ab5-1a5fc7b7df39" alt=""/></div>
-    </div>
-  </div>`;
-
+// ── Right content screens ────────────────────────────────────────────────────
+// li = index into LEFT; img = 1|2 to inject an image window, else omit
 const SCREENS = [
   { li:0, t:`<p>The Organic Italian got its start the way the best dinners do – thoughtfully, hungrily and with way too many people around the table. Created by Bella Italia, the goal was startlingly simple: bring a fresh take on Italian pasta to American homes.</p>` },
   { li:0, t:`<p>First, we took note of American consumers' desire for something honest and real – organic ingredients, cleaner labels and uncomplicated products that fit their modern lifestyle. Next, we worked with the finest producers, growers and makers across Italy, developing authentic Italian foods rooted in quality ingredients and thoughtful craftsmanship.</p>`, img:1 },
@@ -373,29 +327,58 @@ const SCREENS = [
   { li:1, t:`<p>Good food brings people together.</p><p>It's a belief that Italians have long embraced. And they know that celebrating these shared moments, big and small, is just as important as the food on the table.</p><p>The comfortably crowded table. The second bottle…the third. The friend who stays a little too late. The night that drifts into dawn. The quiet luxury of actually slowing down for dinner.</p><p>Nothing complicated. Nothing planned. Just great ingredients and even better company.</p>` },
   { li:1, t:`<p style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;color:#000;">The Organic Italian was created for those moments.</p>`, img:2 },
   { li:2, t:`<p>It's our standard.</p><p>We know great pasta starts with thoughtfully sourced ingredients, traditional Italian craftsmanship and a commitment to doing things the right way. And so, everything we do starts with organic Italian wheat. It's what gives our pasta that naturally golden color and perfect al dente bite.</p><p>Simple ingredients. Beautiful flavor. Nothing unnecessary.</p>` },
-  { li:2, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
+  { li:2, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind. Ribbed tubes stand ready to catch the chunkiest ragus. And playful bow ties scoop up creamy, cheesy goodness.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose.</p>` },
   { li:3, t:`<p>Every pasta shape arrives with its own personality. Ribbons, both thick and thin, slink through rich sauces like silk. Spirals and twists eagerly gather every last drop, refusing to leave any flavor behind.</p><p>Every shape in The Organic Italian collection was selected with intention and purpose. Some bring elegance, some bring a bit of fun, but each has a purpose: to carry flavor, create balance and make every bite worth savoring.</p>` },
   { li:4, t:`<p>Naples is one of the most celebrated pasta-making regions in Italy. And it's where The Organic Italian was born.</p><p>Working with experienced pasta makers and trusted partners, we combine generations of Italian pasta craftsmanship with modern production standards to create something exceptional. It's the best of Italian tradition. Made for a modern American life.</p><p>Bella Italia is on a mission to bring authentic Italian food experiences to new audiences. The Organic Italian represents the next chapter in that journey – a modern organic pasta brand built in Italy and created for American homes.</p>` },
   { li:5, t:`<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>` },
-  { li:6, t:`<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p><p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p><p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p><p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>` }
+  { li:6, t:`<p>We created this pasta for people exactly like you. People who care as much about the ingredients, as they do about the vibe.</p><p>That's why we're about bringing a little more beauty, a lot more flavor and a bit of spontaneity into everyday life. Not just through what's on the plate, but everything that surrounds it.</p><p>Authentic Italian craftsmanship. Organic Italian ingredients. Thoughtfully selected shapes. Made in Naples for modern American life.</p><p>The Organic Italian is just really good pasta for people who know the best nights usually happen around the table.</p>` },
 ];
 
+// ── Image window templates ───────────────────────────────────────────────────
+function imgWindowHTML(cls, w, h, photoStyle, photoSrc, linesSrc, linesStyle='') {
+  return `
+  <div class="img-window-wrap ${cls}" data-parallax>
+    <div class="img-window" style="width:${w}px;height:${h}px">
+      <div class="img-window-photo" style="overflow:hidden">
+        <img src="${photoSrc}" alt="" style="${photoStyle}"/>
+      </div>
+      <div class="img-window-lines" ${linesStyle ? `style="${linesStyle}"` : ''}>
+        <img src="${linesSrc}" alt=""/>
+      </div>
+    </div>
+  </div>`;
+}
+
+const IMG_WINDOW = {
+  1: imgWindowHTML(
+    'img-window-right', 266, 227,
+    'position:absolute;width:100%;height:191.93%;left:0;top:-45.96%;object-fit:cover;display:block;max-width:none',
+    ASSETS.win1Photo, ASSETS.win1Lines,
+    'left:10px;width:256px'
+  ),
+  2: imgWindowHTML(
+    'img-window-left', 338, 227,
+    'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block',
+    ASSETS.win2Photo, ASSETS.win2Lines
+  ),
+};
+
 // ── DOM refs ────────────────────────────────────────────────────────────────
-const leftBox     = document.getElementById('leftBox');
-const rightScroll = document.getElementById('rightScroll');
-const progThumb   = document.getElementById('progThumb');
-const mobileScroll= document.getElementById('mobileScroll');
-const topBarBgImg = document.getElementById('topBarBgImg');
-const topBarSun   = document.getElementById('topBarSun');
-const topBarLabel = document.getElementById('topBarLabel');
-const scrollArrow = document.getElementById('scrollArrow');
-const topBarArrow = document.getElementById('topBarArrow');
+const leftBox      = document.getElementById('leftBox');
+const rightScroll  = document.getElementById('rightScroll');
+const progThumb    = document.getElementById('progThumb');
+const mobileScroll = document.getElementById('mobileScroll');
+const topBarBgImg  = document.getElementById('topBarBgImg');
+const topBarSun    = document.getElementById('topBarSun');
+const topBarLabel  = document.getElementById('topBarLabel');
+const scrollArrow  = document.getElementById('scrollArrow');
+const topBarArrow  = document.getElementById('topBarArrow');
 
 const NL = LEFT.length;
 const TRACK_TOP = 35, TRACK_H = 682;
 let activeLeft = 0, carouselTimer = null, carouselIdx = 0;
 
-// ── Build desktop left panels ───────────────────────────────────────────────
+// ── Build left box panels ───────────────────────────────────────────────────
 LEFT.forEach((s, i) => {
   const panel = document.createElement('div');
   panel.className = 'lb-panel' + (i === 0 ? ' active' : '');
@@ -435,12 +418,11 @@ LEFT.forEach((s, i) => {
 // ── Build right screens (desktop + mobile) ──────────────────────────────────
 SCREENS.forEach((s, i) => {
   ['rs', 'ms'].forEach(pfx => {
-    const sc = document.createElement('div');
-    sc.className = (pfx === 'rs' ? 'rs-screen' : 'mobile-screen');
-    sc.id = pfx + '-' + i;
-    const imgHtml = s.img === 1 ? IMG_WINDOW_1 : s.img === 2 ? IMG_WINDOW_2 : '';
-    sc.innerHTML = `<div class="copy">${s.t}</div>` + imgHtml;
-    (pfx === 'rs' ? rightScroll : mobileScroll).appendChild(sc);
+    const el = document.createElement('div');
+    el.className = pfx === 'rs' ? 'rs-screen' : 'mobile-screen';
+    el.id = `${pfx}-${i}`;
+    el.innerHTML = `<div class="copy">${s.t}</div>` + (s.img ? IMG_WINDOW[s.img] : '');
+    (pfx === 'rs' ? rightScroll : mobileScroll).appendChild(el);
   });
 });
 
@@ -452,7 +434,7 @@ function setProgress(idx) {
 }
 setProgress(0);
 
-// ── Activate left panel ─────────────────────────────────────────────────────
+// ── Left panel activation ───────────────────────────────────────────────────
 function activateLeft(idx) {
   if (idx === activeLeft) return;
   document.getElementById('lb-' + activeLeft).classList.remove('active');
@@ -471,138 +453,64 @@ function updateTopBar(idx) {
 }
 updateTopBar(0);
 
-// ── Jump to first screen of a left section ──────────────────────────────────
+// ── Desktop: jump to first screen of a left section ─────────────────────────
 function jumpDesktop(li) {
   const i = SCREENS.findIndex(s => s.li === li);
   const el = document.getElementById('rs-' + i);
-  if (el) rightScroll.scrollTo({ top: el.offsetTop, behavior:'smooth' });
+  if (el) deskJacker.goTo(i);
 }
 
-// ── Determine active screen from scroll position ─────────────────────────────
-function activeScreenIdx(container, prefix) {
-  const threshold = container.scrollTop + container.clientHeight * 0.4;
-  let best = 0;
-  SCREENS.forEach((_, i) => {
-    const el = document.getElementById(prefix + i);
-    if (el && el.offsetTop <= threshold) best = i;
-  });
-  return best;
-}
+// ── Scroll-jacker ────────────────────────────────────────────────────────────
+const DURATION = 900;
+function easeInOutQuart(t) { return t < .5 ? 8*t*t*t*t : 1-Math.pow(-2*t+2,4)/2; }
 
-// ── Scrolljack engine ────────────────────────────────────────────────────────
-// Intercepts wheel/touch, animates to the target screen with easing.
-// DURATION controls how slow the snap feels (ms).
-
-const DURATION = 900; // ms — increase to slow further
-
-function easeInOutQuart(t) {
-  return t < 0.5 ? 8*t*t*t*t : 1 - Math.pow(-2*t+2,4)/2;
-}
-
-function makeJacker(container, screenPrefix, screenCount, onActivate) {
-  let current  = 0;
-  let animFrame= null;
-  let startY   = 0, targetY = 0, startTime = 0;
-  let busy     = false;
-  let touchStartY = 0;
+function makeJacker(container, prefix, count, onActivate) {
+  let cur = 0, frame = null, startY = 0, targetY = 0, startTime = 0, busy = false, touchY = 0;
 
   function screenTop(i) {
-    const el = document.getElementById(screenPrefix + i);
+    const el = document.getElementById(prefix + i);
     return el ? el.offsetTop : i * container.clientHeight;
   }
 
-  function animateTo(idx, onDone) {
-    if (animFrame) cancelAnimationFrame(animFrame);
-    startY    = container.scrollTop;
-    targetY   = screenTop(idx);
-    startTime = performance.now();
-    busy      = true;
-
-    function step(now) {
+  function animateTo(idx) {
+    if (frame) cancelAnimationFrame(frame);
+    startY = container.scrollTop; targetY = screenTop(idx);
+    startTime = performance.now(); busy = true;
+    (function step(now) {
       const t = Math.min((now - startTime) / DURATION, 1);
       container.scrollTop = startY + (targetY - startY) * easeInOutQuart(t);
-      if (t < 1) {
-        animFrame = requestAnimationFrame(step);
-      } else {
-        container.scrollTop = targetY;
-        busy = false;
-        if (onDone) onDone();
-      }
-    }
-    animFrame = requestAnimationFrame(step);
+      if (t < 1) frame = requestAnimationFrame(step);
+      else { container.scrollTop = targetY; busy = false; }
+    })(startTime);
   }
 
   function goTo(idx) {
-    idx = Math.max(0, Math.min(screenCount - 1, idx));
-    if (idx === current && !busy) return;
-    current = idx;
-    onActivate(idx);
-    animateTo(idx, () => {});
+    idx = Math.max(0, Math.min(count - 1, idx));
+    cur = idx; onActivate(idx); animateTo(idx);
   }
 
-  // Wheel
-  container.addEventListener('wheel', e => {
-    e.preventDefault();
-    if (busy) return;
-    goTo(current + (e.deltaY > 0 ? 1 : -1));
-  }, { passive: false });
+  container.addEventListener('wheel', e => { e.preventDefault(); if (!busy) goTo(cur + (e.deltaY > 0 ? 1 : -1)); }, { passive:false });
+  container.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive:true });
+  container.addEventListener('touchend', e => { if (!busy) { const dy = touchY - e.changedTouches[0].clientY; if (Math.abs(dy) > 30) goTo(cur + (dy > 0 ? 1 : -1)); } }, { passive:true });
 
-  // Touch
-  container.addEventListener('touchstart', e => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  container.addEventListener('touchend', e => {
-    if (busy) return;
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) > 30) goTo(current + (dy > 0 ? 1 : -1));
-  }, { passive: true });
-
-  return {
-    goTo,
-    get current() { return current; },
-    isBusy() { return busy; }
-  };
+  return { goTo, get current() { return cur; } };
 }
 
-// ── Wire up desktop jacker ──────────────────────────────────────────────────
-const deskJacker = makeJacker(
-  rightScroll,
-  'rs-',
-  SCREENS.length,
-  idx => {
-    activateLeft(SCREENS[idx].li);
-    scrollArrow.classList.toggle('hidden', idx > 0);
-  }
-);
+const deskJacker = makeJacker(rightScroll, 'rs-', SCREENS.length, idx => {
+  activateLeft(SCREENS[idx].li);
+  scrollArrow.classList.toggle('hidden', idx > 0);
+});
 
-// ── Wire up mobile jacker ───────────────────────────────────────────────────
-const mobJacker = makeJacker(
-  mobileScroll,
-  'ms-',
-  SCREENS.length,
-  idx => {
-    updateTopBar(SCREENS[idx].li);
-    topBarArrow.style.opacity = idx > 0 ? '0' : '1';
-  }
-);
+const mobJacker = makeJacker(mobileScroll, 'ms-', SCREENS.length, idx => {
+  updateTopBar(SCREENS[idx].li);
+  topBarArrow.style.opacity = idx > 0 ? '0' : '1';
+});
 
-// ── Arrow clicks ────────────────────────────────────────────────────────────
 scrollArrow.addEventListener('click', () => deskJacker.goTo(deskJacker.current + 1));
 topBarArrow.addEventListener('click', () => mobJacker.goTo(mobJacker.current + 1));
 
-// ── Menu item jump ──────────────────────────────────────────────────────────
-function jumpDesktop(li) {
-  const i = SCREENS.findIndex(s => s.li === li);
-  if (i >= 0) deskJacker.goTo(i);
-}
-
-// ── Parallax / fade-in ───────────────────────────────────────────────────────
-// Checks visibility of [data-parallax] elements against their scroll container.
-// Called every frame during jacker animation so it fires even without native scroll events.
-const parallaxEls = {
-  desktop: [],
-  mobile:  []
-};
+// ── Parallax visibility checker (rAF loop) ───────────────────────────────────
+const parallaxEls = { desktop:[], mobile:[] };
 
 function collectParallaxEls() {
   parallaxEls.desktop = [...rightScroll.querySelectorAll('[data-parallax]')];
@@ -610,17 +518,13 @@ function collectParallaxEls() {
 }
 
 function checkParallax(container, els) {
-  const top = container.scrollTop;
-  const bot = top + container.clientHeight;
+  const top = container.scrollTop, bot = top + container.clientHeight;
   els.forEach(el => {
     if (el.classList.contains('visible')) return;
-    // offsetTop is relative to the rs-screen parent, which is inside rightScroll
     const screen = el.closest('.rs-screen, .mobile-screen');
     if (!screen) return;
-    const screenTop = screen.offsetTop;
-    const elTop  = screenTop + el.offsetTop;
-    const elBot  = elTop + el.offsetHeight;
-    if (elBot > top && elTop < bot) el.classList.add('visible');
+    const eTop = screen.offsetTop + el.offsetTop;
+    if (eTop + el.offsetHeight > top && eTop < bot) el.classList.add('visible');
   });
 }
 
@@ -629,6 +533,7 @@ function tickParallax() {
   checkParallax(mobileScroll, parallaxEls.mobile);
   requestAnimationFrame(tickParallax);
 }
+
 collectParallaxEls();
 requestAnimationFrame(tickParallax);
 
@@ -637,16 +542,12 @@ function startCarousel() {
   const si   = LEFT.findIndex(s => s.carousel);
   const wrap = document.getElementById('cwrap-' + si);
   if (!wrap) return;
-  carouselIdx = 0; setFrame(wrap, 0);
-  carouselTimer = setInterval(() => {
-    carouselIdx = (carouselIdx + 1) % LEFT[si].carousel.length;
-    setFrame(wrap, carouselIdx);
-  }, 2000);
+  carouselIdx = 0;
+  setFrame(wrap, 0);
+  carouselTimer = setInterval(() => { carouselIdx = (carouselIdx + 1) % LEFT[si].carousel.length; setFrame(wrap, carouselIdx); }, 2000);
 }
 function stopCarousel() { clearInterval(carouselTimer); carouselTimer = null; }
-function setFrame(wrap, idx) {
-  wrap.querySelectorAll('.c-frame').forEach((f, i) => f.classList.toggle('active', i === idx));
-}
+function setFrame(wrap, idx) { wrap.querySelectorAll('.c-frame').forEach((f, i) => f.classList.toggle('active', i === idx)); }
 </script>
 </body>
 </html>
